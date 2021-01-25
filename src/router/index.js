@@ -1,22 +1,44 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Login from '../views/login'
+import Home from '../views/home'
+import ContractRequest from '../views/home/contract-request'
+import RequestDetail from '../views/home/detail-request'
+import ConfirmContract from '../views/home/confirm-contract'
+import AccountManagement from '../views/home/account-management'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/home',
     name: 'Home',
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/contract-request',
+    name: 'ContractRequest',
+    component: ContractRequest
+  },
+  {
+    path: '/request-detail/:patientId&:contractCode',
+    name: 'request-detail',
+    component: RequestDetail
+  },
+  {
+    path: '/confirm-contract',
+    name: 'confirm-contract',
+    component: ConfirmContract
+  },
+  {
+    path: '/account-manage',
+    name: 'account-manage',
+    component: AccountManagement
   }
 ]
 
