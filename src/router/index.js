@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../views/login'
 import Home from '../views/home'
 import ContractRequest from '../views/home/contract-request'
-import RequestDetail from '../views/home/detail-request'
+import RequestDetail from '../views/home/request-detail'
 import ConfirmContract from '../views/home/confirm-contract'
 import AccountManagement from '../views/home/account-management'
 
@@ -26,7 +26,7 @@ const routes = [
     component: ContractRequest
   },
   {
-    path: '/request-detail/:patientId&:contractCode',
+    path: '/request-detail/:contractId',
     name: 'request-detail',
     component: RequestDetail
   },

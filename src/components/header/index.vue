@@ -1,14 +1,13 @@
 <template>
   <div>
-    <h1>Left Content</h1>
+    <h1>Default Header</h1>
   </div>
 </template>
-
 <script>
 export default {
+  name: 'HeaderDefault'
 }
 </script>
 
-<style>
-
+<style style="scss">
 </style>

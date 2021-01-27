@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="12"><h1>Hợp đồng</h1></el-col>
+      <el-col :span="12"><h1>HỢP ĐỒNG KHÁM BỆNH CHỮA BỆNH</h1></el-col>
       <el-col :span="12"><el-button type="dark">Xuất thành PDF</el-button></el-col>
     </el-row>
     <el-row :gutter="10">
@@ -59,6 +59,12 @@
     </el-row>
     <el-row>
       <h3>III. Cam kết</h3>
+      <h5>1. Quyền và trách nhiệm bên bác sĩ</h5>
+      <h5>2. Quyền và trách nhiệm bên người bệnh</h5>
+      <h5>3. Cam kết chung</h5>
+      <p>- Hai bên cam kết thực hiện đúng các quy định về pháp luật và những điều khoản có trong hợp đồng.</p>
+      <p>- Trong trường hợp thay đổi hoặc chấm dứt hợp đồng trước thời hạn, hai bên phải thông báo cho nhau trước một tháng để đảm bảo quyền lợi cho hai bên</p>
+      <p>- Hai bên thống nhất phối hợp và sử dụng ứng dụng HDr để thuận tiện cho việc theo dõi bệnh.</p>
     </el-row>
     <el-row>
       <el-col :span="12" ><el-button type="info" @click="cancelContract()">Huỷ hợp đồng</el-button></el-col>
@@ -67,7 +73,7 @@
           <el-button type="info" @click="rejectCancelContract()">Không</el-button>
           <el-button type="info" @click="confirmCancelContract()">Đồng ý</el-button>
         </el-dialog>
-      <el-col :span="12" ><el-button type="info" @click="confirmContract([contract, value, txtNote])">Xác nhận</el-button></el-col>
+      <el-col :span="12" ><el-button type="info" @click="confirmContract([contract, value])">Xác nhận</el-button></el-col>
     </el-row>
   </div>
 </template>

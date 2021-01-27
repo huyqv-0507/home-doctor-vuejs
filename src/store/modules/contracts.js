@@ -4,39 +4,44 @@ import router from '../../router/index.js'
 const contractRepository = RepositoryFactory.get('contractRepository')
 const state = () => ({
   contractRequests: [],
-  requestDetail: {},
+  requestDetail: {
+    contractId: '', // Id hợp đồng
+    fullNameDoctor: '', // Họ tên của bác sĩ
+    phoneNumberDoctor: '', // Số điện thoại của bác sĩ
+    workLocationDoctor: '', // Nơi làm việc của bác sĩ
+    dobDoctor: '', // Ngày sinh của bác sĩ
+    fullNamePatient: '', // Họ tên của bệnh nhân
+    phoneNumberPatient: '', // Số điện thoại của bệnh nhân
+    addressPatient: '', // Địa chỉ bệnh nhân
+    dobPatient: '', // Ngày sinh của bệnh nhân
+    contractCode: '', // Mã hợp đồng
+    reason: '', // Lý do muốn kí hợp đồng
+    status: '', // Trạng thái của hợp đồng ACTIVE:  Đã kết nối, FINISHED: Bị huỷ bởi hệ thống, PENDING: Đang chờ bác sĩ xét duyệt, REJECTED: Bị bác sĩ từ chối
+    dateOfTracking: '', // Số ngày theo dõi
+    dateCreated: '', // Ngày tạo ra hợp đồng
+    dateStarted: '', // Ngày bắt đầu theo dõi
+    dateFinished: '', // Ngày kết thúc theo dõi
+    doctorId: '', // Id của bác sĩ
+    patientId: '' // Id của bệnh nhân
+  },
   rejectDialogVisible: false,
   contractCode: '',
   cancelContractVisible: false,
   contract: {
-    contractCode: '',
-    doctorId: '',
-    doctorFullName: '',
-    workLocation: '',
-    dobDoctor: null,
-    experienceYear: 0,
-    addressOfDoctor: '',
-    patientId: '',
-    patientName: '',
-    genderOfPatient: '',
-    addressOfPatient: '',
-    career: '',
-    dobPatient: null,
-    dateOfExamination: null,
-    dateStarted: null,
-    dateFinished: null,
-    relativeName: '',
-    relativePhoneNumber: '',
-    diseaseType: '',
-    note: ''
+    contractId: '',
+    status: 'Finished',
+    dateStarted: '',
+    daysOfTracking: 0
   }
 })
 const getters = {
 }
 const actions = {
   // Get all contract requests
-  getContractRequests ({ commit }) {
-    contractRepository.getContractRequests().then(response => {
+  getContractRequestPending ({ commit }, payloadUser) {
+    console.log(payloadUser)
+    contractRepository.getContractRequestPending(payloadUser[0]).then(response => {
+      console.log(response.data)
       if (response.status === 200) {
         commit('success', response.data)
       } else {
@@ -46,10 +51,12 @@ const actions = {
   },
 
   // Get request detail by patientId when doctor click [0] is patientId, [1] is contractCode
-  getRequestDetail ({ commit }, payload) {
-    contractRepository.getRequestDetail(payload[0]).then(response => {
+  getRequestDetail ({ commit }, payloadContractId) {
+    console.log(`payloadPatientId: ${payloadContractId}`)
+    contractRepository.getRequestDetail(payloadContractId).then(response => {
+      console.log(response.data)
       if (response.status === 200) {
-        commit('getRequestDetailSuccess', [response.data, payload[1]])
+        commit('getRequestDetailSuccess', response.data)
       } else {
         commit('failure')
       }
@@ -85,10 +92,12 @@ const actions = {
     commit('confirmCancelContract')
   },
   // Confirm contract and insert db [0] is contract, [1] is value of disease type, [2] is value of note
-  confirmContract ({ commit, state }, payloadContract) {
-    state.contract.diseaseType = payloadContract[1]
-    state.contract.note = payloadContract[2]
-    contractRepository.createContract(state.contract)
+  confirmContract ({ state }, payload) {
+    console.log(payload)
+    console.log(`state contract: ${state.contract}`)
+    contractRepository.createContract(payload[0]).then(response => {
+      console.log(response.data)
+    })
   }
 }
 const mutations = {
@@ -96,9 +105,26 @@ const mutations = {
   success (state, contractRequests) {
     state.contractRequests = contractRequests
   },
-  getRequestDetailSuccess (state, payload) {
-    state.requestDetail = payload[0][0]
-    state.contractCode = payload[1]
+  getRequestDetailSuccess (state, payloadRequestDetail) {
+    state.requestDetail.contractId = payloadRequestDetail.contractId
+    state.requestDetail.fullNameDoctor = payloadRequestDetail.fullNameDoctor
+    state.requestDetail.phoneNumberDoctor = payloadRequestDetail.phoneNumberDoctor
+    state.requestDetail.genderOfPatient = payloadRequestDetail.genderOfPatient
+    state.requestDetail.workLocationDoctor = payloadRequestDetail.workLocationDoctor
+    state.requestDetail.dobDoctor = payloadRequestDetail.dobDoctor.split('T')[0]
+    state.requestDetail.fullNamePatient = payloadRequestDetail.fullNamePatient
+    state.requestDetail.phoneNumberPatient = payloadRequestDetail.phoneNumberPatient
+    state.requestDetail.addressOfPatient = payloadRequestDetail.addressOfPatient
+    state.requestDetail.dobPatient = payloadRequestDetail.dobPatient.split('T')[0]
+    state.requestDetail.contractCode = payloadRequestDetail.contractCode
+    state.requestDetail.reason = payloadRequestDetail.reason
+    state.requestDetail.status = payloadRequestDetail.status
+    state.requestDetail.dateOfTracking = payloadRequestDetail.dateOfTracking
+    state.requestDetail.dateCreated = payloadRequestDetail.dateCreated
+    state.requestDetail.dateStarted = payloadRequestDetail.dateStarted
+    state.requestDetail.dateFinished = payloadRequestDetail.dateFinished
+    state.requestDetail.doctorId = payloadRequestDetail.doctorId
+    state.requestDetail.patientId = payloadRequestDetail.patientId
   },
   // Manage rejectContract
   rejectContract (state) {
@@ -113,27 +139,14 @@ const mutations = {
   },
   // Transfer data of request detail from request-detail to confirm-contract
   nextCreateContract (state, payload) {
-    console.log(payload[0])
+    console.log(payload[0].contractId)
+    console.log(payload[0].dateStarted)
+    console.log(payload[0].contractId)
     console.log(payload[1])
-    state.contract.contractCode = state.contractCode
-    state.contract.doctorId = payload[1].id
-    state.contract.doctorFullName = payload[1].fullName
-    state.contract.workLocation = payload[1].workLocation
-    state.contract.dobDoctor = payload[1].dateOfBirth
-    state.contract.experienceYear = payload[1].experienceYear
-    state.contract.addressOfDoctor = payload[1].address
-    state.contract.patientId = payload[0].patientId
-    state.contract.patientName = payload[0].fullName
-    state.contract.genderOfPatient = payload[0].gender
-    state.contract.addressOfPatient = payload[0].address
-    state.contract.career = payload[0].career
-    state.contract.dobPatient = payload[0].dateOfBirth
-    state.contract.dateOfExamination = payload[0].dateOfExamination
-    state.contract.dateStarted = payload[0].dateStarted
-    state.contract.dateFinished = payload[0].dateFinished
-    state.contract.relativeName = payload[0].relativeName
-    state.contract.relativePhoneNumber = payload[0].relativePhoneNumber
-    console.log(state.contract)
+    state.contract.contractId = payload[0].contractId
+    state.contract.status = 'active'
+    state.contract.dateStarted = payload[0].dateStarted.split('T')[0]
+    state.contract.daysOfTracking = payload[1]
   },
   // Manage cancelContract
   cancelContract (state) {

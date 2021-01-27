@@ -1,18 +1,14 @@
 import axios from 'axios'
-import { getToken } from '../helpers/CookieHelper'
+import { getToken } from './cookie'
 
 // const baseDomain = "https://homedoctorfpt.com"
 
-const baseDomain = 'https://5f715f3b64a3720016e6059d.mockapi.io'
+const baseDomain = 'http://45.76.186.233:8000'
 const versionAPI = 'v1'
 
 const baseUrl = `${baseDomain}/api/${versionAPI}`
-const headers = {
-  'Content-Type': 'application/json',
-  // eslint-disable-next-line quote-props
-  'Accept': 'application/json'
-}
-const requestTimeout = 7000
+const requestTimeout = 20000
+const headers = ''
 
 const request = axios.create({
   baseURL: baseUrl,
@@ -22,7 +18,7 @@ const request = axios.create({
 
 request.interceptors.request.use(function (config) {
 // Do something before request is sent
-  const token = getToken()
+  const token = getToken('hdr-key')
   if (token != null) {
     // config.headers.Authorization = 'Bearer' + token
   }

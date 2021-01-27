@@ -11,6 +11,7 @@
 
 <script>
 export default {
+  name: 'LeftContent',
   methods: {
     goToContractRequest () {
       return this.$router.push('/contract-request')

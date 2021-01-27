@@ -1,26 +1,35 @@
 <template>
-  <div>
-    <el-row>
-      <h3>HOMEDOCTOR</h3>
-    </el-row>
-    <el-row>
-      <el-col :span="6" class="shortcuts"><left-content/></el-col>
-      <el-col :span="12"><main-content/></el-col>
-      <el-col :span="6" class="shortcuts"><right-content/></el-col>
-    </el-row>
+  <div class="wrapper">
+    <base-layout>
+       <template v-slot:left-content>
+         <left-content/>
+       </template>
+       <template v-slot:main-content>
+         <confirm-contract/>
+       </template>
+       <template v-slot:right-content>
+         <right-content/>
+       </template>
+    </base-layout>
   </div>
 </template>
 
 <script>
-import LeftContent from '../../../components/home/confirm-contract/LeftContent.vue'
-import RightContent from '../../../components/home/confirm-contract/RightContent.vue'
-import MainContent from '../../../components/home/confirm-contract/MainContent.vue'
+import BaseLayout from '../../../layouts/BaseLayout.vue'
+import LeftContent from '../../../components/home/LeftContent.vue'
+import RightContent from '../../../components/home/RightContent.vue'
+import ConfirmContract from '../../../components/home/confirm-contract'
 export default {
   name: 'ContractRequest',
   components: {
+    'base-layout': BaseLayout,
     'left-content': LeftContent,
     'right-content': RightContent,
-    'main-content': MainContent
+    'confirm-contract': ConfirmContract
   }
 }
 </script>
+
+<style>
+
+</style>

@@ -1,26 +1,34 @@
 <template>
-  <div>
-    <el-row>
-      <h3>HOMEDOCTOR</h3>
-    </el-row>
-    <el-row>
-      <el-col :span="6" class="shortcuts"><left-content/></el-col>
-      <el-col :span="12"><main-content/></el-col>
-      <el-col :span="6" class="shortcuts"><right-content/></el-col>
-    </el-row>
+  <div class="wrapper">
+    <base-layout>
+       <template v-slot:left-content>
+         <left-content/>
+       </template>
+       <template v-slot:main-content><h1>{{user}}</h1></template>
+       <template v-slot:right-content>
+         <right-content/>
+       </template>
+    </base-layout>
   </div>
 </template>
 
 <script>
+import BaseLayout from '../../layouts/BaseLayout.vue'
 import LeftContent from '../../components/home/LeftContent.vue'
 import RightContent from '../../components/home/RightContent.vue'
-import MainContent from '../../components/home/MainContent.vue'
+import { mapState } from 'vuex'
 export default {
-  name: 'Home',
+  computed: {
+    ...mapState('users', ['user'])
+  },
   components: {
+    'base-layout': BaseLayout,
     'left-content': LeftContent,
-    'right-content': RightContent,
-    'main-content': MainContent
+    'right-content': RightContent
   }
 }
 </script>
+
+<style>
+
+</style>
