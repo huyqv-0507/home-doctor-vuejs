@@ -4,7 +4,7 @@
 import request from '../utils/request.js'
 // Tương tác với database
 export default {
-  // Hàm yêu cầu đăng nhập vào hệ thống.
+  // Đăng nhập vào hệ thống.
   async loginApp (account) {
     return await request({
       method: 'POST',
