@@ -2,46 +2,62 @@
   <div>
     <h1>Danh sách yêu cầu</h1>
     <br/>
-    <el-input placeholder="Người yêu cầu"></el-input>
-    <br/><br/>
-    <el-row>
-      <el-col :span="7" class="title">Người yêu cầu</el-col>
-      <el-col :span="3" class="title">Mã hợp đồng</el-col>
-      <el-col :span="8" class="title">Lý do</el-col>
-      <el-col :span="2" class="title">Trạng thái</el-col>
-      <el-col :span="4" class="title">Ngày theo dõi</el-col>
-    </el-row>
-      <el-row v-for="contractRequest in contractRequests" :key="contractRequest.contractId">
-        <router-link :to="{name: 'request-detail', params: {contractId: contractRequest.contractId}}">
-          <el-card class="row-card">
-          <el-col :span="7" class="request-content">
-            <el-row>{{contractRequest.fullNamePatient}}</el-row>
-            <el-row>{{contractRequest.phoneNumberPatient}}</el-row>
-          </el-col>
-          <el-col :span="3" class="request-content">{{contractRequest.contractId}}</el-col>
-          <el-col v-if="contractRequest.reason === ''" :span="8" class="request-content">Chưa có</el-col>
-          <el-col v-else :span="8" class="request-content">{{contractRequest.reason}}</el-col>
-          <el-col :span="2" class="request-content">{{contractRequest.status}}</el-col>
-          <el-col :span="4" class="request-content-center">{{contractRequest.daysOfTracking}}</el-col>
-       </el-card>
-        </router-link>
-    </el-row>
+    <el-input placeholder="Nhập tên bệnh nhân" style="margin-bottom: 1em;"></el-input>
+    <el-table :data="contractRequests"
+              :default-sort = "{prop: 'dateCreated', order: 'descending'}"
+              @row-click="goToRequestDetail">
+      <el-table-column
+          prop="contractCode"
+          label="Code"
+          width="120">
+      </el-table-column>
+      <el-table-column
+          prop="fullNamePatient"
+          label="Name"
+          width="200">
+      </el-table-column>
+      <el-table-column
+          prop="note"
+          label="Reason"
+          width="170">
+      </el-table-column>
+      <el-table-column
+          prop="status"
+          label="Trạng thái"
+          width="100">
+      </el-table-column>
+      <el-table-column
+          prop="daysOfTracking"
+          label="Ngày theo dõi"
+          width="125">
+      </el-table-column>
+      <el-table-column
+          prop="dateCreated"
+          label="Ngày tạo"
+          sortable
+          width="125">
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import router from '../../../router/index.js'
 export default {
   computed: {
     ...mapState('contracts', ['contractRequests']),
     ...mapState('users', ['user'])
   },
   mounted () {
-    console.log(`userId: ${this.user.userId}`)
     this.getContractRequestPending(`${this.user.userId}`)
   },
   methods: {
-    ...mapActions('contracts', ['getContractRequestPending'])
+    ...mapActions('contracts', ['getContractRequestPending']),
+    // Đi đến trang chi tiết yêu cầu của bệnh nhân mà bác sĩ đã chọn
+    goToRequestDetail (row, column, event) {
+      router.push({ name: 'request-detail', params: { contractId: row.contractId } })
+    }
   }
 
 }

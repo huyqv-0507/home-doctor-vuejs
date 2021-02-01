@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Default Footer</h1>
+    <h5>Powered by HDr</h5>
   </div>
 </template>
 <script>

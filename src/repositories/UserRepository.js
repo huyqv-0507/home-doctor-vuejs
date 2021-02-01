@@ -19,16 +19,17 @@ export default {
     })
   },
   // Lấy thông tin của bác sĩ
-  async getDoctorProfile () {
+  async getDoctorProfileByUserName (userName) {
     return await request({
       method: 'get',
-      url: '/users'
+      url: `/Doctors?username=${userName}`
     })
   },
-  async testApi () {
+  // Lấy thông tin của bác sĩ
+  async getPatientProfileByPatientId (patientId) {
     return await request({
       method: 'get',
-      url: '/Doctors?username=huynl'
+      url: `/Patients/${patientId}`
     })
   }
 }

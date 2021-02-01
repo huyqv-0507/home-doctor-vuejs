@@ -25,23 +25,20 @@ const actions = {
       if (response.status === 200) { // Thành công
         console.log(response.data)
         setToken(`${response.data.token}`) // Lưu lại token để sử dụng những chức năng khác
-        const tmpUser = {
-          userId: '1',
-          userName: 'huynl',
-          fullName: 'Nguyễn Lê Huy',
-          workLocation: 'BV quận 9',
-          phone: '987654321',
-          email: 'huynl@gmail.com',
-          dateOfBirth: '1998-02-17'
-        }
-        commit('loginSuccess', tmpUser) // Báo cho mutation thành công để render view
-        router.push('/home') // Chuyển qua trang home
-      } else {
+        userRepository.getDoctorProfileByUserName(account.userName).then((response) => {
+          if (response.status === 200) {
+            console.log(response.data)
+            commit('loginSuccess', response.data) // Báo cho mutation thành công để render view
+            router.push('/home') // Chuyển qua trang home
+          }
+        })
+      } else if (response.status === 400) {
         console.log('failed')
         commit('loginFailed') // Báo cho mutation thất bại để render view
       }
     }).catch((error) => {
       console.log(error)
+      commit('loginFailed')
     })
   }
 }
@@ -49,7 +46,7 @@ const mutations = {
   // Nhận thông tin người dùng từ database và cập nhật vào store vuex
   loginSuccess (state, tmpUser) {
     state.status = 'logged'
-    state.user.userId = tmpUser.userId
+    state.user.userId = tmpUser.doctorId
     state.user.userName = tmpUser.userName
     state.user.fullName = tmpUser.fullName
     state.user.workLocation = tmpUser.workLocation
@@ -59,7 +56,6 @@ const mutations = {
   },
   loginFailed (state) {
     state.status = 'unLogged'
-    state.user = null
   }
 }
 export default {

@@ -1,5 +1,10 @@
 <template>
   <div>
+    <el-breadcrumb separator="/" style="font-size: 10px">
+       <el-breadcrumb-item :to="{ path: '/' }">Danh sách yêu cầu</el-breadcrumb-item>
+       <el-breadcrumb-item>Thông tin bệnh nhân</el-breadcrumb-item>
+       <el-breadcrumb-item>Xác nhận hợp đồng</el-breadcrumb-item>
+    </el-breadcrumb><br/><br/>
     <el-row>
       <el-col :span="12"><h1>HỢP ĐỒNG KHÁM BỆNH CHỮA BỆNH</h1></el-col>
       <el-col :span="12"><el-button type="dark">Xuất thành PDF</el-button></el-col>

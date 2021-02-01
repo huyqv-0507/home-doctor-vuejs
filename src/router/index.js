@@ -5,7 +5,8 @@ import Home from '../views/home'
 import ContractRequest from '../views/home/contract-request'
 import RequestDetail from '../views/home/request-detail'
 import ConfirmContract from '../views/home/confirm-contract'
-import AccountManagement from '../views/home/account-management'
+import AccountManagement from '../views/account-management'
+import MedicalInstruction from '../views/home/medical-instruction'
 
 Vue.use(VueRouter)
 
@@ -19,6 +20,11 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/medical-instruction',
+    name: 'MedicalInstruction',
+    component: MedicalInstruction
   },
   {
     path: '/contract-request',

@@ -16,8 +16,8 @@
 
 <script>
 import BaseLayout from '../../../layouts/BaseLayout.vue'
-import LeftContent from '../../../components/home/LeftContent.vue'
-import RightContent from '../../../components/home/RightContent.vue'
+import LeftContent from '../../../components/left-content'
+import RightContent from '../../../components/right-content'
 import RequestDetail from '../../../components/home/request-detail'
 export default {
   components: {

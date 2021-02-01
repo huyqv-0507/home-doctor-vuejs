@@ -1,16 +1,18 @@
 <template>
  <div class="wrapper">
    <header-default class="header-content"/>
-   <main class="container">
-     <div class="left-content">
-       <slot name="left-content"/>
-     </div>
-     <div class="main-content">
-       <slot name="main-content"/>
-     </div>
-     <div class="right-content">
-       <slot name="right-content"/>
-     </div>
+   <main>
+     <el-row>
+       <el-col :span="5">
+         <slot name="left-content"/>
+       </el-col>
+       <el-col :span="14" class="main-content">
+         <slot name="main-content"/>
+       </el-col>
+       <el-col :span="5">
+         <slot name="right-content"/>
+       </el-col>
+     </el-row>
    </main>
    <footer-default class="footer-content"/>
  </div>
@@ -28,48 +30,11 @@ export default {
 </script>
 
 <style style="scss">
-.wrapper {
-    position: relative;
-    min-height: 100%;
-}
-.container {
- background-color: cornflowerblue;
- width: 100%;
- top: 2.5em;
- position: absolute;
-}
-.header-content {
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2.5em;
-    background: chocolate;
-    position: fixed;
-}
-.footer-content {
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: chocolate;
-    position: absolute;
-}
-.left-content {
-    background-color: cornflowerblue;
-    width: 20%;
-    left: 0;
-    position: fixed;
-    height: 43.75em;
-}
-.right-content {
-    background-color: cornflowerblue;
-    width: 20%;
-    right: 0;
-    position: fixed;
-    height: 43.75em;
-}
 .main-content {
-    right: 30%;
-    left: 30%;
-    position: fixed;
+  margin: 1em;
+  padding: 2em 1em;
+  border-radius: 6px;
+  overflow: scroll;
+  background-color: #EEEFF3;
 }
 </style>

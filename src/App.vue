@@ -13,12 +13,5 @@ export default {
 }
 </script>
 <style lang="scss">
-* {
-  padding: 0;
-  margin: 0;
-}
-html {
-   height: 100%;
-   font-family: 'Arial, Helvetica, sans-serif';
-}
+  @import '../src/style/index.scss'
 </style>
