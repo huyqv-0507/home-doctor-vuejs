@@ -5,7 +5,7 @@
          <left-content/>
        </template>
        <template v-slot:main-content>
-         <main-content/>
+         <router-view></router-view>
        </template>
        <template v-slot:right-content>
          <right-content/>
@@ -18,7 +18,6 @@
 import BaseLayout from '../../layouts/BaseLayout.vue'
 import LeftContent from '../../components/left-content'
 import RightContent from '../../components/right-content'
-import MainContent from '../../components/home'
 import { mapState } from 'vuex'
 export default {
   computed: {
@@ -27,8 +26,7 @@ export default {
   components: {
     'base-layout': BaseLayout,
     'left-content': LeftContent,
-    'right-content': RightContent,
-    'main-content': MainContent
+    'right-content': RightContent
   }
 }
 </script>

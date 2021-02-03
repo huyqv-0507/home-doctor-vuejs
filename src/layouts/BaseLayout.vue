@@ -37,4 +37,8 @@ export default {
   overflow: scroll;
   background-color: #EEEFF3;
 }
+.header-content {
+  position: fixed;
+  top: 0;
+}
 </style>

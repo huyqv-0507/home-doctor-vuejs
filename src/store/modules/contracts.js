@@ -32,12 +32,14 @@ const state = () => ({
   rejectDialogVisible: false,
   contractCode: '',
   cancelContractVisible: false,
+  // Hợp đồng để thêm vào database
   contract: {
-    contractId: '',
-    status: 'Finished',
+    contractId: '', // Id của hợp đồng
+    status: 'Finished', // Trạng thái của hợp đồng (Để update xuống database)
     dateStarted: '',
     daysOfTracking: 0
   },
+  // Thông tin của bệnh nhân (render view)
   patientDetail: {
     patientId: '',
     gender: '',
@@ -102,7 +104,7 @@ const actions = {
   nextCreateContract ({ commit }, payload) {
     console.log(`nextCreateContract: ${payload}`)
     commit('nextCreateContract', payload)
-    router.push('/confirm-contract')
+    router.push({ name: 'confirm-contract' })
   },
 
   // Cancel contract manage

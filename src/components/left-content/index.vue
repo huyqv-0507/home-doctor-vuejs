@@ -16,7 +16,7 @@
     <div class="wrapper_shortcut">
       <h4>Lối tắt</h4>
       <div class="wrapper_shortcut-items">
-        <router-link to="/medical-instruction" class="router-items">
+        <router-link to="/home/medical-instruction" class="router-items">
         <el-row :gutter="20" class="wrapper_shortcut-items_item"  style="margin-left: -15px; margin-right: 5px; margin-top: .7em;">
           <el-col :span="4">
             <img src="../../assets/icons/ic-medicine.png"/>
@@ -54,7 +54,7 @@
             <el-row><span class="wrapper_shortcut-items_item-description">Đặt lịch nhắc hẹn với bệnh nhân</span></el-row>
           </el-col>
         </el-row>
-        <router-link to="/contract-request" class="router-items">
+        <router-link to="/home/contract-request" class="router-items">
           <el-row :gutter="20" class="wrapper_shortcut-items_item" style="margin-left: -15px; margin-right: 5px; margin-top: 1em;">
             <el-col :span="4">
               <img src="../../assets/icons/ic-patient-list.png"/>
