@@ -1,7 +1,8 @@
 <template>
   <div class="wrapper">
     <el-breadcrumb separator="/" style="font-size: 10px">
-       <el-breadcrumb-item :to="{ path: '/' }">Danh sách yêu cầu</el-breadcrumb-item>
+       <el-breadcrumb-item :to="{ path: '/' }">Trang chủ</el-breadcrumb-item>
+       <el-breadcrumb-item>Danh sách yêu cầu</el-breadcrumb-item>
        <el-breadcrumb-item>Thông tin bệnh nhân</el-breadcrumb-item>
     </el-breadcrumb><br/><br/>
     <h2>Thông tin cơ bản</h2>

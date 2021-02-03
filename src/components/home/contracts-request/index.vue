@@ -1,5 +1,9 @@
 <template>
   <div>
+    <el-breadcrumb separator="/" style="font-size: 10px">
+       <el-breadcrumb-item :to="{ path: '/' }">Trang chủ</el-breadcrumb-item>
+       <el-breadcrumb-item>Danh sách yêu cầu</el-breadcrumb-item>
+    </el-breadcrumb><br/><br/>
     <h1>Danh sách yêu cầu</h1>
     <br/>
     <el-input placeholder="Nhập tên bệnh nhân" style="margin-bottom: 1em;"></el-input>
