@@ -1,9 +1,9 @@
 <template>
-<div>
-  <h1>Account Management</h1>
-  <qrcode-vue :value="doctorInfo" :size="300" level="H" />
-  <el-row>Mã : {{user.userId}}</el-row>
-</div>
+  <div>
+    <h1>Account Management</h1>
+    <qrcode-vue :value="doctorInfo" :size="300" level="H" />
+    <el-row>Mã : {{user.userId}}</el-row>
+  </div>
 </template>
 
 <script>
@@ -25,5 +25,4 @@ export default {
 </script>
 
 <style>
-
 </style>

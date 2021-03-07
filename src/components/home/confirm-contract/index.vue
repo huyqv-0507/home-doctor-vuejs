@@ -1,84 +1,132 @@
 <template>
-  <div>
-    <el-breadcrumb separator="/" style="font-size: 10px">
-       <el-breadcrumb-item :to="{ path: '/' }">Danh sách yêu cầu</el-breadcrumb-item>
-       <el-breadcrumb-item>Thông tin bệnh nhân</el-breadcrumb-item>
-       <el-breadcrumb-item>Xác nhận hợp đồng</el-breadcrumb-item>
-    </el-breadcrumb><br/><br/>
-    <el-row>
-      <el-col :span="12"><h1>HỢP ĐỒNG KHÁM BỆNH CHỮA BỆNH</h1></el-col>
-      <el-col :span="12"><el-button type="dark">Xuất thành PDF</el-button></el-col>
+  <div class="mainContent">
+    <el-breadcrumb separator="/" class="breadcrumb">
+      <el-breadcrumb-item :to="{ path: '/' }">Danh sách yêu cầu</el-breadcrumb-item>
+      <el-breadcrumb-item>Thông tin bệnh nhân</el-breadcrumb-item>
+      <el-breadcrumb-item>Xác nhận hợp đồng</el-breadcrumb-item>
+    </el-breadcrumb>
+    <div class="contract">
+      <el-row class="contract__today">
+        <span></span>
+        <span>
+          <i>{{contractForm.today()}}</i>
+        </span>
+      </el-row>
+      <el-row>
+        <el-col :span="24" class="contract__title" style="display: flex; justify-content: center;">
+          <h1>HỢP ĐỒNG KHÁM BỆNH CHỮA BỆNH</h1>
+        </el-col>
+      </el-row>
+      <el-row :gutter="10" class="contract__content font-size14">
+        <el-row class="contract__content_social-legal">{{contractForm.intro.socialLegal}}</el-row>
+        <el-row
+          class="contract__content_medical-exam-and-treatment-law"
+        >{{contractForm.intro.medicalExaminationAndTreatmentLaw}}</el-row>
+        <el-row class="contract__content_decree">{{contractForm.intro.decree}}</el-row>
+        <el-row class="contract__content_circular">{{contractForm.intro.circular}}</el-row>
+        <el-row class="contract__content_today">{{contractForm.today()}}, chúng tôi gồm:</el-row>
+        <el-row class="contract__content_side">
+          <el-row class="margin-line">
+            <strong>BÊN A:</strong>
+            Bên {{contractForm.dutyAndInterest[1].name}}
+          </el-row>
+          <el-row class="margin-line">Đại diện là Ông/bà: {{user.fullName}}</el-row>
+          <el-row class="margin-line">Chức vụ: {{user.specialization}}</el-row>
+          <el-row class="margin-line">Địa chỉ: {{user.address}}</el-row>
+          <el-row class="margin-line">Điện thoại: {{user.phoneNumber}}</el-row>
+          <el-row class="margin-line">
+            <strong>BÊN B:</strong>
+            Bên {{contractForm.dutyAndInterest[0].name}}
+          </el-row>
+          <el-row class="margin-line">Đại diện là Ông/bà: {{requestDetail.fullNamePatient}}</el-row>
+          <el-row class="margin-line">Giới tính: {{patientDetail.gender}}</el-row>
+          <el-row class="margin-line">Ngày sinh: {{requestDetail.dobPatient}}</el-row>
+          <el-row class="margin-line">Chỗ ở hiện nay: {{requestDetail.addressPatient}}</el-row>
+          <el-row class="margin-line">Nghề nghiệp: {{patientDetail.career}}</el-row>
+          <el-row class="margin-line">Điện thoại: {{requestDetail.phoneNumberPatient}}</el-row>
+        </el-row>
+        <el-row>
+          <el-row class="margin-line">
+            <strong>Điều 1. {{contractForm.timeAndMission.title}}</strong>
+          </el-row>
+          <p class="margin-line">- {{contractForm.timeAndMission.description}}</p>
+        </el-row>
+        <el-row>
+          <el-row class="margin-line">
+            <strong>Điều 2. {{contractForm.workingMode.title}}</strong>
+          </el-row>
+          <p class="margin-line">- {{contractForm.workingMode.description}}</p>
+        </el-row>
+        <el-row>
+          <el-row class="margin-line">
+            <strong>Điều 3. Nghĩa vụ và quyền lợi của bên B</strong>
+          </el-row>
+          <el-row>
+            <strong>1. Nghĩa vụ:</strong>
+          </el-row>
+          <p
+            class="margin-line"
+            v-for="(duty, index) in contractForm.dutyAndInterest[0].duty"
+            :key="`duty-a-${index}`"
+          >- {{duty}}</p>
+          <el-row>
+            <strong>2. Quyền lợi:</strong>
+          </el-row>
+          <p
+            class="margin-line"
+            v-for="(interest, index) in contractForm.dutyAndInterest[0].interest"
+            :key="`interest-a-${index}`"
+          >- {{interest}}</p>
+        </el-row>
+        <el-row>
+          <el-row class="margin-line">
+            <strong>Điều 4. Nghĩa vụ và quyền lợi của bên A</strong>
+          </el-row>
+          <el-row>
+            <strong>1. Nghĩa vụ:</strong>
+          </el-row>
+          <p
+            class="margin-line"
+            v-for="(duty, index) in contractForm.dutyAndInterest[1].duty"
+            :key="`duty-a-${index}`"
+          >- {{duty}}</p>
+          <el-row>
+            <strong>2. Quyền lợi:</strong>
+          </el-row>
+          <p
+            class="margin-line"
+            v-for="(interest, index) in contractForm.dutyAndInterest[1].interest"
+            :key="`interest-a-${index}`"
+          >- {{interest}}</p>
+        </el-row>
+        <el-row>
+          <el-row class="margin-line">
+            <strong>Điều 5. {{contractForm.termEnforcement.title}}</strong>
+          </el-row>
+          <p class="margin-line" v-for="(des, index) in contractForm.termEnforcement.description" :key="`des-${index}`">- {{des}}</p>
+        </el-row>
+      </el-row>
+    </div>
+    <el-row class="margin-line">
+      <el-checkbox v-model="confirmRule"><strong>Đồng ý với các điều khoản trên.</strong></el-checkbox>
     </el-row>
-    <el-row :gutter="10">
-      <el-col :span="12">
-          <p>Mã hợp đồng: <strong>{{contractCode}}</strong></p>
-          <p>Bác sĩ: <strong>{{user.fullName}}</strong></p>
-          <p>Ngày bắt đầu theo dõi:</p>
-          <p><strong>{{requestDetail.dateStarted}}</strong></p>
-      </el-col>
-      <el-col :span="12">
-          <p>Công tác tại: <strong>{{user.workLocation}}</strong></p>
-          <p>Số năm kinh nghiệm: <strong>{{user.experienceYear}}</strong></p>
-          <p>Ngày kết thúc theo dõi:</p>
-          <p><strong>{{requestDetail.dateFinished}}</strong></p>
-      </el-col>
-    </el-row>
-    <el-row>
-      <h3>I. HÀNH CHÍNH</h3>
-    </el-row>
-    <el-row :gutter="10">
-      <el-col :span="12">
-          <p>Họ tên: <strong>{{requestDetail.fullName}}</strong></p>
-          <p>Giới tính: <strong>{{requestDetail.gender}}</strong></p>
-          <p>Ngày sinh: <strong>{{requestDetail.dateOfBirth}}</strong></p>
-          <p>Địa chỉ<strong>{{requestDetail.address}}</strong></p>
-          <p>Họ tên người nhà<strong>{{requestDetail.relativeName}}</strong></p>
-      </el-col>
-      <el-col :span="12">
-          <p>Tuổi: <strong>{{requestDetail.dateOfBirth}}</strong></p>
-          <p>Nghề nghiệp: <strong>{{requestDetail.career}}</strong></p>
-          <p>Số điện thoại: <strong>{{requestDetail.phoneNumber}}</strong></p>
-          <p></p>
-          <p>Số điện thoại người nhà: <strong>{{requestDetail.relativePhoneNumber}}</strong></p>
-      </el-col>
-    </el-row>
-    <el-row>
-      <h3>II. Lý do theo dõi</h3>
-    </el-row>
-    <el-row :gutter="10">
-      <el-row>Loại bệnh</el-row>
-    <el-row>
-      <el-select v-model="value" placeholder="Chọn bệnh">
-        <el-option
-          v-for="item in diseaseOptions"
-          :key="item.name"
-          :label="item.value"
-          :value="item.name">
-        </el-option>
-      </el-select>
-    </el-row>
-    <el-row>
-      <p>Ghi chú</p>
-        <el-input type="textarea" :rows="5" v-model="txtNote"></el-input>
-    </el-row>
-    </el-row>
-    <el-row>
-      <h3>III. Cam kết</h3>
-      <h5>1. Quyền và trách nhiệm bên bác sĩ</h5>
-      <h5>2. Quyền và trách nhiệm bên người bệnh</h5>
-      <h5>3. Cam kết chung</h5>
-      <p>- Hai bên cam kết thực hiện đúng các quy định về pháp luật và những điều khoản có trong hợp đồng.</p>
-      <p>- Trong trường hợp thay đổi hoặc chấm dứt hợp đồng trước thời hạn, hai bên phải thông báo cho nhau trước một tháng để đảm bảo quyền lợi cho hai bên</p>
-      <p>- Hai bên thống nhất phối hợp và sử dụng ứng dụng HDr để thuận tiện cho việc theo dõi bệnh.</p>
-    </el-row>
-    <el-row>
-      <el-col :span="12" ><el-button type="info" @click="cancelContract()">Huỷ hợp đồng</el-button></el-col>
-        <el-dialog title="Thông báo" :visible.sync="cancelContractVisible" width="30%">
-          <span>Bác sĩ có muốn huỷ hợp đồng không?</span><br/>
-          <el-button type="info" @click="rejectCancelContract()">Không</el-button>
-          <el-button type="info" @click="confirmCancelContract()">Đồng ý</el-button>
-        </el-dialog>
-      <el-col :span="12" ><el-button type="info" @click="confirmContract([contract, value])">Xác nhận</el-button></el-col>
+    <el-row class="handle-event">
+      <el-button
+        class="handle-event__button"
+        type="secondary"
+        @click="backToRequestDetailContract()"
+      >Trở lại</el-button>
+      <el-button
+        v-if="confirmRule"
+        class="handle-event__button"
+        type="primary"
+        @click="confirmContract([contract, value])"
+      >Xác nhận</el-button>
+      <el-button v-else
+        class="handle-event__button"
+        type="primary"
+        disabled=""
+      >Xác nhận</el-button>
     </el-row>
   </div>
 </template>
@@ -88,35 +136,73 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      diseaseOptions: [
-        {
-          name: 'nhoimaucotim',
-          value: 'Nhồi máu cơ tim'
-        },
-        {
-          name: 'suytim',
-          value: 'Suy tim'
-        }
-      ],
-      value: '',
-      txtNote: ''
+      confirmRule: false
     }
   },
   computed: {
-    ...mapState('contracts', ['requestDetail', 'contractRequests', 'contractCode', 'cancelContractVisible', 'contract']),
+    ...mapState('contracts', [
+      'requestDetail',
+      'contractRequests',
+      'contractCode',
+      'cancelContractVisible',
+      'contract',
+      'patientDetail',
+      'contractForm'
+    ]),
     ...mapState('users', ['user'])
+  },
+  mounted () {
+    console.log('contractForm:::', this.contractForm)
   },
   methods: {
     ...mapActions('contracts', [
-      'cancelContract',
-      'rejectCancelContract',
-      'confirmCancelContract',
+      'backToRequestDetailContract',
       'confirmContract'
     ])
   }
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+@import "../../../style/index.scss";
+.handle-event {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  .handle-event__button {
+    margin: 0 40px;
+  }
+}
+.contract {
+  .contract__today {
+    display: flex;
+    justify-content: flex-end;
+    color: grey;
+    margin-bottom: 0.5em;
+  }
+  .contract__title {
+    margin-bottom: 2em;
+  }
+  .contract__content {
+    .contract__content_social-legal {
+      margin-bottom: 0.8em;
+    }
+    .contract__content_medical-exam-and-treatment-law {
+      margin-bottom: 0.5em;
+    }
+    .contract__content_decree {
+      margin-bottom: 0.8em;
+    }
+    .contract__content_circular {
+      margin-bottom: 1em;
+    }
+    .contract__content_today {
+      margin: 1em 0;
+    }
+  }
+}
+.margin-line {
+  margin: 0.8em 0;
+}
 </style>

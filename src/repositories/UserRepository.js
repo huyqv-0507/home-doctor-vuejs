@@ -8,7 +8,7 @@ export default {
   async loginApp (account) {
     return await request({
       method: 'POST',
-      url: '/Doctors/Login/',
+      url: '/Accounts/Login/',
       data: {
         // eslint-disable-next-line quote-props
         // eslint-disable-next-line quotes
@@ -19,10 +19,10 @@ export default {
     })
   },
   // Lấy thông tin của bác sĩ
-  async getDoctorProfileByUserName (userName) {
+  async getDoctorProfileByUserId (userId) {
     return await request({
       method: 'get',
-      url: `/Doctors?username=${userName}`
+      url: `/Doctors?doctorId=${userId}`
     })
   },
   // Lấy thông tin của bác sĩ
@@ -30,6 +30,17 @@ export default {
     return await request({
       method: 'get',
       url: `/Patients/${patientId}`
+    })
+  },
+  async createTokenFirebase (accountId, token) {
+    console.log('createTokenFirebase:', { accountId: accountId, token: token })
+    return await request({
+      method: 'post',
+      url: `/FireBases=${token}`,
+      data: {
+        accountId: accountId,
+        token: token
+      }
     })
   }
 }

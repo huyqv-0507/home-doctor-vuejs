@@ -1,18 +1,10 @@
 <template>
  <div class="wrapper">
-   <header-default class="header-content"/>
-   <main>
-     <el-row>
-       <el-col :span="5">
-         <slot name="left-content"/>
-       </el-col>
-       <el-col :span="14" class="main-content">
-         <slot name="main-content"/>
-       </el-col>
-       <el-col :span="5">
-         <slot name="right-content"/>
-       </el-col>
-     </el-row>
+   <header-default/>
+   <main class="layout-wrapper">
+     <slot name="left-content" class="layout-wrapper_left-content"/>
+     <slot name="main-content" class="layout-wrapper_main-content"/>
+     <slot name="right-content" class="layout-wrapper_right-content"/>
    </main>
    <footer-default class="footer-content"/>
  </div>
@@ -30,15 +22,5 @@ export default {
 </script>
 
 <style style="scss">
-.main-content {
-  margin: 1em;
-  padding: 2em 1em;
-  border-radius: 6px;
-  overflow: scroll;
-  background-color: #EEEFF3;
-}
-.header-content {
-  position: fixed;
-  top: 0;
-}
+
 </style>

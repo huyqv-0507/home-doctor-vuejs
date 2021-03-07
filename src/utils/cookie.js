@@ -2,6 +2,15 @@ import Cookies from 'js-cookie'
 
 const tokenKey = 'hdr-key'
 const userNameKey = 'username-key'
+const firebaseKey = 'firebase-key'
+
+export function getTokenFirebase () {
+  return Cookies.get(firebaseKey)
+}
+
+export function setTokenFirebase (token) {
+  return Cookies.set(firebaseKey, token)
+}
 
 export function getToken () {
   return Cookies.get(tokenKey)

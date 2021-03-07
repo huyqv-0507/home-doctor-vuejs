@@ -44,11 +44,6 @@ export default {
 </script>
 
 <style style="scss" scoped>
-.heading {
-  position: relative;
-  top: 0;
-  background-color: #F9F9F9;
-}
 .heading__nav-bar {
   display: flex;
   justify-content: space-between;

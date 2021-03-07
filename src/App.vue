@@ -1,6 +1,7 @@
 <template>
   <div id="app">
       <router-view/>
+      <notifications position="bottom right"/>
   </div>
 </template>
 <script>
@@ -9,9 +10,11 @@ export default {
     return {
       layout: 'div'
     }
+  },
+  mounted () {
   }
 }
 </script>
 <style lang="scss">
-  @import '../src/style/index.scss'
+  @import '../src/style/index.scss';
 </style>
