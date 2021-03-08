@@ -1,10 +1,10 @@
 <template>
   <el-dialog
-    :visible="visibleAddMedicineForm"
+    :visible="visibleEditMedicineForm"
     title="Thêm thuốc"
     width="30%"
     center
-    @close="closeAddMedicine()"
+    @close="closeEditMedicine()"
   >
     <el-form ref="newMedicineForm" :model="newMedicineForm" size="mini" class="form">
       <el-form-item class="form__item">
@@ -41,7 +41,7 @@
             <span>Đơn vị:</span>
           </el-col>
           <el-col :span="18">
-            <el-input v-model="medicine.unitType" disabled></el-input>
+            <el-input v-model="mEdit.unitType" disabled></el-input>
           </el-col>
         </el-row>
       </el-form-item>
@@ -51,7 +51,7 @@
             <span>Hàm lượng:</span>
           </el-col>
           <el-col :span="18" class="form__item_suggestion">
-            <el-input v-model="medicine.content" disabled></el-input>
+            <el-input v-model="mEdit.content" disabled></el-input>
           </el-col>
         </el-row>
       </el-form-item>
@@ -73,7 +73,7 @@
                   <el-input v-model="newMedicineForm.unitMorning"></el-input>
                 </el-col>
                 <el-col :span="17">
-                  <span>{{medicine.unitType}}.</span>
+                  <span>{{mEdit.unitType}}.</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -88,7 +88,7 @@
                   <el-input v-model="newMedicineForm.unitNoon"></el-input>
                 </el-col>
                 <el-col :span="17">
-                  <span>{{medicine.unitType}}.</span>
+                  <span>{{mEdit.unitType}}.</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -103,7 +103,7 @@
                   <el-input v-model="newMedicineForm.unitAfternoon"></el-input>
                 </el-col>
                 <el-col :span="17">
-                  <span>{{medicine.unitType}}.</span>
+                  <span>{{mEdit.unitType}}.</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -118,7 +118,7 @@
                   <el-input v-model="newMedicineForm.unitNight"></el-input>
                 </el-col>
                 <el-col :span="17">
-                  <span>{{medicine.unitType}}.</span>
+                  <span>{{mEdit.unitType}}.</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -166,15 +166,15 @@ export default {
   data () {
     return {
       newMedicineForm: {
-        medicineName: '',
-        unitMorning: '', // Số thuốc sử dụng cho sáng
-        unitNoon: '', // Số thuốc sử dụng cho trưa
-        unitAfternoon: '', // Số thuốc sử dụng cho chiều
-        unitNight: '', // Số thuốc sử dụng cho tối
-        morningCheck: false,
-        noonCheck: false,
-        afternoonCheck: false,
-        nightCheck: false,
+        medicineName: this.$store.state.medicalInstruction.medicineEdit.medicineEdit.medicineName,
+        unitMorning: this.$store.state.medicalInstruction.medicineEdit.medicineEdit.morning, // Số thuốc sử dụng cho sáng
+        unitNoon: this.$store.state.medicalInstruction.medicineEdit.medicineEdit.noon, // Số thuốc sử dụng cho trưa
+        unitAfternoon: this.$store.state.medicalInstruction.medicineEdit.medicineEdit.afternoon, // Số thuốc sử dụng cho chiều
+        unitNight: this.$store.state.medicalInstruction.medicineEdit.medicineEdit.night, // Số thuốc sử dụng cho tối
+        morningCheck: true,
+        noonCheck: true,
+        afternoonCheck: true,
+        nightCheck: true,
         useTimeOpt: '', // Thời gian sử dụng thuốc vào buổi sáng
         useTimeOptions: [
           {
@@ -186,7 +186,7 @@ export default {
             label: 'Sau bữa ăn'
           }
         ],
-        noteMore: '' // Ghi chú thêm
+        noteMore: this.$store.state.medicalInstruction.medicineEdit.medicineEdit.usage // Ghi chú thêm
       }
     }
   },
@@ -201,10 +201,11 @@ export default {
       'contentSuggestion',
       'visibleTypeSearchContent'
     ]),
-    ...mapState('modals', ['visibleAddMedicineForm'])
+    ...mapState('modals', ['visibleEditMedicineForm']),
+    ...mapState('medicalInstruction', ['mEdit'])
   },
   methods: {
-    ...mapActions('modals', ['closeAddMedicine']),
+    ...mapActions('modals', ['closeEditMedicine']),
     handleSelectMedicine (medicine) {
       this.newMedicineForm.medicineName = medicine.medicineDetail
       this.$store.dispatch(
@@ -255,6 +256,9 @@ export default {
         ],
         noteMore: '' // Ghi chú thêm
       }
+    },
+    closeEditMedicine () {
+      this.$store.dispatch('modals/closeEditMedicine', null, { root: true })
     }
   }
 }

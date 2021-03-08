@@ -1,6 +1,6 @@
 import router from '../../router/index'
 import { RepositoryFactory } from '../../repositories/RepositoryFactory'
-import Vue from 'vue'
+import { Notification } from 'element-ui'
 
 const medicalInstructionRepository = RepositoryFactory.get('medicalInstructionRepository')
 
@@ -10,7 +10,9 @@ const state = () => ({
   patientSelected: {}, // Bệnh nhân được chọn
   prescriptionDetails: null,
   prescriptionDetail: {},
-  visibleSelectMedicine: false
+  visibleSelectMedicine: false,
+  medicineEdit: {},
+  mEdit: {}
 })
 const getters = {}
 const actions = {
@@ -55,8 +57,7 @@ const actions = {
 
   },
   // Insert đơn thuốc xuống db
-  savePrescription ({ commit, state }, data) {
-    console.log('list:', state.prescriptionDetails)
+  savePrescription ({ dispatch, state }, data) {
     var medicalInstructionSchedule = {
       healthRecordId: state.patientSelected.healthRecordId,
       diagnose: data.diagnose,
@@ -79,20 +80,13 @@ const actions = {
     console.log('medicalInstructionSchedule', medicalInstructionSchedule)
     medicalInstructionRepository.createMedicalSchedule(medicalInstructionSchedule).then(response => {
       if (response.status === 201) {
-        Vue.notify({
-          type: 'success',
-          title: 'Thông báo',
-          text: 'Tạo đơn thuốc thành công!'
-        })
+        Notification.success({ title: 'Thông báo', message: 'Tạo đơn thuốc thành công!', duration: 6000 })
+        dispatch('medicalInstruction/getMedicalScheduleHistory', null, { root: true })
         router.go(-1)
       }
     }).catch(error => {
       console.log(error)
-      Vue.notify({
-        type: 'error',
-        title: 'Thông báo',
-        text: 'Tạo đơn thuốc không thành công!'
-      })
+      Notification.error({ title: 'Thông báo', message: 'Tạo đơn thuốc không thành công!', duration: 6000 })
     })
     // commit('savePrescription', medicalInstructionSchedule)
   },
@@ -115,6 +109,14 @@ const actions = {
   },
   backToMedicalSchedule () {
     router.go(-1)
+  },
+  // Dùng lại đơn thuốc cũ
+  reusePrescription ({ commit }, prescription) {
+
+  },
+  // Sửa medicine
+  editMedicine ({ commit }, medicine) {
+    commit('editMedicine', medicine)
   }
 }
 const mutations = {
@@ -129,6 +131,7 @@ const mutations = {
     state.patientSelected = payloadPatient
     console.log('patientSelected: ', state.patientSelected)
   },
+  // Thêm 1 thuốc vào danh sách thuốc
   addMedicineToPrescription (state, prescription) {
     console.log('prescription', prescription)
     var medicineName = prescription.medicineName
@@ -191,9 +194,16 @@ const mutations = {
           }
         })
       }
-    }).sort((a, b) => { return new Date(b.dateFinished) - new Date(a.dateFinished) })
+    }).sort((a, b) => { return new Date(b.dateFinished.split('/').reverse().join('-')) - new Date(a.dateFinished.split('/').reverse().join('-')) })
     state.medicalInstructionHistory = tmpMedicalInstructionHistory
     console.log('medicalInstructionHistory: ', state.medicalInstructionHistory)
+  },
+  editMedicine (state, medicine) {
+    state.medicineEdit.index = medicine.index
+    state.medicineEdit.medicineEdit = medicine.medicineEdit
+    state.mEdit.medicineName = medicine.medicineEdit.medicineName
+    state.mEdit.unitType = medicine.medicineEdit.unit
+    state.mEdit.content = medicine.medicineEdit.content
   }
 }
 

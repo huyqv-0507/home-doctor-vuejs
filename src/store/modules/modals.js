@@ -1,7 +1,7 @@
 const state = () => ({
   visibleMedicalInstruction: false, // Modal khi bác sĩ bấm Y lệnh trong lối tắt
   visibleAddMedicineForm: false, // Modal khi bác sĩ thêm một thuốc mới vào đơn thuốc cho bệnh nhân
-  visibleEditMedicine: false
+  visibleEditMedicineForm: false
 })
 const getters = {}
 const actions = {
@@ -22,10 +22,10 @@ const actions = {
     rootState.suggestions.medicine = {}
   },
   openEditMedicine ({ commit }) {
-    commit('openAddNewMedicine')
+    commit('openEditMedicine')
   },
   closeEditMedicine ({ commit }) {
-    commit('closeAddNewMedicine')
+    commit('closeEditMedicine')
   }
 }
 const mutations = {
@@ -42,10 +42,10 @@ const mutations = {
     state.visibleAddMedicineForm = false
   },
   openEditMedicine (state) {
-    state.visibleEditMedicine = true
+    state.visibleEditMedicineForm = true
   },
   closeEditMedicine (state) {
-    state.visibleEditMedicine = false
+    state.visibleEditMedicineForm = false
   }
 }
 

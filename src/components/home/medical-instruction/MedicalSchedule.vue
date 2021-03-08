@@ -28,7 +28,7 @@
         <el-button type="primary" @click="openAddNewMedicine()">Tạo mới</el-button>
       </div>
     </div>
-    <h1 style="margin-top: 1em;">Lịch sử dùng thuốc</h1>
+    <h1 style="margin-top: 1em;">Đơn thuốc đã sử dụng</h1>
     <el-timeline class="timeline">
       <el-timeline-item v-show="medicalInstructionHistory !== []" v-for="(prescription, index) in medicalInstructionHistory" :key="index" :timestamp="`${prescription.dateStarted} - ${prescription.dateFinished}`" placement="top">
         <el-card shadow="never">
@@ -47,7 +47,7 @@
           <el-row class="right">
             <span style="color: gray; margin-right: .4em; font-size: 10px"><i>Sử dụng đơn thuốc này cho đơn thuốc tiếp theo</i></span>
             <router-link :to="'medical-schedule'" class="router-items">
-              <el-button type="primary" class="copy" @click="openAddNewMedicine()">Dùng</el-button>
+              <el-button type="primary" class="copy" @click="reusePrescription(prescription)">Dùng</el-button>
             </router-link>
           </el-row>
         </el-card>
@@ -72,7 +72,7 @@ export default {
     ...mapActions('patients', ['getPatientApproved']),
     ...mapActions('medicalInstruction', [
       'createMedicalSchedule',
-      'usePrescription', 'getMedicalScheduleHistory', 'openAddNewMedicine'
+      'usePrescription', 'getMedicalScheduleHistory', 'openAddNewMedicine', 'reusePrescription'
     ])
   }
 }

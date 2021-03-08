@@ -1,12 +1,20 @@
 const state = () => ({
   medicalInstructionSharedIndex: null, // Vị trí hình ảnh bác sĩ muốn xem,
   medicalInstructionShareds: [],
-  visibleAllImages: false
+  visibleAllImages: false,
+  imageInfo: {
+    medicalInstructionType: '',
+    diagnose: '',
+    description: ''
+  }
 })
 const getters = {}
 const actions = {
-  showAllImages ({ commit }) {
-    console.log('showAllImagesshowAllImagesshowAllImages')
+  setImageInfo ({ commit, rootState }, index) {
+    commit('setImageInfo', rootState.contracts.allMedicalInstructionShareds[index])
+  },
+  showAllImages ({ commit, dispatch }) {
+    dispatch('slideshows/setImageInfo', 0, { root: true })
     commit('showAllImages')
   },
   closeAllImages ({ commit }) {
@@ -42,6 +50,11 @@ const actions = {
   }
 }
 const mutations = {
+  setImageInfo (state, imageInfo) {
+    state.imageInfo.medicalInstructionType = imageInfo.medicalInstructionType
+    state.imageInfo.diagnose = imageInfo.diagnose
+    state.imageInfo.description = imageInfo.description
+  },
   selectImg (state, imgIndex) {
     state.medicalInstructionSharedIndex = imgIndex
   },

@@ -9,8 +9,8 @@ import slideshows from './modules/slideshows'
 import suggestions from './modules/suggestions'
 import schedules from './modules/schedules'
 // eslint-disable-next-line quotes
-// import createPersistedState from "vuex-persistedstate"
-
+import createPersistedState from 'vuex-persistedstate'
+import notifications from './modules/notifications'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -22,7 +22,8 @@ export default new Vuex.Store({
     medicalInstruction,
     slideshows,
     suggestions,
-    schedules
-  }
-  // plugins: [createPersistedState()]
+    schedules,
+    notifications
+  },
+  plugins: [createPersistedState()]
 })

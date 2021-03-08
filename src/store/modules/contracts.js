@@ -1,7 +1,7 @@
 /* eslint-disable no-tabs */
 import { RepositoryFactory } from '../../repositories/RepositoryFactory'
 import router from '../../router/index.js'
-import Vue from 'vue'
+import { Notification } from 'element-ui'
 const contractRepository = RepositoryFactory.get('contractRepository')
 const userRepository = RepositoryFactory.get('userRepository')
 
@@ -109,10 +109,11 @@ const state = () => ({
         'Hai bên cam kết thực hiện đúng những điều khoản trong hợp đồng, những vấn đề phát sinh khác ngoài hợp đồng, kể cả việc kéo dài hoặc chấm dứt hợp đồng trước thời hạn sẽ được hai bên cùng thảo luận giải quyết (thể hiện bằng các phụ lục kèm theo hợp đồng)',
         'Hai bên cam kết thực hiện đúng các quy định về pháp luật và những điều khoản có trong hợp đồng',
         'Trong trường hợp thay đổi hoặc chấm dứt hợp đồng trước thời hạn, hai bên phải thông báo cho nhau trước một tháng để đảm bảo quyền lợi cho hai bên',
-        'Hai bên thống nhất phối hợp và sử dụng ứng dụng HDr cho việc theo dõi bệnh.'
+        'Hai bên thống nhất phối hợp và sử dụng ứng dụng HDr cho việc theo dõi bệnh'
       ]
     }
-  }
+  },
+  allMedicalInstructionShareds: []
 })
 const getters = {
 }
@@ -177,21 +178,11 @@ const actions = {
     // set state pending to rejected (database)
     contractRepository.cancelContract(contractId).then(response => {
       if (response.status === 200) {
-        Vue.notify({
-          type: 'success',
-          title: 'Thông báo',
-          text: 'Huỷ hợp đồng thành công!',
-          duration: 5000
-        })
+        Notification.success({ title: 'Thông báo', message: 'Huỷ hợp đồng thành công!', duration: 6000, position: 'bottom-right' })
       }
     }).catch(error => {
       console.log(error)
-      Vue.notify({
-        type: 'error',
-        title: 'Thông báo',
-        text: 'Huỷ hợp đồng không thành công!',
-        duration: 5000
-      })
+      Notification.error({ title: 'Thông báo', message: 'Huỷ hợp đồng thất bại!', duration: 6000, position: 'bottom-right' })
     })
     commit('confirmRejectContract')
   },
@@ -200,7 +191,7 @@ const actions = {
   nextCreateContract ({ commit, state, rootState }, payload) {
     console.log(`nextCreateContract: ${payload}`)
     commit('nextCreateContract', payload)
-    state.contract.doctorId = rootState.users.user.userId
+    state.contract.doctorId = parseInt(rootState.users.user.userId)
     router.push({ name: 'confirm-contract' })
   },
 
@@ -212,59 +203,45 @@ const actions = {
     contractRepository.createContract(payload[0]).then(response => {
       console.log('status code:', response.status)
       if (response.status === 204) {
-        Vue.notify({
-          type: 'success',
-          title: 'Thông báo',
-          text: 'Tạo hợp đồng thành công!',
-          duration: 5000
-        })
+        Notification.success({ title: 'Thông báo', message: 'Tạo hợp đồng thành công!', duration: 6000, position: 'bottom-right' })
         dispatch('contracts/getActiveContracts', null, { root: true })
-        router.go(-3)
+        router.push('/home')
       } else if (response.status === 405) {
-        Vue.notify({
-          type: 'error',
-          title: 'Thông báo',
-          text: 'Xin lỗi, hiện tại bạn đã đủ 5 hợp đồng.',
-          duration: 5000
-        })
+        Notification.error({ title: 'Thông báo', message: 'Xin lỗi, hiện tại bạn đã đủ 5 hợp đồng!', duration: 6000, position: 'bottom-right' })
       }
     }).catch(error => {
       console.log(error)
-      Vue.notify({
-        type: 'error',
-        title: 'Thông báo',
-        text: 'Tạo hợp đồng không thành công!',
-        duration: 5000
-      })
+      Notification.error({ title: 'Thông báo', message: 'Tạo hợp đồng thất bại!', duration: 6000, position: 'bottom-right' })
     })
   },
+  // Lấy tất cả các hợp đồng đang theo dõi
   getActiveContracts ({ commit, rootState }) {
     contractRepository.getActiveContracts(rootState.users.user.userId).then(response => {
-      console.log('activeContracts: ', response.data)
       if (response.status === 200) {
+        console.log('acc::::', response.data)
         commit('getActiveContracts', response.data)
       }
     })
   },
+  // Lấy tất cả các hợp đồng đã hết hạn
   getFinishContracts ({ commit, rootState }) {
     contractRepository.getFinishContracts(rootState.users.user.userId).then(response => {
-      console.log('finishContracts: ', response.data)
       if (response.status === 200) {
         commit('getFinishContracts', response.data)
       }
     })
   },
+  // Lấy tất cả các hợp động bị từ chối
   getRejectContracts ({ commit, rootState }) {
     contractRepository.getRejectContracts(rootState.users.user.userId).then(response => {
-      console.log('rejectContracts: ', response.data)
       if (response.status === 200) {
         commit('getRejectContracts', response.data)
       }
     })
   },
+  // Lấy tất cả các hợp đồng đang chờ xét duyệt
   getPendingContracts ({ commit, rootState }) {
     contractRepository.getPendingContracts(rootState.users.user.userId).then(response => {
-      console.log('pendingContracts: ', response.data)
       if (response.status === 200) {
         commit('getPendingContracts', response.data)
       }
@@ -298,6 +275,7 @@ const mutations = {
         dateCreated: contract.dateCreated.split('T')[0].split('-').reverse().join('-'),
         dateFinished: contract.dateFinished.split('T')[0].split('-').reverse().join('-'),
         dateStarted: contract.dateStarted.split('T')[0].split('-').reverse().join('-'),
+        daysOfTracking: contract.daysOfTracking,
         diseases: contract.diseases.map(disease => {
           return {
             diseaseId: disease.diseaseId,
@@ -313,6 +291,7 @@ const mutations = {
         priceLicense: contract.priceLicense
       }
     })
+    console.log('activeContracts:::', state.activeContracts)
   },
   getFinishContracts (state, contractResponse) {
     state.finishContracts = contractResponse.map(contract => {
@@ -322,6 +301,7 @@ const mutations = {
         dateCreated: contract.dateCreated.split('T')[0].split('-').reverse().join('-'),
         dateFinished: contract.dateFinished.split('T')[0].split('-').reverse().join('-'),
         dateStarted: contract.dateStarted.split('T')[0].split('-').reverse().join('-'),
+        daysOfTracking: contract.daysOfTracking,
         diseases: contract.diseases.map(disease => {
           return {
             diseaseId: disease.diseaseId,
@@ -337,6 +317,7 @@ const mutations = {
         priceLicense: contract.priceLicense
       }
     })
+    console.log('finishContracts:::', state.finishContracts)
   },
   getPendingContracts (state, contractResponse) {
     state.pendingContracts = contractResponse.map(contract => {
@@ -346,6 +327,7 @@ const mutations = {
         dateCreated: contract.dateCreated.split('T')[0].split('-').reverse().join('-'),
         dateFinished: contract.dateFinished.split('T')[0].split('-').reverse().join('-'),
         dateStarted: contract.dateStarted.split('T')[0].split('-').reverse().join('-'),
+        daysOfTracking: contract.daysOfTracking,
         diseases: contract.diseases.map(disease => {
           return {
             diseaseId: disease.diseaseId,
@@ -361,6 +343,7 @@ const mutations = {
         priceLicense: contract.priceLicense
       }
     })
+    console.log('pendingContracts:::', state.pendingContracts)
   },
   getRejectContracts (state, contractResponse) {
     state.rejectContracts = contractResponse.map(contract => {
@@ -370,6 +353,7 @@ const mutations = {
         dateCreated: contract.dateCreated.split('T')[0].split('-').reverse().join('-'),
         dateFinished: contract.dateFinished.split('T')[0].split('-').reverse().join('-'),
         dateStarted: contract.dateStarted.split('T')[0].split('-').reverse().join('-'),
+        daysOfTracking: contract.dateOfTracking,
         diseases: contract.diseases.map(disease => {
           return {
             diseaseId: disease.diseaseId,
@@ -385,7 +369,9 @@ const mutations = {
         priceLicense: contract.priceLicense
       }
     })
+    console.log('rejectContracts:::', state.rejectContracts)
   },
+  // Lấy hợp đồng mà bệnh nhân đã request
   getRequestDetailSuccess (state, payloadRequestDetail) {
     state.requestDetail.contractId = payloadRequestDetail.contractId
     state.requestDetail.fullNameDoctor = payloadRequestDetail.fullNameDoctor
@@ -405,10 +391,9 @@ const mutations = {
     state.requestDetail.licenseId = payloadRequestDetail.licenseId
     state.requestDetail.doctorId = payloadRequestDetail.doctorId
     state.requestDetail.patientId = payloadRequestDetail.patientId
-    console.log('Finally - requestDetail', state.requestDetail)
+    console.log('requestDetail', state.requestDetail)
   },
   setMedicalInstructionShared (state, medicalInstructionShared) {
-    console.log('medicalInstructionShared,', medicalInstructionShared)
     state.requestDetail.medicalInstructionShared = medicalInstructionShared.map(mis => {
       return {
         medicalInstructionType: mis.medicalInstructionType,
@@ -421,42 +406,24 @@ const mutations = {
         })
       }
     })
-
-    /* state.requestDetail.medicalInstructionShared = [
-							  {
-								medicalInstructionType: 'Đơn thuốc',
-								images: [
-								  {
-									image: 'https://firebasestorage.googleapis.com/v0/b/homedoctor-b1f7e.appspot.com/o/benhannoikhoa1.jpg?alt=media&token=5277e9a2-b8a6-42da-9f2b-ee0aeb969c55',
-									description: 'homedoctor1'
-								  },
-								  {
-									image: 'https://firebasestorage.googleapis.com/v0/b/homedoctor-b1f7e.appspot.com/o/benhannoikhoa1.jpg?alt=media&token=5277e9a2-b8a6-42da-9f2b-ee0aeb969c55',
-									description: 'homedoctor2'
-								  }
-								],
-								index: ''
-							  },
-							  {
-								medicalInstructionType: 'Phiếu xét nghiệm',
-								images: [
-								  {
-									image: 'https://firebasestorage.googleapis.com/v0/b/homedoctor-b1f7e.appspot.com/o/benhannoikhoa1.jpg?alt=media&token=5277e9a2-b8a6-42da-9f2b-ee0aeb969c55',
-									description: 'homedoctor3'
-								  },
-								  {
-									image: 'https://firebasestorage.googleapis.com/v0/b/homedoctor-b1f7e.appspot.com/o/benhannoikhoa1.jpg?alt=media&token=5277e9a2-b8a6-42da-9f2b-ee0aeb969c55',
-									description: 'homedoctor4'
-								  }
-								],
-								index: null
-							  }
-							// eslint-disable-next-line no-tabs
-							] */
-    // state.requestDetail.medicalInstructionShared.forEach(mi => {
-    //  state.contractImgs = state.contractImgs.concat(mi.images)
-    // })
-    console.log('shared: ', state.requestDetail.medicalInstructionShared)
+    console.log('medicalInstructionShared: ', state.requestDetail.medicalInstructionShared)
+    var tmp = state.requestDetail.medicalInstructionShared.map(mis => {
+      return {
+        medicalInstructionShared: mis.images.map(i => {
+          return {
+            medicalInstructionType: mis.medicalInstructionType,
+            diagnose: i.diagnose,
+            description: i.description,
+            image: i.image
+          }
+        })
+      }
+    })
+    state.allMedicalInstructionShareds = []
+    tmp.forEach(e => {
+      state.allMedicalInstructionShareds = state.allMedicalInstructionShareds.concat(e.medicalInstructionShared)
+    })
+    console.log('allMedicalInstructionShareds:::', state.allMedicalInstructionShareds)
   },
   // Manage rejectContract
   rejectContract (state) {
@@ -471,7 +438,6 @@ const mutations = {
   },
   // Transfer data of request detail from request-detail to confirm-contract
   nextCreateContract (state, payload) {
-    console.log('nextCreateContract', payload)
     state.contract.contractId = payload.contractId
     state.contract.status = 'active'
     state.contract.patientId = payload.patientId
@@ -480,13 +446,12 @@ const mutations = {
     console.log('contract: ', state.contract)
   },
   setPatientInfo (state, payloadPatientInfo) {
-    console.log('setPatientInfo')
-    console.log(payloadPatientInfo)
     state.patientDetail.patientId = payloadPatientInfo.patientId
     state.patientDetail.gender = payloadPatientInfo.gender
     state.patientDetail.email = payloadPatientInfo.email
     state.patientDetail.career = payloadPatientInfo.career
     state.patientDetail.relatives = payloadPatientInfo.relatives
+    console.log('patientDetail:::', state.patientDetail)
   }
 }
 export default {

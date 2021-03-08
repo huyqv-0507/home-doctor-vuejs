@@ -42,7 +42,7 @@ export default {
   // Cập nhật lại (Xác nhận) hợp đồng bệnh nhân đã yêu cầu
   async createContract (contract) {
     return await request({
-      url: `/Contracts?doctorId=${contract.doctorId}&patientId=${contract.patientId}&contractId=${contract.contractId}&status=ACTIVE&dateStart=${contract.dateStarted}&daysOfTracking=${contract.daysOfTracking}`,
+      url: `/Contracts/${contract.contractId}?doctorId=${contract.doctorId}&patientId=${contract.patientId}&status=ACTIVE&dateStart=${contract.dateStarted}&daysOfTracking=${contract.daysOfTracking}`,
       method: 'put'
     })
   },

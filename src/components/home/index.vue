@@ -19,7 +19,7 @@
           </el-row>
         </el-col>
         <el-col :span="3">
-          <span>{{nextSchedule.timeStart.split('T')[0].split('-').reverse().join('-')}}</span>
+          <span>{{nextSchedule.dateStarted}}</span>
         </el-col>
       </el-row>
       <el-row style="margin: .5em; margin-left: 1em;">
@@ -32,7 +32,7 @@
         <el-col :span="3">
           <div
             class="next-time"
-          >{{nextSchedule.timeStart.split('T')[1]}}-{{nextSchedule.timeEnded.split('T')[1]}}</div>
+          >{{nextSchedule.hourStarted}}-{{nextSchedule.hourEnded}}</div>
         </el-col>
       </el-row>
     </el-row>
@@ -146,12 +146,6 @@ export default {
 @import "../../style/index.scss";
 .card-wrapper {
   font-size: 13px;
-}
-.bg-theme {
-  background-color: #eeeff3;
-  padding: 1em;
-  margin: 0.5em;
-  border-radius: 8px;
 }
 .patient-health-wrapper {
   .patient-health-wrapper_card {

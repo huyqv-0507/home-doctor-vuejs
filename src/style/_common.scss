@@ -27,10 +27,11 @@
 	top: 3.125em;
 	position: fixed;
 	right: 0;
-	width: 18.75em;
+	bottom: 0;
+	width: 17.7em;
 	overflow: auto;
 	padding: 1em 1em 0 1em;
-	box-sizing: border-box;
+	background-color: white;
 }
 .mainContent {
 	top: 3.125em;
@@ -39,7 +40,6 @@
 	right: 18.75em;
 	overflow: scroll;
 	padding: 1em 1em 0 1em;
-	box-sizing: border-box;
 }
 .breadcrumb {
 	font-size: 10px;
@@ -101,3 +101,10 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+.bg-theme {
+	background-color: #eeeff3;
+	padding: 1em;
+	margin: 0.5em;
+	border-radius: 8px;
+  }

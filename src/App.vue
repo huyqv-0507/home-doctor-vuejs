@@ -1,10 +1,10 @@
 <template>
   <div id="app">
       <router-view/>
-      <notifications position="bottom right"/>
   </div>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {
@@ -12,6 +12,10 @@ export default {
     }
   },
   mounted () {
+    this.getNotifications()
+  },
+  methods: {
+    ...mapActions('notifications', ['getNotifications'])
   }
 }
 </script>

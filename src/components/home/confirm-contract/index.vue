@@ -5,7 +5,7 @@
       <el-breadcrumb-item>Thông tin bệnh nhân</el-breadcrumb-item>
       <el-breadcrumb-item>Xác nhận hợp đồng</el-breadcrumb-item>
     </el-breadcrumb>
-    <div class="contract">
+    <div class="contract bg-theme">
       <el-row class="contract__today">
         <span></span>
         <span>
@@ -22,28 +22,29 @@
         <el-row
           class="contract__content_medical-exam-and-treatment-law"
         >{{contractForm.intro.medicalExaminationAndTreatmentLaw}}</el-row>
-        <el-row class="contract__content_decree">{{contractForm.intro.decree}}</el-row>
-        <el-row class="contract__content_circular">{{contractForm.intro.circular}}</el-row>
+        <el-row class="contract__content_decree"><p class="text">{{contractForm.intro.decree}}</p></el-row>
+        <el-row class="contract__content_circular"><span class="text">{{contractForm.intro.circular}}</span></el-row>
         <el-row class="contract__content_today">{{contractForm.today()}}, chúng tôi gồm:</el-row>
         <el-row class="contract__content_side">
           <el-row class="margin-line">
             <strong>BÊN A:</strong>
             Bên {{contractForm.dutyAndInterest[1].name}}
           </el-row>
-          <el-row class="margin-line">Đại diện là Ông/bà: {{user.fullName}}</el-row>
-          <el-row class="margin-line">Chức vụ: {{user.specialization}}</el-row>
-          <el-row class="margin-line">Địa chỉ: {{user.address}}</el-row>
-          <el-row class="margin-line">Điện thoại: {{user.phoneNumber}}</el-row>
+          <el-row class="margin-line">Đại diện là Ông/bà: <strong>{{user.fullName}}</strong></el-row>
+          <el-row class="margin-line">Ngày sinh: <strong>{{user.dateOfBirth}}</strong></el-row>
+          <el-row class="margin-line">Chuyên khoa: <strong>{{user.specialization}}</strong></el-row>
+          <el-row class="margin-line">Nơi làm việc: <strong>{{user.workLocation}}</strong></el-row>
+          <el-row class="margin-line">Điện thoại: {{user.phone}}</el-row>
           <el-row class="margin-line">
             <strong>BÊN B:</strong>
             Bên {{contractForm.dutyAndInterest[0].name}}
           </el-row>
-          <el-row class="margin-line">Đại diện là Ông/bà: {{requestDetail.fullNamePatient}}</el-row>
-          <el-row class="margin-line">Giới tính: {{patientDetail.gender}}</el-row>
-          <el-row class="margin-line">Ngày sinh: {{requestDetail.dobPatient}}</el-row>
-          <el-row class="margin-line">Chỗ ở hiện nay: {{requestDetail.addressPatient}}</el-row>
-          <el-row class="margin-line">Nghề nghiệp: {{patientDetail.career}}</el-row>
-          <el-row class="margin-line">Điện thoại: {{requestDetail.phoneNumberPatient}}</el-row>
+          <el-row class="margin-line">Đại diện là Ông/bà: <strong>{{requestDetail.fullNamePatient}}</strong></el-row>
+          <el-row class="margin-line">Giới tính: <strong>{{patientDetail.gender}}</strong></el-row>
+          <el-row class="margin-line">Ngày sinh: <strong>{{requestDetail.dobPatient}}</strong></el-row>
+          <el-row class="margin-line">Chỗ ở hiện nay: <strong>{{requestDetail.addressPatient}}</strong></el-row>
+          <el-row class="margin-line">Nghề nghiệp: <strong>{{patientDetail.career}}</strong></el-row>
+          <el-row class="margin-line">Điện thoại: <strong>{{requestDetail.phoneNumberPatient}}</strong></el-row>
         </el-row>
         <el-row>
           <el-row class="margin-line">
@@ -103,10 +104,9 @@
           <el-row class="margin-line">
             <strong>Điều 5. {{contractForm.termEnforcement.title}}</strong>
           </el-row>
-          <p class="margin-line" v-for="(des, index) in contractForm.termEnforcement.description" :key="`des-${index}`">- {{des}}</p>
+          <p class="margin-line" v-for="(des, index) in contractForm.termEnforcement.description" :key="`des-${index}`">- {{des}}.</p>
         </el-row>
       </el-row>
-    </div>
     <el-row class="margin-line">
       <el-checkbox v-model="confirmRule"><strong>Đồng ý với các điều khoản trên.</strong></el-checkbox>
     </el-row>
@@ -128,6 +128,7 @@
         disabled=""
       >Xác nhận</el-button>
     </el-row>
+    </div>
   </div>
 </template>
 
@@ -169,12 +170,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px;
   .handle-event__button {
     margin: 0 40px;
   }
 }
 .contract {
+  padding: 2em 1.5em;
   .contract__today {
     display: flex;
     justify-content: flex-end;

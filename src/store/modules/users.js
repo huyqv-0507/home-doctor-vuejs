@@ -39,10 +39,10 @@ const actions = {
             }) // Báo cho mutation thành công để render view
             userRepository.createTokenFirebase(tokenInfo.accountId, getTokenFirebase()).then(response => {
               if (response.status === 201) {
-                router.push('/home') // Chuyển qua trang home
+              //  router.push('/home') // Chuyển qua trang home
               }
-            })
-            router.push('/home') // Chuyển qua trang home
+            }).catch()
+            router.push('/home')
           }
         })
       } else if (response.status === 400) {
@@ -66,7 +66,7 @@ const mutations = {
     state.user.workLocation = user.doctorProfile.workLocation
     state.user.phone = user.doctorProfile.phone
     state.user.email = user.doctorProfile.email
-    state.user.dateOfBirth = user.doctorProfile.dateOfBirth
+    state.user.dateOfBirth = user.doctorProfile.dateOfBirth.split('T')[0].split('-').reverse().join('-')
     state.user.details = user.doctorProfile.details
     state.user.specialization = user.doctorProfile.specialization
     state.user.experience = user.doctorProfile.experience

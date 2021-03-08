@@ -49,10 +49,13 @@ export default {
 @import '../../style/index.scss';
 .wrapper {
   background-image: linear-gradient(to right, #64E8DE, #8A64E8);
-  height: 51.3125em;
-  position: relative;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
   .wrapper-opacity {
-    height: 51.3125em;
+    height: 60.3125em;
     background-color: #575E6E;
     opacity: 60%;
   }

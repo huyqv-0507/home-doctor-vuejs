@@ -6,7 +6,6 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './style/element-variables.scss'
 import locale from 'element-ui/lib/locale/lang/en'
-import Notifications from 'vue-notification'
 import { register } from 'register-service-worker'
 import { setTokenFirebase } from './utils/cookie'
 
@@ -21,20 +20,19 @@ var firebaseConfig = {
 }
 var firebase = require('firebase/app')
 require('firebase/messaging')
-firebase.default.initializeApp(firebaseConfig)
+firebase.default.initializeApp(firebaseConfig) // init firebase
 
 const messaging = firebase.default.messaging()
-console.log('messaging', messaging)
 messaging.requestPermission().then(function () {
-  console.log('Have Permission')
+  console.log('Have permission')
   return messaging.getToken()
 })
   .then((token) => {
-    console.log('token:::', token)
+    console.log('Token firebase:::', token)
     setTokenFirebase(token)
   })
   .catch((err) => {
-    console.log('Have not Permission', err)
+    console.log('Have not permission', err)
     if ('serviceWorker' in navigator) {
       register('../public/firebase-messaging-sw.js', { scope: '../public_html/' })
         .then(function (registration) {
@@ -45,13 +43,13 @@ messaging.requestPermission().then(function () {
     }
   })
 messaging.onMessage(payload => {
-  console.log(payload)
-  alert(`${payload.data.message}`)
+  console.log('Message from firebase:::', payload)
+  store.dispatch('notifications/newMessage', null, { root: true })
+  ElementUI.Message.info({ dangerouslyUseHTMLString: true, message: `<h4 style="color: black;">${payload.notification.title}</h4><div style="width: 100%; height: 1px; background-color: grey;"></div><p style="margin-top: .5em; color: black;">${payload.notification.body}</p>`, duration: 0, showClose: true })
 })
 
 Vue.config.productionTip = false
 Vue.use(ElementUI, { locale })
-Vue.use(Notifications)
 
 new Vue({
   router,

@@ -19,10 +19,10 @@ export default {
     })
   },
   // Lấy thông tin của bác sĩ
-  async getDoctorProfileByUserId (userId) {
+  async getDoctorProfileByDoctorId (doctorId) {
     return await request({
       method: 'get',
-      url: `/Doctors?doctorId=${userId}`
+      url: `/Doctors/${doctorId}`
     })
   },
   // Lấy thông tin của bác sĩ
@@ -33,14 +33,14 @@ export default {
     })
   },
   async createTokenFirebase (accountId, token) {
-    console.log('createTokenFirebase:', { accountId: accountId, token: token })
+    console.log('createTokenFirebase:', { accountId: parseInt(accountId), token: token })
+    var formData = new FormData()
+    formData.append('accountId', accountId)
+    formData.append('token', token)
     return await request({
       method: 'post',
-      url: `/FireBases=${token}`,
-      data: {
-        accountId: accountId,
-        token: token
-      }
+      url: `/FireBases`,
+      data: formData
     })
   }
 }

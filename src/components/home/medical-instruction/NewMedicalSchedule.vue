@@ -145,8 +145,9 @@ export default {
       })
     },
     handleEdit (index, row) {
-      console.log('Edit index:', index)
-      console.log('Edit row:', row)
+      console.log('row edit', row)
+      this.$store.dispatch('medicalInstruction/editMedicine', { index: index, medicineEdit: row }, { root: true })
+      this.$store.dispatch('modals/openEditMedicine', null, { root: true })
     },
     // Xoá thuốc khỏi danh sách đơn thuốc
     handleDelete (index, row) {
