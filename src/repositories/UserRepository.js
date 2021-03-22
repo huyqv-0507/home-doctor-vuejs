@@ -42,5 +42,11 @@ export default {
       url: `/FireBases`,
       data: formData
     })
+  },
+  async getActivities (accountId) {
+    return await request({
+      method: 'get',
+      url: `/Notifications/GetHistoryByAccountId?accountId=${accountId}`
+    })
   }
 }

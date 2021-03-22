@@ -1,13 +1,7 @@
 import request from '../utils/request.js'
+import contractSample from '../assets/data/contract-sample.json'
 
 export default {
-  // Lấy tất cả các yêu cầu hợp đồng đang chờ xét duyệt
-  async getContractRequestPending (userId) {
-    return await request({
-      url: `/Contracts?doctorId=${userId}&status=pending`,
-      method: 'get'
-    })
-  },
   async getActiveContracts (userId) {
     return await request({
       url: `/Contracts?doctorId=${userId}&status=active`,
@@ -32,6 +26,12 @@ export default {
       method: 'get'
     })
   },
+  async getApproveContracts (userId) {
+    return await request({
+      url: `/Contracts?doctorId=${userId}&status=approved`,
+      method: 'get'
+    })
+  },
   // Lấy thông tin hợp đồng bằng ID của Contract
   async getRequestDetail (contractId) {
     return await request({
@@ -42,7 +42,7 @@ export default {
   // Cập nhật lại (Xác nhận) hợp đồng bệnh nhân đã yêu cầu
   async createContract (contract) {
     return await request({
-      url: `/Contracts/${contract.contractId}?doctorId=${contract.doctorId}&patientId=${contract.patientId}&status=ACTIVE&dateStart=${contract.dateStarted}&daysOfTracking=${contract.daysOfTracking}`,
+      url: `/Contracts/${contract.contractId}?doctorId=${contract.doctorId}&patientId=${contract.patientId}&status=APPROVED&dateStart=${contract.dateStarted}&daysOfTracking=${contract.daysOfTracking}`,
       method: 'put'
     })
   },
@@ -55,12 +55,23 @@ export default {
     })
   },
   // Lấy các medicalInstruction (Đơn thuốc, phiếu xét nghiệm) được bệnh nhân share trong khi tạo Contract
-  async getMedicalInstructionShared (contractId) {
-    console.log('ContractRepository - getContractImages - contractId:', contractId)
+  async getMedicalInstructionShared (contractId, diseaseId) {
+    console.log('ContractRepository - getMedicalInstructionShared - contractId:', contractId)
+    console.log('ContractRepository - getMedicalInstructionShared - diseaseId:', diseaseId)
     return await request({
-      url: `/MedicalInstructionShares?contractId=${contractId}`,
+      url: `/MedicalInstructionShares?contractId=${contractId}&diseaseId=${diseaseId}`,
       // url: `http://45.76.186.233:8000/api/MedicalInstructionShares?contractId=${contractId}`,
       method: 'GET'
+    })
+  },
+  getContractSample () {
+    return contractSample
+  },
+  async getPriceOfContract (days) {
+    console.log('days', typeof days)
+    return await request({
+      url: `/Licenses/GetLicenseByDays?days=${days}`,
+      method: 'get'
     })
   }
 }

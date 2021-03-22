@@ -16,6 +16,21 @@ import ActiveContract from '../components/home/contract/ActiveContract.vue'
 import FinishContract from '../components/home/contract/FinishContract.vue'
 import RejectContract from '../components/home/contract/RejectContract.vue'
 import PendingContract from '../components/home/contract/PendingContract.vue'
+import ApproveContract from '../components/home/contract/ApproveContract.vue'
+import PatientDetailView from '../views/patient-detail'
+import OverviewPatient from '../components/patient-detail/overview'
+import TimelinePatient from '../components/patient-detail/timeline'
+import VitalSignPatient from '../components/patient-detail/vital-sign'
+import HealthRecordPatient from '../components/patient-detail/health-record'
+import History from '../views/history'
+import HistoryPage from '../components/history'
+import ContractHistory from '../components/history/contract-history'
+import MedicalInstructionHistory from '../components/history/medical-instruction-history'
+import PrescriptionHistory from '../components/history/prescription-history'
+import NewMedicalScheduleByReuse from '../components/home/medical-instruction/NewMedicalScheduleByReuse.vue'
+import ActivityPatient from '../components/patient-detail/activity'
+import Appointment from '../components/home/appointment'
+import ActivedContract from '../components/home/components/ActivedContract.vue'
 
 Vue.use(VueRouter)
 
@@ -60,6 +75,10 @@ const routes = [
           {
             path: 'pending-contract',
             component: PendingContract
+          },
+          {
+            path: 'approve-contract',
+            component: ApproveContract
           }
         ]
       },
@@ -90,6 +109,42 @@ const routes = [
         path: 'new-medical-schedule',
         name: 'new-medical-schedule',
         component: NewMedicalSchedule
+      },
+      {
+        path: 'reuse-medical-schedule',
+        name: 'reuse-medical-schedule',
+        component: NewMedicalScheduleByReuse
+      },
+      {
+        path: 'appointment',
+        component: Appointment
+      },
+      {
+        path: 'actived-contract',
+        component: ActivedContract
+      }
+    ]
+  },
+  {
+    path: '/history',
+    name: 'history',
+    component: History,
+    children: [
+      {
+        path: '',
+        component: HistoryPage
+      },
+      {
+        path: 'contract-history',
+        component: ContractHistory
+      },
+      {
+        path: 'medical-instruction-history',
+        component: MedicalInstructionHistory
+      },
+      {
+        path: 'prescription-history',
+        component: PrescriptionHistory
       }
     ]
   },
@@ -97,6 +152,36 @@ const routes = [
     path: '/account-manage',
     name: 'account-manage',
     component: AccountManagement
+  },
+  {
+    path: '/patient-detail-page',
+    component: PatientDetailView,
+    children: [
+      {
+        path: '',
+        component: OverviewPatient
+      },
+      {
+        path: 'overview',
+        component: OverviewPatient
+      },
+      {
+        path: 'timeline',
+        component: TimelinePatient
+      },
+      {
+        path: 'vital-sign',
+        component: VitalSignPatient
+      },
+      {
+        path: 'health-record',
+        component: HealthRecordPatient
+      },
+      {
+        path: 'activity',
+        component: ActivityPatient
+      }
+    ]
   }
 ]
 

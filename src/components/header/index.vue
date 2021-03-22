@@ -29,20 +29,60 @@
               />
             </el-badge>
             <div v-show="isShowNotify" class="heading__nav-bar_badge">
-              <el-card
-                style="margin: 1em 0; cursor: pointer"
-                v-for="(notification, index) in notifications"
-                :key="`notifications-${index}`"
-                shadow="never"
+              <h1>Thông báo</h1>
+              <el-row
+                style="margin: 1em 0;"
+                v-for="(notification, dateIndex) in notifications"
+                :key="`notifications-${dateIndex}`"
               >
-                <div v-on:click="goToRequestDetail(notification.contractId)">
-                  <div slot="header">
-                    <span>{{notification.title}}</span>
+                <h3>{{notification.dateCreated}}</h3>
+                <div
+                  v-for="(noti, index) in notification.notifications"
+                  :key="`noti-${index}`"
+                  style=" cursor: pointer;"
+                >
+                  <div v-if="noti.status">
+                    <el-row class="heading__nav-bar_badge-wrapper">
+                      <el-col :span="4">
+                        <img src="../../assets/icons/ic-noti-selected.png" style="margin: 0" />
+                      </el-col>
+                      <el-col :span="20">
+                        <div
+                          v-on:click="handleNotificationLink({ contractId: noti.contractId, dateIndex: dateIndex, notificationId: noti.notificationId })"
+                        >
+                          <div slot="header">
+                            <h4>{{noti.title}}</h4>
+                          </div>
+                          <!-- card body -->
+                          <p style="color: grey;">{{noti.description}}</p>
+                          <p style="color: grey; font-size: 9px; margin: .3em 0;">
+                            <i>{{noti.timeAgo}}</i>
+                          </p>
+                        </div>
+                      </el-col>
+                    </el-row>
                   </div>
-                  <!-- card body -->
-                  <p>{{notification.description}}</p>
+                  <el-row v-else class="heading__nav-bar_badge-wrapper unseen-notification">
+                    <el-col :span="4">
+                      <img src="../../assets/icons/ic-noti-selected.png" style="margin: 0" />
+                    </el-col>
+                    <el-col :span="20">
+                      <div
+                        v-on:click="handleNotificationLink({ contractId: noti.contractId, dateIndex: dateIndex, notificationId: noti.notificationId })"
+                      >
+                        <div slot="header">
+                          <h4>{{noti.title}}</h4>
+                        </div>
+                        <!-- card body -->
+                        <p style="color: grey;">{{noti.description}}</p>
+                        <p style="color: grey; font-size: 9px; margin: .3em 0;">
+                          <i>{{noti.timeAgo}} trước</i>
+                        </p>
+                      </div>
+                    </el-col>
+                  </el-row>
                 </div>
-              </el-card>
+              </el-row>
             </div>
           </el-col>
           <el-col>
@@ -56,7 +96,7 @@
               <router-link to="/account-manage">
                 <el-button>Cài đặt</el-button>
               </router-link>
-              <el-button>Đăng xuất</el-button>
+              <el-button v-on:click="handleLogout()">Đăng xuất</el-button>
             </el-popover>
           </el-col>
         </el-row>
@@ -74,14 +114,33 @@ export default {
   },
   methods: {
     ...mapActions('notifications', ['handleShowNotification']),
-    goToRequestDetail (contractId) {
-      console.log('contractId:::', contractId)
-      router.push({
-        name: 'request-detail',
-        params: { contractId: contractId }
-      })
-      this.$store.dispatch('notifications/showNotify', null, { root: true })
-      this.$store.dispatch('notifications/seeNotify', null, { root: true })
+    ...mapActions('users', ['handleLogout']),
+    ...mapActions('contracts', ['checkNavigateContract']),
+    handleNotificationLink (notificationSelected) {
+      if (notificationSelected.contractId !== null) {
+        this.checkNavigateContract(notificationSelected.contractId)
+        switch (this.$store.state.contracts.navigateContract.statusContract) {
+          case 'PENDING': {
+            router.push({
+              name: 'request-detail',
+              params: { contractId: notificationSelected.contractId }
+            })
+            break
+          }
+          case 'ACTIVE': {
+            router.push('/home/actived-contract')
+            break
+          }
+        }
+      }
+      this.$store.dispatch(
+        'notifications/seeNotify',
+        {
+          dateIndex: notificationSelected.dateIndex,
+          notificationId: notificationSelected.notificationId
+        },
+        { root: true }
+      )
     }
   }
 }
@@ -96,7 +155,7 @@ export default {
 .heading__nav-bar_badge {
   width: 300px;
   height: auto;
-  overflow: scroll;
+  overflow: auto;
   background-color: whitesmoke;
   position: absolute;
   z-index: 3000;
@@ -104,6 +163,16 @@ export default {
   right: 140px;
   padding: 1em;
   font-size: 13px;
+  max-height: 400px;
+  box-shadow: 0px 0px 7px -2px rgba(0, 0, 0, 0.93);
+  border-radius: 8px;
+}
+.heading__nav-bar_badge-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 1em;
 }
 .heading__nav-bar_logo {
   padding: 0.5em 1em;
@@ -140,5 +209,8 @@ export default {
 }
 .pointer {
   cursor: pointer;
+}
+.unseen-notification {
+  background-color: #cecece;
 }
 </style>

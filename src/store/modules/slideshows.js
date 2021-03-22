@@ -1,19 +1,33 @@
 const state = () => ({
-  medicalInstructionSharedIndex: null, // Vị trí hình ảnh bác sĩ muốn xem,
-  medicalInstructionShareds: [],
   visibleAllImages: false,
   imageInfo: {
-    medicalInstructionType: '',
+    diseases: [],
+    medicalInstructionTypeName: '',
     diagnose: '',
-    description: ''
-  }
+    description: '',
+    imgUrl: ''
+  },
+  isShowImg: false,
+  imageShow: {
+    diseases: [],
+    medicalInstructionTypeName: '',
+    diagnose: '',
+    description: '',
+    imgUrl: ''
+  },
+  allMedicalInstructionShared: []
 })
 const getters = {}
 const actions = {
-  setImageInfo ({ commit, rootState }, index) {
-    commit('setImageInfo', rootState.contracts.allMedicalInstructionShareds[index])
+  setImageInfo ({ commit, state }, index) {
+    commit('setImageInfo', state.allMedicalInstructionShared[index])
   },
-  showAllImages ({ commit, dispatch }) {
+  showAllImages ({ commit, dispatch, rootState }) {
+    console.log(rootState.contracts.requestDetail.medicalInstructionTypes)
+    commit('setAllMedicalInstructionShared', {
+      medicalInstructionTypes: rootState.contracts.requestDetail.medicalInstructionTypes,
+      diseases: rootState.contracts.requestDetail.diseases
+    })
     dispatch('slideshows/setImageInfo', 0, { root: true })
     commit('showAllImages')
   },
@@ -21,27 +35,17 @@ const actions = {
     commit('closeAllImages')
   },
   // Bác sĩ chọn ảnh để xem
-  selectImg ({ commit, rootState, state }, imgIndex) {
-    console.log('selectImg: ', imgIndex)
-    // rootState.contracts.requestDetail.medicalInstructionShared.index = imgIndex
-    // console.log('root index:', rootState.contracts.requestDetail.medicalInstructionShared.index)
-    state.medicalInstructionShareds = rootState.contracts.requestDetail.medicalInstructionShared.map(mis => {
-      return {
-        medicalInstructionType: mis.medicalInstructionType,
-        images: mis.images.map(i => {
-          return i.image
-        }),
-        index: null
-      }
-    })
-    state.medicalInstructionShareds[imgIndex.index].index = parseInt(imgIndex.indexImg)
-    // commit('selectImg', imgIndex)
-    console.log('medicalInstructionShareds', state.medicalInstructionShareds)
+  selectImg ({ commit }, image) {
+    console.log('selectImg: ', image)
+    commit('setImageShow', image)
+  },
+  closeImgShow ({ commit }) {
+    commit('closeImgShow')
   },
   closeZoom ({ commit, state }) {
-    state.medicalInstructionShareds = state.medicalInstructionShareds.map(mi => {
+    state.medicalInstructionShared = state.medicalInstructionShared.map(mi => {
       return {
-        medicalInstructionType: mi.medicalInstructionType,
+        medicalInstructionType: mi.medicalInstructionTypeName,
         images: mi.images,
         index: null
       }
@@ -50,10 +54,45 @@ const actions = {
   }
 }
 const mutations = {
+  setAllMedicalInstructionShared (state, medicalInstructionShared) {
+    var tmp = []
+    console.log('medicalInstructionShared', medicalInstructionShared)
+    medicalInstructionShared.medicalInstructionTypes.forEach(medicalInstructionType => {
+      medicalInstructionType.medicalInstructions.forEach(medicalInstruction => {
+        var obj = {
+          medicalInstructionTypeName: medicalInstructionType.medicalInstructionTypeName,
+          imgUrl: medicalInstruction.image,
+          diseases: medicalInstructionShared.diseases,
+          diagnose: medicalInstruction.diagnose,
+          description: medicalInstruction.description
+        }
+        tmp.push(obj)
+      })
+    })
+    state.allMedicalInstructionShared = tmp
+    console.log('allMedicalInstructionShared', state.allMedicalInstructionShared)
+  },
+  closeImgShow (state) {
+    state.imageShow = ''
+    state.isShowImg = false
+  },
+  setImageShow (state, image) {
+    state.imageShow = {}
+    state.imageShow.diseases = image.diseases
+    state.imageShow.medicalInstructionTypeName = image.medicalInstructionTypeName
+    state.imageShow.diagnose = image.diagnose
+    state.imageShow.imgUrl = image.imgUrl
+    state.imageShow.description = image.description
+    state.isShowImg = true
+  },
   setImageInfo (state, imageInfo) {
-    state.imageInfo.medicalInstructionType = imageInfo.medicalInstructionType
+    state.imageInfo = {}
+    state.imageInfo.diseases = imageInfo.diseases
+    state.imageInfo.medicalInstructionTypeName = imageInfo.medicalInstructionTypeName
     state.imageInfo.diagnose = imageInfo.diagnose
+    state.imageInfo.imgUrl = imageInfo.imgUrl
     state.imageInfo.description = imageInfo.description
+    console.log('imgInfo: ', state.imageInfo)
   },
   selectImg (state, imgIndex) {
     state.medicalInstructionSharedIndex = imgIndex

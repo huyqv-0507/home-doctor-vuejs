@@ -2,15 +2,34 @@
   <div class="rightContent">
     <h4 class="titleColor">Danh sách theo dõi</h4>
     <div class="wrapper_shortcut-items">
-       <el-row v-for="(activeContract, index) in activeContracts" :key="index" :gutter="20" class="wrapper_shortcut-items_item"  style="margin-left: -15px; margin-right: 5px; margin-top: .7em;">
-          <el-col :span="4">
-            <img style="border-radius: 30px;" src="../../assets/icons/avatar-default.jpg">
-          </el-col>
-          <el-col :span="20">
-            <el-row><span class="wrapper_shortcut-items_item-title">{{activeContract.fullNamePatient}}</span></el-row>
-            <el-row><span class="wrapper_shortcut-items_item-description">0961564432</span></el-row>
-          </el-col>
-        </el-row>
+      <el-row
+        v-for="(approvedPatient, index) in approvedPatients"
+        :key="index"
+        :gutter="20"
+        class="wrapper_shortcut-items_item pointer"
+        style="margin-left: -15px; margin-right: 5px; margin-top: .7em;"
+        v-on:click.native="goToPatientDetail({
+                                       patientId: approvedPatient.patientId,
+                                       healthRecordId: approvedPatient.healthRecordId,
+                                       contractId: approvedPatient.contractId,
+                                       accountPatientId: approvedPatient.accountPatientId})"
+      >
+        <el-col :span="4">
+          <img style="border-radius: 30px;" src="../../assets/icons/avatar-default.jpg" />
+        </el-col>
+        <el-col :span="20">
+          <el-row>
+            <span class="wrapper_shortcut-items_item-title">{{approvedPatient.patientName}}</span>
+          </el-row>
+          <el-row>
+            <p
+              v-for="(item, index) in approvedPatient.diseaseContract"
+              :key="index"
+              class="wrapper_shortcut-items_item-description"
+            >{{item}}</p>
+          </el-row>
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
@@ -19,13 +38,13 @@
 import { mapState, mapActions } from 'vuex'
 export default {
   computed: {
-    ...mapState('contracts', ['activeContracts'])
+    ...mapState('patients', ['approvedPatients'])
   },
   mounted () {
-    this.getActiveContracts()
+    this.getPatientApproved()
   },
   methods: {
-    ...mapActions('contracts', ['getActiveContracts'])
+    ...mapActions('patients', ['getPatientApproved', 'goToPatientDetail'])
   }
 }
 </script>
@@ -33,23 +52,22 @@ export default {
 <style lang="scss">
 @import "../../style/index.scss";
 .wrapper_shortcut-items {
-   margin-left: 2em;
+  margin-left: 2em;
   .wrapper_shortcut-items_item {
-    background-image: linear-gradient(45deg, #F8F8FA, #EEEFF3);
+    background-image: linear-gradient(45deg, #f8f8fa, #eeeff3);
     border-radius: 15px;
     height: 60px;
     margin-right: 0;
-    @include center()
-     img {
-       width: 2em;
-     }
-     .wrapper_shortcut-items_item-title {
-       font-size: .8em;
-     }
-     .wrapper_shortcut-items_item-description {
-       font-size: .4em;
-       color: $color-button-sub-bg;
-     }
+    @include center() img {
+      width: 2em;
+    }
+    .wrapper_shortcut-items_item-title {
+      font-size: 0.8em;
+    }
+    .wrapper_shortcut-items_item-description {
+      font-size: 0.4em;
+      color: $color-button-sub-bg;
+    }
   }
 }
 </style>

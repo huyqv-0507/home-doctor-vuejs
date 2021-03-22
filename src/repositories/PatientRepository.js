@@ -21,5 +21,46 @@ export default {
   },
   getPatientTracking () {
     return patientTracking
+  },
+  // Lấy thông tin tổng quan của bệnh nhân theo HealthRecordId
+  async getOverviewPatient (healthRecordId) {
+    return await request({
+      method: 'get',
+      url: `/HealthRecords/GetOverviewHealthRecordByHRId?healthRecordId=${healthRecordId}`
+    })
+  },
+  // Lấy thông tin điều kiện trong trang tổng quam của bệnh nhân
+  async getHealingConditions (healthRecordId, contractId) {
+    return await request({
+      method: 'get',
+      url: `/HealthRecords/GetHealingConditions?healthRecordId=${healthRecordId}&contractId=${contractId}`
+    })
+  },
+  async requestAppointment (patientAppointment) {
+    return await request({
+      method: 'post',
+      url: '/Appointments',
+      data: {
+        contractId: patientAppointment.contractId,
+        note: patientAppointment.note,
+        dateExamination: patientAppointment.dateExamination,
+        accountDoctorId: patientAppointment.accountDoctorId,
+        accountPatientId: patientAppointment.accountPatientId
+      }
+    })
+  },
+  // month format yyyy/MM
+  async getAppointmentsByMonth (accountId, month) {
+    return await request({
+      method: 'get',
+      url: `/Appointments/GetAppointmentForMonth?accountId=${accountId}&month=${month}`
+    })
+  },
+  //
+  async getAppointments (accountId) {
+    return await request({
+      method: 'get',
+      url: `/Appointments/GetAppointmentForMonth?accountId=${accountId}`
+    })
   }
 }

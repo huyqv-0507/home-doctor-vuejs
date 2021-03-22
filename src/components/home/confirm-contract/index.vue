@@ -9,8 +9,14 @@
       <el-row class="contract__today">
         <span></span>
         <span>
-          <i>{{contractForm.today()}}</i>
+          <i>Hôm nay, ngày {{contractSample.today.day}} tháng {{contractSample.today.month}} năm {{contractSample.today.year}}</i>
         </span>
+      </el-row>
+      <el-row class="horizontalCenter">
+        <b>CÔNG HOÀ XÃ HÔI CHỦ NGHĨA VIỆT NAM</b>
+      </el-row>
+      <el-row class="horizontalCenter margin-line margin-bottom2em">
+        <u>Độc lập - Tự do - Hạnh phúc</u>
       </el-row>
       <el-row>
         <el-col :span="24" class="contract__title" style="display: flex; justify-content: center;">
@@ -18,116 +24,144 @@
         </el-col>
       </el-row>
       <el-row :gutter="10" class="contract__content font-size14">
-        <el-row class="contract__content_social-legal">{{contractForm.intro.socialLegal}}</el-row>
-        <el-row
-          class="contract__content_medical-exam-and-treatment-law"
-        >{{contractForm.intro.medicalExaminationAndTreatmentLaw}}</el-row>
-        <el-row class="contract__content_decree"><p class="text">{{contractForm.intro.decree}}</p></el-row>
-        <el-row class="contract__content_circular"><span class="text">{{contractForm.intro.circular}}</span></el-row>
-        <el-row class="contract__content_today">{{contractForm.today()}}, chúng tôi gồm:</el-row>
-        <el-row class="contract__content_side">
-          <el-row class="margin-line">
-            <strong>BÊN A:</strong>
-            Bên {{contractForm.dutyAndInterest[1].name}}
-          </el-row>
-          <el-row class="margin-line">Đại diện là Ông/bà: <strong>{{user.fullName}}</strong></el-row>
-          <el-row class="margin-line">Ngày sinh: <strong>{{user.dateOfBirth}}</strong></el-row>
-          <el-row class="margin-line">Chuyên khoa: <strong>{{user.specialization}}</strong></el-row>
-          <el-row class="margin-line">Nơi làm việc: <strong>{{user.workLocation}}</strong></el-row>
-          <el-row class="margin-line">Điện thoại: {{user.phone}}</el-row>
-          <el-row class="margin-line">
-            <strong>BÊN B:</strong>
-            Bên {{contractForm.dutyAndInterest[0].name}}
-          </el-row>
-          <el-row class="margin-line">Đại diện là Ông/bà: <strong>{{requestDetail.fullNamePatient}}</strong></el-row>
-          <el-row class="margin-line">Giới tính: <strong>{{patientDetail.gender}}</strong></el-row>
-          <el-row class="margin-line">Ngày sinh: <strong>{{requestDetail.dobPatient}}</strong></el-row>
-          <el-row class="margin-line">Chỗ ở hiện nay: <strong>{{requestDetail.addressPatient}}</strong></el-row>
-          <el-row class="margin-line">Nghề nghiệp: <strong>{{patientDetail.career}}</strong></el-row>
-          <el-row class="margin-line">Điện thoại: <strong>{{requestDetail.phoneNumberPatient}}</strong></el-row>
+        <p
+          class="margin-line"
+          v-for="(baseLaw, index) in contractSample.baseLaw"
+          :key="`baselaw-${index}`"
+        >{{baseLaw}}.</p>
+        <el-row class="contract__content_today font-size14 margin-line">
+          <p>Hôm nay, ngày {{contractSample.today.day}} tháng {{contractSample.today.month}} năm {{contractSample.today.year}}, chúng tôi gồm:</p>
         </el-row>
         <el-row>
-          <el-row class="margin-line">
-            <strong>Điều 1. {{contractForm.timeAndMission.title}}</strong>
-          </el-row>
-          <p class="margin-line">- {{contractForm.timeAndMission.description}}</p>
+          <h4>Bên A: {{contractSample.dutyAndInterest[0].name}} ({{contractSample.partyA.name}}):</h4>
+        </el-row>
+        <el-row class="margin-line">
+          <p>Họ tên: <strong>{{contractSample.partyA.fullName}}.</strong></p>
+        </el-row>
+        <el-row class="margin-line">
+          <p>Giới tính: <strong>{{contractSample.partyA.gender}}.</strong></p>
+        </el-row>
+        <el-row class="margin-line">
+          <p>Ngày sinh: <strong>{{contractSample.partyA.dateOfBirth}}.</strong></p>
+        </el-row>
+        <el-row class="margin-line">
+          <p>Số điện thoại: <strong>{{contractSample.partyA.phoneNumber}}.</strong></p>
+        </el-row>
+        <el-row class="margin-line">
+          <p>Địa chỉ: <strong>{{contractSample.partyA.address}}.</strong></p>
         </el-row>
         <el-row>
-          <el-row class="margin-line">
-            <strong>Điều 2. {{contractForm.workingMode.title}}</strong>
-          </el-row>
-          <p class="margin-line">- {{contractForm.workingMode.description}}</p>
+          <b>Bên B: {{contractSample.dutyAndInterest[1].name}} ({{contractSample.partyB.name}}):</b>
+        </el-row>
+        <el-row class="margin-line">
+          <p>Họ tên: <strong>{{contractSample.partyB.fullName}}.</strong></p>
+        </el-row>
+        <el-row class="margin-line">
+          <p>Ngày sinh: <strong>{{contractSample.partyB.dateOfBirth}}.</strong></p>
+        </el-row>
+        <el-row class="margin-line">
+          <p>Số điện thoại: <strong>{{contractSample.partyB.phoneNumber}}.</strong></p>
+        </el-row>
+        <el-row class="margin-line">
+          <p>Chuyên khoa: <strong>{{contractSample.partyB.specialization}}.</strong></p>
+        </el-row>
+        <el-row class="margin-line">
+          <p>Địa chỉ làm việc: <strong>{{contractSample.partyB.workLocation}}.</strong></p>
+        </el-row>
+        <el-row class="margin-line">
+          <p>Địa chỉ: <strong>{{contractSample.partyB.address}}.</strong></p>
         </el-row>
         <el-row>
-          <el-row class="margin-line">
-            <strong>Điều 3. Nghĩa vụ và quyền lợi của bên B</strong>
-          </el-row>
-          <el-row>
-            <strong>1. Nghĩa vụ:</strong>
-          </el-row>
-          <p
-            class="margin-line"
-            v-for="(duty, index) in contractForm.dutyAndInterest[0].duty"
-            :key="`duty-a-${index}`"
-          >- {{duty}}</p>
-          <el-row>
-            <strong>2. Quyền lợi:</strong>
-          </el-row>
-          <p
-            class="margin-line"
-            v-for="(interest, index) in contractForm.dutyAndInterest[0].interest"
-            :key="`interest-a-${index}`"
-          >- {{interest}}</p>
+          <p><i>{{contractSample.descriptionSum}}:</i></p>
         </el-row>
-        <el-row>
-          <el-row class="margin-line">
-            <strong>Điều 4. Nghĩa vụ và quyền lợi của bên A</strong>
-          </el-row>
-          <el-row>
-            <strong>1. Nghĩa vụ:</strong>
-          </el-row>
-          <p
-            class="margin-line"
-            v-for="(duty, index) in contractForm.dutyAndInterest[1].duty"
-            :key="`duty-a-${index}`"
-          >- {{duty}}</p>
-          <el-row>
-            <strong>2. Quyền lợi:</strong>
-          </el-row>
-          <p
-            class="margin-line"
-            v-for="(interest, index) in contractForm.dutyAndInterest[1].interest"
-            :key="`interest-a-${index}`"
-          >- {{interest}}</p>
+        <el-row class="margin-line">
+          <b>Điều 1: {{contractSample.timeAndMission.title}}:</b>
         </el-row>
-        <el-row>
-          <el-row class="margin-line">
-            <strong>Điều 5. {{contractForm.termEnforcement.title}}</strong>
-          </el-row>
-          <p class="margin-line" v-for="(des, index) in contractForm.termEnforcement.description" :key="`des-${index}`">- {{des}}.</p>
+        <el-row class="margin-line">
+          <p>- Hợp đồng có hiệu lực từ ngày {{contractSample.dateStarted}} đến  ngày {{contractSample.dateContractFinished.day}} tháng {{contractSample.dateContractFinished.month}} năm {{contractSample.dateContractFinished.year}}.</p>
+          <p>- Theo yêu cầu của bên A về việc thực hiện khám và theo dõi bệnh, bên B đám nhận và thực hiện yêu cầu bên A</p>
+        </el-row>
+        <el-row class="margin-line">
+          <p class="margin-line" v-for="(des, index) in contractSample.timeAndMission.description" :key="`tamd${index}`">- {{des}}.</p>
+        </el-row>
+        <el-row class="margin-line">
+          <b>Điều 2: {{contractSample.workingMode.title}}:</b>
+        </el-row>
+        <el-row class="margin-line">
+          <p>- Sử dụng HDr System để hỗ trợ khám và tư vấn cho bên A</p>
+        </el-row>
+        <el-row class="margin-line">
+          <p class="margin-line" v-for="(des, index) in contractSample.workingMode.description" :key="`wmd${index}`">- {{des}}.</p>
+        </el-row>
+        <el-row class="margin-line">
+          <b>Điều 3: Nghĩa vụ và quyền lợi của bên A:</b>
+        </el-row>
+        <el-row class="margin-line">
+          <b>1. Quyển lợi</b>
+        </el-row>
+        <el-row class="margin-line">
+          <p class="margin-line" v-for="(des, index) in contractSample.dutyAndInterest[0].duty" :key="`add${index}`">- {{des}}.</p>
+        </el-row>
+        <el-row class="margin-line">
+          <b>2. Nghĩa vụ</b>
+        </el-row>
+        <el-row class="margin-line">
+          <p class="margin-line" v-for="(des, index) in contractSample.dutyAndInterest[0].interest" :key="`aid${index}`">- {{des}}.</p>
+        </el-row>
+        <el-row class="margin-line">
+          <b>Điều 4: Nghĩa vụ và quyền lợi của bên B:</b>
+        </el-row>
+        <el-row class="margin-line">
+          <b>1. Quyển lợi</b>
+        </el-row>
+        <el-row class="margin-line">
+          <p class="margin-line" v-for="(des, index) in contractSample.dutyAndInterest[1].duty" :key="`bdd${index}`">- {{des}}.</p>
+        </el-row>
+        <el-row class="margin-line">
+          <b>2. Nghĩa vụ</b>
+        </el-row>
+        <el-row class="margin-line">
+          <p class="margin-line" v-for="(des, index) in contractSample.dutyAndInterest[1].interest" :key="`bid${index}`">- {{des}}.</p>
+        </el-row>
+        <el-row class="margin-line">
+          <b>Điều 5: {{contractSample.disputeResolution.title}}:</b>
+        </el-row>
+        <el-row class="margin-line">
+          <p class="margin-line" v-for="(des, index) in contractSample.disputeResolution.description" :key="`tamd${index}`">- {{des}}.</p>
+        </el-row>
+        <el-row class="margin-line">
+          <b>Điều 6: Tiền dịch vụ và phương thức thanh toán:</b>
+        </el-row>
+        <el-row class="margin-line">
+          <p>- Tiền dịch vụ: <b>{{ contractSample.price }} VNĐ.</b></p>
+          <p>- Phương thức thanh toán: Chuyển khoản trực tiếp vào tài khoản của HDr (Tên TK: Home Doctor Vietnam, Số TK: 123456789, Ngân hàng TP Bank)</p>
+        </el-row>
+        <el-row class="margin-line">
+          <b>Điều 7: {{contractSample.collectiveCommitment.title}}:</b>
+        </el-row>
+        <el-row class="margin-line">
+          <p class="margin-line" v-for="(des, index) in contractSample.collectiveCommitment.description" :key="`tamd${index}`">- {{des}}.</p>
         </el-row>
       </el-row>
-    <el-row class="margin-line">
-      <el-checkbox v-model="confirmRule"><strong>Đồng ý với các điều khoản trên.</strong></el-checkbox>
-    </el-row>
-    <el-row class="handle-event">
-      <el-button
-        class="handle-event__button"
-        type="secondary"
-        @click="backToRequestDetailContract()"
-      >Trở lại</el-button>
-      <el-button
-        v-if="confirmRule"
-        class="handle-event__button"
-        type="primary"
-        @click="confirmContract([contract, value])"
-      >Xác nhận</el-button>
-      <el-button v-else
-        class="handle-event__button"
-        type="primary"
-        disabled=""
-      >Xác nhận</el-button>
-    </el-row>
+      <el-row class="margin-line">
+        <el-checkbox v-model="confirmRule">
+          <strong>Đồng ý với các điều khoản trên.</strong>
+        </el-checkbox>
+      </el-row>
+      <el-row class="handle-event">
+        <el-button
+          class="handle-event__button"
+          type="secondary"
+          @click="backToRequestDetailContract()"
+        >Trở lại</el-button>
+        <el-button
+          v-if="confirmRule"
+          class="handle-event__button"
+          type="primary"
+          @click="confirmContract([contract, value])"
+        >Xác nhận</el-button>
+        <el-button v-else class="handle-event__button" type="primary" disabled>Xác nhận</el-button>
+      </el-row>
     </div>
   </div>
 </template>
@@ -148,17 +182,18 @@ export default {
       'cancelContractVisible',
       'contract',
       'patientDetail',
-      'contractForm'
+      'contractSample', 'license'
     ]),
     ...mapState('users', ['user'])
   },
   mounted () {
-    console.log('contractForm:::', this.contractForm)
+    this.getContractSample()
   },
   methods: {
     ...mapActions('contracts', [
       'backToRequestDetailContract',
-      'confirmContract'
+      'confirmContract',
+      'getContractSample'
     ])
   }
 }
@@ -205,5 +240,11 @@ export default {
 }
 .margin-line {
   margin: 0.8em 0;
+}
+.margin-bottom2em {
+  margin-bottom: 2em;
+}
+.margin-bottom1em {
+  margin-bottom: 1em;
 }
 </style>

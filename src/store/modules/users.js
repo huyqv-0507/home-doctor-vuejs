@@ -1,7 +1,7 @@
 import { RepositoryFactory } from '../../repositories/RepositoryFactory'
 import { setToken, getTokenFirebase } from '../../utils/cookie'
 import router from '../../router/index.js'
-import { parseJwt } from '../../utils/common'
+import { parseJwt, toTimeAgo, toDateTitle } from '../../utils/common'
 
 const userRepository = RepositoryFactory.get('userRepository')
 
@@ -18,8 +18,10 @@ const state = () => ({
     dateOfBirth: '', // Ngày sinh của bác sĩ
     details: '', // Note của bác sĩ
     specialization: '', // Chuyên khoa của bác sĩ
-    experience: '' // Số năm kinh nghiệm
-  }
+    experience: '', // Số năm kinh nghiệm
+    address: ''
+  },
+  activities: []
 })
 const getters = {
 }
@@ -53,6 +55,18 @@ const actions = {
       console.log(error)
       commit('loginFailed')
     })
+  },
+  getActivities ({ commit, rootState }) {
+    userRepository.getActivities(rootState.users.user.accountId).then(response => {
+      if (response.status === 200) {
+        commit('setActivities', response.data)
+      }
+    })
+  },
+  handleLogout ({ rootState }) {
+    rootState.notifications.notifications = []
+    rootState.notifications.numBadge = 0
+    router.push('/')
   }
 }
 const mutations = {
@@ -74,6 +88,24 @@ const mutations = {
   },
   loginFailed (state) {
     state.status = 'unLogged'
+  },
+  setActivities (state, activities) {
+    state.activities = activities.map(activity => {
+      return {
+        dateCreated: toDateTitle(activity.dateCreate),
+        activities: activity.histories.map(a => {
+          return {
+            title: a.title.trim(),
+            body: a.body,
+            contractId: a.contractId,
+            historyType: a.historyType,
+            medicalInstructionId: a.medicalInstructionId,
+            timeAgo: toTimeAgo(a.timeAgo)
+          }
+        })
+      }
+    })
+    console.log('Activities history:::', state.activities)
   }
 }
 export default {

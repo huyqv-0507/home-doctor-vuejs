@@ -26,7 +26,7 @@
           prop="dateCreated"
           label="Ngày tạo"
           sortable
-          width="125">
+          width="125" :formatter="formatDate">
       </el-table-column>
     </el-table></div>
 </template>
@@ -41,7 +41,10 @@ export default {
     this.getRejectContracts()
   },
   methods: {
-    ...mapActions('contracts', ['getRejectContracts'])
+    ...mapActions('contracts', ['getRejectContracts']),
+    formatDate (row, column) {
+      return row.dateCreated.split('-').reverse().join('/')
+    }
   }
 }
 </script>

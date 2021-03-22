@@ -35,6 +35,13 @@
       >
         <div :span="8" class="horizontalCenter">Chờ xét duyệt</div>
       </div>
+      <div
+        v-bind:class="{active: approvedTab}"
+        class="tab__item router-pointer"
+        v-on:click="handleApproved()"
+      >
+        <div :span="8" class="horizontalCenter">Chờ đồng ý</div>
+      </div>
     </el-row>
     <router-view />
   </div>
@@ -47,7 +54,8 @@ export default {
       activeTab: true,
       finishTab: false,
       rejectTab: false,
-      pendingTab: false
+      pendingTab: false,
+      approvedTab: false
     }
   },
   methods: {
@@ -56,6 +64,7 @@ export default {
       this.finishTab = false
       this.rejectTab = false
       this.pendingTab = false
+      this.approvedTab = false
       this.$router.push('/home/contracts/active-contract')
     },
     handleFinish () {
@@ -63,6 +72,7 @@ export default {
       this.finishTab = true
       this.rejectTab = false
       this.pendingTab = false
+      this.approvedTab = false
       this.$router.push('/home/contracts/finish-contract')
     },
     handleReject () {
@@ -70,6 +80,7 @@ export default {
       this.finishTab = false
       this.rejectTab = true
       this.pendingTab = false
+      this.approvedTab = false
       this.$router.push('/home/contracts/reject-contract')
     },
     handlePending () {
@@ -77,7 +88,16 @@ export default {
       this.finishTab = false
       this.rejectTab = false
       this.pendingTab = true
+      this.approvedTab = false
       this.$router.push('/home/contracts/pending-contract')
+    },
+    handleApproved () {
+      this.activeTab = false
+      this.finishTab = false
+      this.rejectTab = false
+      this.pendingTab = false
+      this.approvedTab = true
+      this.$router.push('/home/contracts/approve-contract')
     }
   }
 }

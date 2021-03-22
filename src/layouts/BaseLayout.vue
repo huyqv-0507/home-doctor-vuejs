@@ -1,10 +1,10 @@
 <template>
  <div class="wrapper">
    <header-default/>
-   <main class="layout-wrapper">
-     <slot name="left-content" class="layout-wrapper_left-content"/>
-     <slot name="main-content" class="layout-wrapper_main-content"/>
-     <slot name="right-content" class="layout-wrapper_right-content"/>
+   <main>
+     <slot name="left-content"/>
+     <slot name="main-content"/>
+     <slot name="right-content"/>
    </main>
    <footer-default class="footer-content"/>
  </div>

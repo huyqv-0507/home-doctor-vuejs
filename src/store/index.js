@@ -8,6 +8,8 @@ import medicalInstruction from './modules/medicalInstruction'
 import slideshows from './modules/slideshows'
 import suggestions from './modules/suggestions'
 import schedules from './modules/schedules'
+import appointments from './modules/appointments'
+import vitalSign from './modules/vitalSign'
 // eslint-disable-next-line quotes
 import createPersistedState from 'vuex-persistedstate'
 import notifications from './modules/notifications'
@@ -23,7 +25,9 @@ export default new Vuex.Store({
     slideshows,
     suggestions,
     schedules,
-    notifications
+    notifications,
+    appointments,
+    vitalSign
   },
   plugins: [createPersistedState()]
 })

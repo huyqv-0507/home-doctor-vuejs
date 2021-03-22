@@ -16,22 +16,18 @@
             </span>
           </el-col>
           <el-col :span="18" class="form__item_suggestion">
-            <el-input
-              v-model="newMedicineForm.medicineName"
+            <el-autocomplete
+              style="width: 100%;"
+              v-model="medicineDescription"
+              :fetch-suggestions="searchMedicine"
               placeholder="Nhập tên thuốc..."
-              @input="searchMedicineName($event)"
-              @change="leaveSearchMedicineName($event)"
-            ></el-input>
-            <div v-show="visibleTypeCreatePrescription" class="form__item_input-suggestion">
-              <ul>
-                <li
-                  class="pointer"
-                  v-for="item in medicineSuggestion"
-                  :key="item.medicineId"
-                  v-on:click="handleSelectMedicine({medicineId: item.medicineId, medicineDetail: item.medicineDetail})"
-                >{{item.medicineDetail}}</li>
-              </ul>
-            </div>
+              @select="handleSelectMedicine"
+              :trigger-on-focus="false" @change="handleCheckEmpty($event)"
+            >
+              <template slot-scope="{ item }">
+                <div>{{ item.description }}</div>
+              </template>
+            </el-autocomplete>
           </el-col>
         </el-row>
       </el-form-item>
@@ -41,7 +37,7 @@
             <span>Đơn vị:</span>
           </el-col>
           <el-col :span="18">
-            <el-input v-model="medicine.unitType" disabled></el-input>
+            <el-input v-model="unitType" disabled></el-input>
           </el-col>
         </el-row>
       </el-form-item>
@@ -51,7 +47,7 @@
             <span>Hàm lượng:</span>
           </el-col>
           <el-col :span="18" class="form__item_suggestion">
-            <el-input v-model="medicine.content" disabled></el-input>
+            <el-input v-model="content" disabled></el-input>
           </el-col>
         </el-row>
       </el-form-item>
@@ -73,7 +69,7 @@
                   <el-input v-model="newMedicineForm.unitMorning"></el-input>
                 </el-col>
                 <el-col :span="17">
-                  <span>{{medicine.unitType}}.</span>
+                  <span>{{unitType}}.</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -88,7 +84,7 @@
                   <el-input v-model="newMedicineForm.unitNoon"></el-input>
                 </el-col>
                 <el-col :span="17">
-                  <span>{{medicine.unitType}}.</span>
+                  <span>{{unitType}}.</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -103,7 +99,7 @@
                   <el-input v-model="newMedicineForm.unitAfternoon"></el-input>
                 </el-col>
                 <el-col :span="17">
-                  <span>{{medicine.unitType}}.</span>
+                  <span>{{unitType}}.</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -118,7 +114,7 @@
                   <el-input v-model="newMedicineForm.unitNight"></el-input>
                 </el-col>
                 <el-col :span="17">
-                  <span>{{medicine.unitType}}.</span>
+                  <span>{{unitType}}.</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -153,8 +149,11 @@
     </el-form>
 
     <span slot="footer">
-      <el-row>
+      <el-row v-if="isValid">
         <el-button type="primary" @click="addMedicineToPrescription()">Xác nhận</el-button>
+      </el-row>
+      <el-row v-else>
+        <el-button type="primary" disabled>Xác nhận</el-button>
       </el-row>
     </span>
   </el-dialog>
@@ -165,6 +164,11 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
+      isValid: false,
+      medicines: [],
+      medicineDescription: '',
+      unitType: '',
+      content: '',
       newMedicineForm: {
         medicineName: '',
         unitMorning: '', // Số thuốc sử dụng cho sáng
@@ -191,47 +195,40 @@ export default {
     }
   },
   computed: {
-    ...mapState('suggestions', [
-      'medicineName',
-      'medicineSuggestion',
-      'visibleTypeCreatePrescription',
-      'medicine',
-      'medicines',
-      'unitTypes',
-      'contentSuggestion',
-      'visibleTypeSearchContent'
-    ]),
+    ...mapState('suggestions', ['visibleTypeCreatePrescription']),
     ...mapState('modals', ['visibleAddMedicineForm'])
+  },
+  mounted () {
+    this.medicines = this.$store.state.suggestions.medicines.map(medicine => {
+      return {
+        medicineName: medicine.medicineName,
+        content: medicine.content,
+        unitType: medicine.unitType,
+        description: `${medicine.medicineName} - ${medicine.content} - ${medicine.unitType}`
+      }
+    })
   },
   methods: {
     ...mapActions('modals', ['closeAddMedicine']),
     handleSelectMedicine (medicine) {
-      this.newMedicineForm.medicineName = medicine.medicineDetail
-      this.$store.dispatch(
-        'suggestions/getMedicineByMedicineId',
-        medicine.medicineId,
-        { root: true }
-      )
-      this.$store.dispatch('suggestions/leaveSearchMedicineName', null, {
-        root: true
-      })
+      this.medicineDescription = medicine.description
+      this.newMedicineForm.medicineName = medicine.medicineName
+      this.unitType = medicine.unitType
+      this.content = medicine.content
     },
-    ...mapActions('suggestions', [
-      'searchMedicineName',
-      'leaveSearchMedicineName'
-    ]),
+    ...mapActions('suggestions', ['getMedicines']),
     ...mapActions('medicalInstruction'),
     addMedicineToPrescription () {
       this.$store.dispatch(
         'medicalInstruction/addMedicineToPrescription',
         {
           newMedicineForm: this.newMedicineForm,
-          unit: this.medicine.unitType,
-          content: this.medicine.content,
-          medicineName: this.medicine.medicineName
+          unit: this.unitType,
+          content: this.content,
+          medicineName: this.newMedicineForm.medicineName
         },
-        { root: true }
-      )
+        { root: true })
+      // làm mới lại form
       this.newMedicineForm = {
         medicineName: '',
         unitMorning: '', // Số thuốc sử dụng cho sáng
@@ -254,6 +251,34 @@ export default {
           }
         ],
         noteMore: '' // Ghi chú thêm
+      }
+      this.medicineDescription = ''
+      this.unitType = ''
+      this.content = ''
+    },
+    searchMedicine (queryString, cb) {
+      var medicines = this.medicines
+      var results = queryString
+        ? medicines.filter(this.filterMedicines(queryString))
+        : medicines
+      // call callback function to return suggestion objects
+      cb(results)
+    },
+    filterMedicines (queryString) {
+      return medicine => {
+        return (
+          medicine.description
+            .toString()
+            .toLowerCase()
+            .indexOf(queryString.toString().toLowerCase()) > -1
+        )
+      }
+    },
+    handleCheckEmpty (event) {
+      if (event.length >= 1) {
+        this.isValid = true
+      } else {
+        this.isValid = false
       }
     }
   }

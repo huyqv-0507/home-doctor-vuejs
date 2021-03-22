@@ -32,18 +32,18 @@
             </el-row>
           </router-link>
         </div>
-        <div class="router-items pointer">
+        <router-link to="/history" class="router-items pointer">
           <el-row :gutter="20" class="wrapper_shortcut-items_item"  style="margin-left: -15px; margin-right: 5px; margin-top: .7em;">
             <el-col :span="4">
               <img src="../../assets/icons/ic-dashboard-selected.png"/>
             </el-col>
             <el-col :span="20">
-              <el-row><span class="wrapper_shortcut-items_item-title">Phiếu khám bệnh</span></el-row>
-              <el-row><span class="wrapper_shortcut-items_item-description">Tạo phiếu khám bệnh cho bệnh nhân</span></el-row>
+              <el-row><span class="wrapper_shortcut-items_item-title">Nhật ký hoạt đông</span></el-row>
+              <el-row><span class="wrapper_shortcut-items_item-description">Nhật ký làm việc của bác sĩ</span></el-row>
             </el-col>
           </el-row>
-        </div>
-        <div class="router-items pointer">
+        </router-link>
+        <router-link to="/home/appointment" class="router-items pointer">
           <el-row :gutter="20" class="wrapper_shortcut-items_item"  style="margin-left: -15px; margin-right: 5px; margin-top: .7em;">
             <el-col :span="4">
               <img src="../../assets/icons/ic-calendar.png"/>
@@ -53,7 +53,7 @@
               <el-row><span class="wrapper_shortcut-items_item-description">Đặt lịch nhắc hẹn với bệnh nhân</span></el-row>
             </el-col>
           </el-row>
-        </div>
+        </router-link>
         <router-link to="/home/contract-request" class="router-items pointer">
           <el-row :gutter="20" class="wrapper_shortcut-items_item" style="margin-left: -15px; margin-right: 5px; margin-top: 1em;">
             <el-col :span="4">

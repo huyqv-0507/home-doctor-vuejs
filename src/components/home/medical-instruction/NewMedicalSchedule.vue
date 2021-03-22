@@ -16,7 +16,10 @@
         <h2>Đơn thuốc</h2>
       </el-col>
     </el-row>
-    <p class="font-size14 margin-bottom">Tên bệnh nhân: <strong>{{patientSelected.patientName}}</strong></p>
+    <p class="font-size14 margin-bottom">
+      Tên bệnh nhân:
+      <strong>{{patientSelected.patientName}}</strong>
+    </p>
     <el-row class="margin-bottom verticalCenter">
       <el-col :span="6">
         <span class="font-size14">
@@ -24,23 +27,30 @@
           <span class="red">*</span>:
         </span>
       </el-col>
-      <el-col :span="18" class="form__item_suggestion">
-        <el-input
+      <el-col :span="10" class="form__item_suggestion">
+        <el-autocomplete
+          size="mini"
+          style="width: 100%;"
           v-model="diagnoseNewPrescription"
+          :fetch-suggestions="searchDiagnose"
           placeholder="Nhập chuẩn đoán..."
-          @input="searchDiagnose($event)"
-          @change="leaveSearchDiagnose($event)" size="mini" @blur="blurDiagnose($event)"
-        ></el-input>
-        <div v-show="visibleDiagnose" class="form__item_input-suggestion">
-          <ul>
-            <li
-              class="pointer"
-              v-for="item in diagnoseSuggestion"
-              :key="item.diagnoseId"
-              v-on:click="handleSelectDiagnose(item)"
-            >{{item.description}}</li>
-          </ul>
-        </div>
+          @select="handleSelectDiagnose"
+          :trigger-on-focus="false"
+        >
+          <template slot-scope="{ item }">
+            <div>{{ item.description }}</div>
+          </template>
+        </el-autocomplete>
+      </el-col>
+      <el-col :span="10" style="font-size: 11px; color: gray; padding-left: .8em;">
+        <i>
+          Hiện tại ứng dụng chỉ hỗ trợ gợi ý chuẩn đoán về bệnh tim (tuần hoàn). Bác sĩ muốn xem những bệnh khác vui lòng tra cứu danh mục
+          <el-link
+            style="color: blue;"
+            href="http://123.31.27.68/ICD/ICD10.htm"
+            target="_blank"
+          >ICD10</el-link>.
+        </i>
       </el-col>
     </el-row>
     <el-row class="margin-bottom verticalCenter">
@@ -48,13 +58,26 @@
         Ngày bắt đầu
         <span class="red">*</span>:
       </el-col>
-      <el-col :span="18">
+      <el-col :span="10">
         <el-date-picker
+          style="width: 100%;"
           v-model="dateStarted"
           type="date"
           format="yyyy-MM-dd"
-          value-format="yyyy-MM-dd" size="mini"
+          value-format="yyyy-MM-dd"
+          size="mini"
+          @change="handleChangeDateStarted"
         ></el-date-picker>
+      </el-col>
+      <el-col :span="10" class="font-size14">
+        <div
+          v-show="isWarningDateStarted"
+          style="color: #E6A23C"
+        >Đã có đơn thuốc đang được sử dụng trong thời gian này.</div>
+        <div
+          v-show="isErrorDateStarted"
+          style="color: #F56C6C"
+        >Ngày bắt đầu phải lớn hơn hoặc bằng ngày hiện tại.</div>
       </el-col>
     </el-row>
     <el-row class="margin-bottom verticalCenter">
@@ -62,20 +85,40 @@
         Ngày kết thúc
         <span class="red">*</span>:
       </el-col>
-      <el-col :span="18">
+      <el-col :span="10">
         <el-date-picker
+          style="width: 100%;"
           v-model="dateFinished"
           type="date"
           format="yyyy-MM-dd"
-          value-format="yyyy-MM-dd" size="mini"
+          value-format="yyyy-MM-dd"
+          size="mini"
+          @change="handleChangeDateFinished"
         ></el-date-picker>
       </el-col>
+      <el-col :span="10" class="font-size14">
+        <div v-show="isErrorDateFinished" style="color: #F56C6C">
+          <p>Ngày kết thúc nhỏ hơn ngày bắt đầu.</p>
+          <p>Vui lòng chọn lại.</p>
+        </div>
+      </el-col>
     </el-row>
-      <el-button
-        type="primary"
-        @click="openAddMedicine()"
-      >Thêm thuốc</el-button>
-    <el-table v-if="prescriptionDetails !== null" class="medical-treatment__medical-list text" :data="prescriptionDetails">
+    <el-row class="margin-bottom verticalCenter">
+      <el-col :span="6">
+        <span class="font-size14">Mô tả:</span>
+      </el-col>
+      <el-col :span="10" class="form__item_suggestion">
+        <el-input
+          style="width: 100%;"
+          v-model="descriptionNewPrescription"
+          placeholder="Nhập mô tả..."
+          size="mini"
+        ></el-input>
+      </el-col>
+      <el-col :span="10"></el-col>
+    </el-row>
+    <el-button type="primary" @click="openAddMedicine()">Thêm thuốc</el-button>
+    <el-table class="medical-treatment__medical-list text" :data="prescriptionDetails">
       <el-table-column class="text" label="STT" width="50" type="index"></el-table-column>
       <el-table-column class="text" label="Tên thuốc" prop="medicineName"></el-table-column>
       <el-table-column class="text" label="Hàm lượng" prop="content" width="110"></el-table-column>
@@ -88,12 +131,15 @@
           <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">Xoá</el-button>
         </template>
       </el-table-column>
+      <template slot="empty">...</template>
     </el-table>
-      <el-button @click="backToMedicalSchedule()">Trở về</el-button>
-      <el-button
-        type="primary"
-        @click="savePrescription({diagnose: diagnoseNewPrescription, dateStarted: dateStarted, dateFinished: dateFinished})"
-      >Lưu</el-button>
+    <el-button @click="backToMedicalSchedule()">Trở về</el-button>
+    <el-button v-if="isValid === false" type="primary" disabled>Lưu</el-button>
+    <el-button
+      v-else
+      type="primary"
+      @click="savePrescription({diagnose: diagnoseNewPrescription, dateStarted: dateStarted, dateFinished: dateFinished, desscription: descriptionNewPrescription})"
+    >Lưu</el-button>
   </div>
 </template>
 
@@ -104,23 +150,35 @@ export default {
     return {
       diagnoseNewPrescription: '',
       dateStarted: '',
-      dateFinished: ''
+      isWarningDateStarted: false,
+      dateFinished: '',
+      isErrorDateFinished: false,
+      isValid: false,
+      diagnoses: [],
+      descriptionNewPrescription: '',
+      isErrorDateStarted: false
     }
   },
   computed: {
     ...mapState('medicalInstruction', [
       'prescriptionDetails',
-      'patientSelected'
+      'patientSelected',
+      'prescriptionExisted',
+      'prescriptionExistedStatus',
+      'maxDatePrescription'
     ]),
-    ...mapState('suggestions', [
-      'visibleDiagnose',
-      'diagnoseSuggestion',
-      'diagnoses'
-    ])
+    ...mapState('suggestions', ['visibleDiagnose', 'diagnoseSuggestion'])
   },
   mounted () {
     this.getDiagnoses()
+    this.diagnoses = this.$store.state.suggestions.diagnoses.map(diagnose => {
+      return {
+        description: `(${diagnose.code}) ${diagnose.description}`,
+        desSearch: `(${diagnose.code}) ${diagnose.description} ${diagnose.arrCode}`
+      }
+    })
     this.getMedicines()
+    this.isValid = false
   },
   methods: {
     ...mapActions('medicalInstruction', [
@@ -132,21 +190,35 @@ export default {
       'openAddMedicine', // mở modal thêm thuốc
       'closeEditMedicine' // Đóng modal sửa thuốc
     ]),
-    ...mapActions('suggestions', [
-      'getMedicines',
-      'searchDiagnose',
-      'leaveSearchDiagnose',
-      'getDiagnoses'
-    ]),
+    ...mapActions('suggestions', ['getMedicines', 'getDiagnoses']),
+    searchDiagnose (queryString, cb) {
+      var diagnoses = this.diagnoses
+      var results = queryString
+        ? diagnoses.filter(this.filterDiagnose(queryString))
+        : diagnoses
+      // call callback function to return suggestion objects
+      cb(results)
+    },
+    filterDiagnose (queryString) {
+      return diagnose => {
+        return (
+          diagnose.desSearch
+            .toString()
+            .toLowerCase()
+            .indexOf(queryString.toString().toLowerCase()) > -1
+        )
+      }
+    },
     handleSelectDiagnose (diagnose) {
       this.diagnoseNewPrescription = diagnose.description
-      this.$store.dispatch('suggestions/leaveSearchDiagnose', null, {
-        root: true
-      })
     },
     handleEdit (index, row) {
       console.log('row edit', row)
-      this.$store.dispatch('medicalInstruction/editMedicine', { index: index, medicineEdit: row }, { root: true })
+      this.$store.dispatch(
+        'medicalInstruction/editMedicine',
+        { index: index, medicineEdit: row },
+        { root: true }
+      )
       this.$store.dispatch('modals/openEditMedicine', null, { root: true })
     },
     // Xoá thuốc khỏi danh sách đơn thuốc
@@ -154,6 +226,30 @@ export default {
       console.log('Delete index:', index)
       console.log('Delete index:', row)
       this.$store.state.medicalInstruction.prescriptionDetails.splice(index, 1)
+    },
+    handleChangeDateStarted (date) {
+      if (new Date(date) < new Date()) {
+        this.isErrorDateStarted = true
+        this.isWarningDateStarted = false
+      } else if (
+        new Date(date) < this.maxDatePrescription.dateFinished &&
+        new Date(date) > new Date()
+      ) {
+        this.isWarningDateStarted = true
+        this.isErrorDateStarted = false
+      } else {
+        this.isWarningDateStarted = false
+        this.isErrorDateStarted = false
+      }
+    },
+    handleChangeDateFinished (date) {
+      if (new Date(date) < new Date(this.dateStarted)) {
+        this.isErrorDateFinished = true
+        this.isValid = false
+      } else {
+        this.isErrorDateFinished = false
+        this.isValid = true
+      }
     }
   }
 }
@@ -162,7 +258,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../../style/index.scss";
 .margin-bottom {
-  margin-bottom: .3em;
+  margin-bottom: 0.5em;
 }
 .red {
   color: black;

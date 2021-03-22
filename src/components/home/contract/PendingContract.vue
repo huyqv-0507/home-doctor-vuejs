@@ -27,7 +27,7 @@
           prop="dateCreated"
           label="Ngày tạo"
           sortable
-          width="125">
+          width="125" :formatter="formatDate">
       </el-table-column>
     </el-table></div>
 </template>
@@ -47,6 +47,9 @@ export default {
     goToRequestDetail (row, column, event) {
       this.$store.state.contracts.requestDetail.diseases = row.diseases
       this.$router.push({ name: 'request-detail', params: { contractId: row.contractId } })
+    },
+    formatDate (row, column) {
+      return row.dateCreated.split('-').reverse().join('/')
     }
   }
 }
