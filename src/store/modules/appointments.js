@@ -3,25 +3,28 @@ import { Notification } from 'element-ui'
 const patientRepository = RepositoryFactory.get('patientRepository')
 
 const state = () => ({
-  isSelectPatient: false,
+  isSelectPatient: false, // Trạng thái chọn bệnh nhân khi tạo cuộc hẹn
   patientInfoForAppointment: {
     contractId: 0,
     accountPatientId: 0,
     accountDoctorId: 0,
     note: '',
     dateExamination: ''
-  },
-  appointmentsOfMonth: [],
-  appointments: []
+  }, // Thông tin bệnh nhân để tạo cuộc hẹn
+  appointmentsOfMonth: [], // Danh sách cuộc hẹn trong 1 tháng
+  appointments: [] // Tất cả các cuộc hẹn của bác sĩ
 })
 const getters = {}
 const actions = {
+  // Chọn bệnh nhân để tạo cuộc hẹn trong modal chọn bệnh nhân
   selectPatientAppointment ({ commit }, patientData) {
     commit('selectPatientAppointment', patientData)
   },
+  // Trở về bươc chọn bệnh nhân
   backToSelectPatientAppointment ({ commit }) {
     commit('backToSelectPatientAppointment')
   },
+  // Xác nhận tạo cuộc hẹn
   confirmAppointment ({ commit, state, rootState, dispatch }, appointmentData) {
     state.patientInfoForAppointment.accountDoctorId = parseInt(rootState.users.user.accountId)
     state.patientInfoForAppointment.dateExamination = new Date(appointmentData.dateExamination)
@@ -38,6 +41,7 @@ const actions = {
     commit('confirmAppointment')
     dispatch('getAppointments')
   },
+  // Lấy tất cả các cuộc hẹn trong 1 tháng của cá nhân bác sĩ
   getAppointmentsByMonth ({ commit, rootState }) {
     var accountId = rootState.users.user.accountId
     const now = new Date()
@@ -50,8 +54,9 @@ const actions = {
       console.log('getAppointmentsByMonth error' + error)
     })
   },
+  // Lấy tất cả các cuộc hẹn của cá nhận bác sĩ
   getAppointments ({ commit, rootState }) {
-    var accountId = rootState.users.user.accountId
+    var accountId = rootState.users.user.accountId // account id của bác sĩ
     patientRepository.getAppointments(accountId).then(response => {
       if (response.status === 200) {
         commit('setAppointments', response.data)
@@ -66,15 +71,15 @@ const mutations = {
     state.isSelectPatient = true
     state.patientInfoForAppointment.contractId = patient.contractId
     state.patientInfoForAppointment.accountPatientId = patient.accountPatientId
-  },
+  }, // qua modal tạo cuộc hẹn
   backToSelectPatientAppointment (state) {
     state.isSelectPatient = false
     state.patientInfoForAppointment = {}
-  },
+  }, // trở về modal chọn bệnh nhân
   confirmAppointment (state) {
     state.isSelectPatient = false
     state.patientInfoForAppointment = {}
-  },
+  }, // refresh trạng thái modal chọn bệnh nhân
   setAppointmentMonth (state, appointments) {
     state.appointmentsOfMonth = appointments.map(appointmentMonth => {
       return {
@@ -85,8 +90,8 @@ const mutations = {
             status: appointment.status, // PENDING, ACTIVE, CANCEL
             note: appointment.note,
             dateExamination: appointment.dateExamination, // 2021-03-20T16:33:47.927
-            reasonCanceled: appointments.reasonCanceled,
-            dateCanceled: appointments.dateCanceled
+            reasonCanceled: appointments.reasonCanceled, // 2021-03-20T16:33:47.927
+            dateCanceled: appointments.dateCanceled // 2021-03-20T16:33:47.927
           }
         })
       }
@@ -102,8 +107,8 @@ const mutations = {
             status: appointment.status, // PENDING, ACTIVE, CANCEL
             note: appointment.note,
             dateExamination: appointment.dateExamination, // 2021-03-20T16:33:47.927
-            reasonCanceled: appointments.reasonCanceled,
-            dateCanceled: appointments.dateCanceled
+            reasonCanceled: appointments.reasonCanceled, // 2021-03-20T16:33:47.927
+            dateCanceled: appointments.dateCanceled // 2021-03-20T16:33:47.927
           }
         })
       }

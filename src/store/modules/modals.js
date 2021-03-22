@@ -1,7 +1,7 @@
 const state = () => ({
   visibleMedicalInstruction: false, // Modal khi bác sĩ bấm Y lệnh trong lối tắt
   visibleAddMedicineForm: false, // Modal khi bác sĩ thêm một thuốc mới vào đơn thuốc cho bệnh nhân
-  visibleEditMedicineForm: false,
+  visibleEditMedicineForm: false, // Modal khi bác sĩ sửa thuốc
   isVisibleAppointmentPatients: false // Modal danh sách bệnh nhân khi xét lịch tái khám
 })
 const getters = {}
@@ -28,6 +28,7 @@ const actions = {
   closeEditMedicine ({ commit }) {
     commit('closeEditMedicine')
   },
+  // Mở modal tạo cuộc hẹn cho bênh nhân
   openAppointmentPatientsModal ({ commit, rootState }) {
     rootState.appointments.isSelectPatient = false
     rootState.appointments.patientInfoForAppointment = {}

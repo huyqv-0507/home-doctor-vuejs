@@ -48,7 +48,9 @@
                       </el-col>
                       <el-col :span="20">
                         <div
-                          v-on:click="handleNotificationLink({ contractId: noti.contractId, dateIndex: dateIndex, notificationId: noti.notificationId })"
+                          v-on:click="handleNotificationLink({
+                              dateIndex: dateIndex,
+                              notification: noti })"
                         >
                           <div slot="header">
                             <h4>{{noti.title}}</h4>
@@ -106,16 +108,16 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
-import router from '../../router'
 export default {
   name: 'HeaderDefault',
   computed: {
     ...mapState('notifications', ['numBadge', 'isShowNotify', 'notifications'])
   },
   methods: {
-    ...mapActions('notifications', ['handleShowNotification']),
+    ...mapActions('notifications', ['handleShowNotification', 'handleNotificationLink']),
     ...mapActions('users', ['handleLogout']),
-    ...mapActions('contracts', ['checkNavigateContract']),
+    ...mapActions('contracts', ['checkNavigateContract'])
+    /*
     handleNotificationLink (notificationSelected) {
       if (notificationSelected.contractId !== null) {
         this.checkNavigateContract(notificationSelected.contractId)
@@ -141,7 +143,7 @@ export default {
         },
         { root: true }
       )
-    }
+    } */
   }
 }
 </script>

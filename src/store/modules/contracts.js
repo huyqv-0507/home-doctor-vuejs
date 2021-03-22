@@ -114,6 +114,7 @@ const state = () => ({
     priceWord: ''
   },
   allMedicalInstructionShared: [],
+  // Thông tin gói dịch vụ
   license: {
     licenseId: 0,
     name: '',
@@ -145,6 +146,7 @@ const state = () => ({
     doctorId: '', // Id của bác sĩ
     patientId: '' // Id của bệnh nhân
   },
+  // Thông tin hợp đồng dùng để hiển thị trong trang nhật ký (history)
   contractDetailHistory: {
     baseLaw: [],
     today: {
@@ -659,13 +661,14 @@ const mutations = {
       day: new Date(dateFinished).getDate(),
       month: new Date(dateFinished).getMonth() + 1,
       year: new Date(dateFinished).getFullYear()
-    }
+    } // Cập nhật ngày kết thúc của hợp đồng
     var price = parseInt(state.contract.daysOfTracking) * state.license.price
-    state.contractSample.price = formatPrice(`${price}`, '.')
+    state.contractSample.price = formatPrice(`${price}`, '.') // format giá tiền để hiển thị trong hợp đồng
     console.log('date finish', state.contractSample.price)
     console.log('date finish', state.contractSample.dateContractFinished)
     console.log('contract:::: ', state.contract)
   },
+  // set thông tin bệnh nhân để show trong hợp đồng khi ký
   setPatientInfo (state, payloadPatientInfo) {
     state.patientDetail.patientId = payloadPatientInfo.patientId
     state.patientDetail.gender = payloadPatientInfo.gender
@@ -674,6 +677,7 @@ const mutations = {
     state.patientDetail.relatives = payloadPatientInfo.relatives
     console.log('patientDetail:::', state.patientDetail)
   },
+  // set thông tin hợp đồng khi xem trong nhật ký hoạt động
   setContractDetail (state, payloadContractDetail) {
     state.contractDetail = {}
     state.contractDetail.contractId = payloadContractDetail.contractId
@@ -719,7 +723,7 @@ const mutations = {
     })
     console.log('Thông tin hợp đồng của người đã yêu cầu (contractDetail)', state.contractDetail)
   },
-  // Cập nhật hợp đồng
+  // Cập nhật hợp đồng khi xem trong nhật ký hoạt động
   setContractDetailHistory (state, contractObject) {
     state.contractDetailHistory.baseLaw = contractObject.contractSample.baseLaw
     state.contractDetailHistory.today.weekDay = 'Thứ 7'

@@ -6,7 +6,7 @@ import { parseJwt, toTimeAgo, toDateTitle } from '../../utils/common'
 const userRepository = RepositoryFactory.get('userRepository')
 
 const state = () => ({
-  status: '',
+  status: '', // Trạng thai login
   user: {
     accountId: '',
     userId: '', // Id của bác sĩ
@@ -20,8 +20,8 @@ const state = () => ({
     specialization: '', // Chuyên khoa của bác sĩ
     experience: '', // Số năm kinh nghiệm
     address: ''
-  },
-  activities: []
+  }, // Thông tin bác sĩ
+  activities: [] // Nhật ký hoạt động của bác sĩ
 })
 const getters = {
 }
@@ -56,6 +56,7 @@ const actions = {
       commit('loginFailed')
     })
   },
+  // Lấy tất cả nhật ký hoạt động
   getActivities ({ commit, rootState }) {
     userRepository.getActivities(rootState.users.user.accountId).then(response => {
       if (response.status === 200) {
