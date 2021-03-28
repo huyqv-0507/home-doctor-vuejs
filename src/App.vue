@@ -13,9 +13,11 @@ export default {
   },
   mounted () {
     this.getNotifications()
+    this.getSystemNotifications()
   },
   methods: {
-    ...mapActions('notifications', ['getNotifications'])
+    ...mapActions('notifications', ['getNotifications']),
+    ...mapActions('systemHandler', ['getSystemNotifications'])
   }
 }
 </script>

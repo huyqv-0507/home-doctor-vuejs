@@ -15,12 +15,28 @@ const state = () => ({
     description: '',
     imgUrl: ''
   },
-  allMedicalInstructionShared: []
+  allMedicalInstructionShared: [],
+  medicalInstructionChoose: []
 })
-const getters = {}
+const getters = {
+  getImage: state => (imgUrl) => {
+    return state.allMedicalInstructionShared.findIndex(i => i.imgUrl === imgUrl)
+  }
+}
 const actions = {
-  setImageInfo ({ commit, state }, index) {
+  setImageInfo ({ commit, state, rootState }, index) {
     commit('setImageInfo', state.allMedicalInstructionShared[index])
+    rootState.contracts.requestDetail.medicalInstructionTypes.forEach(
+      element => {
+        element.medicalInstructions.forEach(m => {
+          if (m.image === state.imageInfo.imgUrl) {
+            m.isChoose = true
+            return
+          }
+          m.isChoose = false
+        })
+      }
+    )
   },
   showAllImages ({ commit, dispatch, rootState }) {
     console.log(rootState.contracts.requestDetail.medicalInstructionTypes)
@@ -28,10 +44,12 @@ const actions = {
       medicalInstructionTypes: rootState.contracts.requestDetail.medicalInstructionTypes,
       diseases: rootState.contracts.requestDetail.diseases
     })
+    rootState.contracts.requestDetail.medicalInstructionTypes[0].medicalInstructions[0].isChoose = true
     dispatch('slideshows/setImageInfo', 0, { root: true })
     commit('showAllImages')
   },
-  closeAllImages ({ commit }) {
+  closeAllImages ({ commit, dispatch }, checkedImgs) {
+    dispatch('medicalInstruction/saveMedicalInstruction', checkedImgs, { root: true })
     commit('closeAllImages')
   },
   // Bác sĩ chọn ảnh để xem
@@ -77,6 +95,7 @@ const mutations = {
     state.isShowImg = false
   },
   setImageShow (state, image) {
+    console.log('setImageShow', image)
     state.imageShow = {}
     state.imageShow.diseases = image.diseases
     state.imageShow.medicalInstructionTypeName = image.medicalInstructionTypeName

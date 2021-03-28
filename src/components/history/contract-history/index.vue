@@ -80,11 +80,8 @@
           <b>Điều 1: {{contractDetailHistory.timeAndMission.title}}:</b>
         </el-row>
         <el-row class="margin-line">
-          <p>- Theo yêu cầu của bên A về việc thực hiện khám và theo dõi bệnh, bên B đám nhận và thực hiện yêu cầu bên A</p>
-        </el-row>
-        <el-row class="margin-line">
-          <p class="margin-line">- Hợp đồng có hiệu lực từ {{contractDetailHistory.dateStarted}} đến {{contractDetailHistory.dateFinished}}</p>
-          <p class="margin-line" v-for="(des, index) in contractDetailHistory.timeAndMission.description" :key="`tamd${index}`">- {{des}}.</p>
+          <p class="margin-line">- Hợp đồng có hiệu lực từ ngày {{contractDetailHistory.dateStarted.split('/')[0]}} tháng {{contractDetailHistory.dateStarted.split('/')[1]}} năm {{contractDetailHistory.dateStarted.split('/')[2]}} đến ngày {{contractDetailHistory.dateFinished.split('/')[0]}} tháng {{contractDetailHistory.dateFinished.split('/')[1]}} năm {{contractDetailHistory.dateFinished.split('/')[2]}}.</p>
+          <p class="margin-line">- Theo yêu cầu của bên A về việc thực hiện khám và theo dõi bệnh, bên B đám nhận và thực hiện yêu cầu bên A</p>
         </el-row>
         <el-row class="margin-line">
           <b>Điều 2: {{contractDetailHistory.workingMode.title}}:</b>
@@ -135,13 +132,13 @@
           <b>Điều 5: Tiền dịch vụ và phương thức thanh toán:</b>
         </el-row>
         <el-row class="margin-line">
-          <p>- Tiền dịch vụ: <b>{{ contractDetail.priceLicense }} VNĐ.</b></p>
-          <p>- Phương thức thanh toán: Chuyển khoản trực tiếp vào tài khoản của HDr (Tên TK: Home Doctor Vietnam, Số TK: 123456789, Ngân hàng TP Bank)</p>
+          <p class="margin-line">- Tiền dịch vụ: <b>{{ contractDetail.priceLicense }} VNĐ</b> từ ngày {{contractDetailHistory.dateStarted.split('/')[0]}} tháng {{contractDetailHistory.dateStarted.split('/')[1]}} năm {{contractDetailHistory.dateStarted.split('/')[2]}} đến ngày {{contractDetailHistory.dateFinished.split('/')[0]}} tháng {{contractDetailHistory.dateFinished.split('/')[1]}} năm {{contractDetailHistory.dateFinished.split('/')[2]}}.</p>
+          <p class="margin-line">- Phương thức thanh toán: Chuyển khoản trực tiếp vào tài khoản của HDr (Tên TK: Home Doctor Vietnam, Số TK: 123456789, Ngân hàng TP Bank)</p>
         </el-row>
         <el-row class="margin-line">
           <b>Điều 7: {{contractDetailHistory.collectiveCommitment.title}}:</b>
         </el-row>
-        <el-row class="margin-line">
+        <el-row class="margin-line"><p class="margin-line">- Hai bên cam kết thực hiện đúng những điều khoản trong hợp đồng từ ngày {{contractDetailHistory.dateStarted.split('/')[0]}} tháng {{contractDetailHistory.dateStarted.split('/')[1]}} năm {{contractDetailHistory.dateStarted.split('/')[2]}} đến ngày {{contractDetailHistory.dateFinished.split('/')[0]}} tháng {{contractDetailHistory.dateFinished.split('/')[1]}} năm {{contractDetailHistory.dateFinished.split('/')[2]}}.</p>
           <p class="margin-line" v-for="(des, index) in contractDetailHistory.collectiveCommitment.description" :key="`tamd${index}`">- {{des}}.</p>
         </el-row>
       </el-row>

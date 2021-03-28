@@ -108,11 +108,13 @@
           <el-row class="wrapper_patient-item font-size14">
             Ngày bắt đầu theo dõi:
             <el-date-picker v-model="dateStarted" type="date" @change="handleChangeDateStarted"
-              :placeholder="requestDetail.dateStarted"></el-date-picker>
+              :placeholder="requestDetail.dateStarted"
+              format="dd/MM/yyyy"
+              value-format="dd-MM-yyyy"></el-date-picker>
           </el-row>
           <el-row class="wrapper_patient-item font-size14">
-            Số ngày theo dõi:
-            <el-input-number v-model="requestDetail.daysOfTracking"></el-input-number>
+            <p style="color: red; margin-bottom: .5em; margin-top: .8em;">Số ngày theo dõi tối thiểu phải là 30 để HDr hoạt động hiệu quả nhất.</p>Số ngày theo dõi:
+            <el-input-number v-model="requestDetail.daysOfTracking" :min="30" :step="5"></el-input-number>
           </el-row>
         </div>
         <div v-else-if="dateChk === false">
@@ -146,7 +148,7 @@
         <span>Bạn có muốn từ chối yêu cầu không?</span>
         <br />
         <el-button type="secondary" @click="continueAssignContract()">Không</el-button>
-        <el-button type="primary" @click="confirmRejectContract(requestDetail.contractId)">Đồng ý</el-button>
+        <el-button type="primary" @click="confirmRejectContract(contract.contractId)">Đồng ý</el-button>
       </el-dialog>
     </el-row>
   </div>
@@ -194,13 +196,16 @@ export default {
     },
     handleChangeDateStarted (date) {
       var now = new Date()
-      if (now > date) {
+      if (now > new Date(date.split('-').reverse().join('-'))) {
         console.log('Vui lòng chọn ngày ký hợp đồng lớn hơn ngày hiện tại')
       } else {
-        this.$store.dispatch('contracts/setDateStartedContract', date, {
+        this.$store.dispatch('contracts/setDateStartedContract', new Date(date.split('-').reverse().join('-')), {
           root: true
         })
       }
+    },
+    blur (input) {
+      console.log(input)
     }
   }
 }

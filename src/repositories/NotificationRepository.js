@@ -8,7 +8,6 @@ export default {
     })
   },
   async seenNotification (notificationId) {
-    console.log('notificationID:::', typeof notificationId)
     return await request({
       method: 'put',
       url: `/Notifications?notiId=${notificationId}`
@@ -19,6 +18,12 @@ export default {
     return await request({
       method: 'post',
       url: `/Notifications?deviceType=${deviceType}&notificationType=${notificationType}&senderAccountId=${senderAccountId}&recipientAccountId=${recipientAccountId}`
+    })
+  },
+  async getSystemNotifications (accountId) {
+    return await request({
+      method: 'get',
+      url: `/Notifications/GetSystemNotification?accountId=${accountId}`
     })
   }
 }

@@ -38,7 +38,7 @@
               <img src="../../assets/icons/ic-dashboard-selected.png"/>
             </el-col>
             <el-col :span="20">
-              <el-row><span class="wrapper_shortcut-items_item-title">Nhật ký hoạt đông</span></el-row>
+              <el-row><span class="wrapper_shortcut-items_item-title">Nhật ký hoạt động</span></el-row>
               <el-row><span class="wrapper_shortcut-items_item-description">Nhật ký làm việc của bác sĩ</span></el-row>
             </el-col>
           </el-row>

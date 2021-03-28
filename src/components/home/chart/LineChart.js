@@ -11,7 +11,13 @@ Vue.component('line-chart', {
           backgroundColor: '#FF4565',
           data: [80, 77, 80, 76, 75, 78, 79, 80, 83, 77]
         }
-      ]
+      ],
+      options: {
+        title: {
+          display: true,
+          text: 'Custom Chart Title'
+        }
+      }
     }, { responsive: true, maintainAspectRatio: false })
   }
 

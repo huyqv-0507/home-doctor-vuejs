@@ -8,7 +8,7 @@
     <div v-if="!isSelectPatient">
       <el-row
         align="middle"
-        class="content pointer"
+        class="content pointer marginbottom"
         v-for="(patient, index) in approvedPatients"
         :key="index"
         v-on:click.native="selectPatientAppointment({
@@ -52,12 +52,7 @@
         </el-col>
       </el-row>
       <div class="dialog-footer">
-        <el-button
-          type="primary"
-          @click="confirmAppointment({
-            dateExamination: dateExamination,
-            note: note})"
-        >Xác nhận</el-button>
+        <el-button type="primary" @click="confirmAppointment({ dateExamination: dateExamination, note: note })">Xác nhận</el-button>
       </div>
     </div>
   </el-dialog>
@@ -85,9 +80,31 @@ export default {
     ...mapActions('patients', ['getPatientApproved']),
     ...mapActions('appointments', [
       'selectPatientAppointment',
-      'backToSelectPatientAppointment',
-      'confirmAppointment'
-    ])
+      'backToSelectPatientAppointment'
+    ]),
+    confirmAppointment () {
+      this.$confirm(
+        'Bác sĩ sẽ đồng ý lịch hẹn tái khám cho bệnh nhân. Xác nhận?',
+        'Xác nhận',
+        {
+          confirmButtonText: 'Đồng ý',
+          cancelButtonText: 'Thoát',
+          type: 'warning'
+        }
+      )
+        .then(() => {
+          this.$store.dispatch(
+            'appointments/confirmAppointment',
+            {
+              dateExamination: this.dateExamination,
+              note: this.note
+            },
+            { root: true }
+          )
+          // location.reload()
+        })
+        .catch(() => {})
+    }
   }
 }
 </script>
@@ -116,5 +133,8 @@ export default {
   justify-content: center;
   align-items: center;
   margin-top: 2em;
+}
+.marginbottom {
+  margin-bottom: .3em;
 }
 </style>

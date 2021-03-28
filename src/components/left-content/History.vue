@@ -39,15 +39,12 @@ export default {
   },
   methods: {
     ...mapActions('users', ['getActivities']),
+    ...mapActions('historyActivities', ['handleRouteHistory'])
     // Xem thông tin chi tiết khi click
-    handleRouteHistory (history) {
+    /* handleRouteHistory (history) {
       console.log('select activities:::', history)
       if (history.contractId !== null) {
-        this.$store.dispatch(
-          'contracts/getContractDetail',
-          history.contractId,
-          { root: true }
-        )
+        this.$store.
       } else if (history.medicalInstructionId !== null) {
         if (history.body.includes('đơn thuốc mới')) {
           this.$store.dispatch(
@@ -63,7 +60,7 @@ export default {
           )
         }
       }
-    }
+    } */
   }
 }
 </script>

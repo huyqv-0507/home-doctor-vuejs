@@ -15,30 +15,17 @@
         <el-calendar class="content__body_calendar">
           <template slot="dateCell" slot-scope="{date, data}">
             <p>{{data.day.split('-')[2]}}</p>
-            <div v-for="(appointment, index) in appointmentsOfMonth" :key="index">
-              <div v-if="appointment.dateExamination.split('/').reverse().join('-') == data.day">
-                <el-popover v-for="(apt, index) in appointment.appointments" :key="`apt-${index}`"
-                  placement="bottom"
-                  title="Chi tiết"
-                  width="200"
-                  trigger="click"
-                >
-                  <div v-if="apt.status == 'PENDING'" class="content__body_calendar-pending" style="color: red;">
-                    <h4>Đang xử lí</h4>
-                    <p>Thời gian: {{apt.dateExamination}}</p>
-                    <p>Nội dung: {{apt.note}}</p>
-                  </div>
-                  <div v-else-if="apt.status == 'CANCEL'" class="content__body_calendar-cancel" style="color: grey;">
-                    <h4>Đã huỷ</h4>
-                    <p>Thời gian: {{apt.dateExamination}}</p>
-                    <p>Nội dung: {{apt.note}}</p>
-                  </div>
-                  <div v-else  class="content__body_calendar-active" style="color: green;">
-                    <h4>Đang hiện hành</h4>
-                    <p>Thời gian: {{apt.dateExamination}}</p>
-                    <p>Nội dung: {{apt.note}}</p>
-                  </div>
+            <div v-for="(appointment, index) in appointments" :key="`appointment-${index}`">
+              <div v-if="data.day.split('-').reverse().join('/') === appointment.dateExamination">
+                <el-popover placement="top">
                   <div class="active-activity" slot="reference"></div>
+                  <div class="bg-theme">
+                    <el-table :data="appointment.appointments">
+                      <el-table-column label="Họ tên" width="200" prop="patientName"></el-table-column>
+                      <el-table-column label="Công việc" width="400" prop="note"></el-table-column>
+                      <el-table-column label="Trạng thái" width="200" prop="status"></el-table-column>
+                    </el-table>
+                  </div>
                 </el-popover>
               </div>
             </div>
@@ -53,14 +40,14 @@
 import { mapActions, mapState } from 'vuex'
 export default {
   computed: {
-    ...mapState('appointments', ['appointmentsOfMonth', 'appointments'])
+    ...mapState('appointments', ['appointments'])
   },
   methods: {
     ...mapActions('modals', ['openAppointmentPatientsModal']),
-    ...mapActions('appointments', ['getAppointmentsByMonth', 'getAppointments'])
+    ...mapActions('appointments', ['getAppointments'])
   },
   mounted () {
-    this.getAppointmentsByMonth()
+    this.getAppointments()
   }
 }
 </script>

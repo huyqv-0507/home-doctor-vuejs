@@ -130,3 +130,7 @@ export function toTimeAgo (time) {
   }
   return timeAgo
 }
+export function formatDateToInsertDb (date) {
+  var dateInsert = new Date(date)
+  return `${dateInsert.getFullYear()}-${dateInsert.getMonth() + 1 < 10 ? '0' + (dateInsert.getMonth() + 1) : (dateInsert.getMonth() + 1)}-${dateInsert.getDate() < 10 ? '0' + dateInsert.getDate() : dateInsert.getDate()}`
+}

@@ -2,7 +2,9 @@ const state = () => ({
   visibleMedicalInstruction: false, // Modal khi bác sĩ bấm Y lệnh trong lối tắt
   visibleAddMedicineForm: false, // Modal khi bác sĩ thêm một thuốc mới vào đơn thuốc cho bệnh nhân
   visibleEditMedicineForm: false, // Modal khi bác sĩ sửa thuốc
-  isVisibleAppointmentPatients: false // Modal danh sách bệnh nhân khi xét lịch tái khám
+  isVisibleAppointmentPatients: false, // Modal danh sách bệnh nhân khi xét lịch tái khám
+  isVisibleSelectMedicalInstruction: false, // Modal chọn bệnh nhân để xét lich tái khám
+  isVisibleAddAppointmentForm: false // Modal xét lịch tái khám khi đã chọn bệnh nhân ở trang chủ
 })
 const getters = {}
 const actions = {
@@ -36,6 +38,21 @@ const actions = {
   },
   closeAppointmentPatientsModal ({ commit }) {
     commit('setCloseAppointmentPatientsModal')
+  },
+  // Mở modal tạo cuộc hẹn cho bênh nhân
+  openAddAppointmentForm ({ commit, rootState }) {
+    rootState.appointments.isSelectPatient = false
+    rootState.appointments.patientInfoForAppointment = {}
+    commit('openAddAppointmentForm')
+  },
+  closeAddAppointmentForm ({ commit }) {
+    commit('closeAddAppointmentForm')
+  },
+  openSelectMedicalInstructionModal ({ commit }) {
+    commit('openSelectMedicalInstructionModal')
+  },
+  closeSelectMedicalInstructionModal ({ commit }) {
+    commit('closeSelectMedicalInstructionModal')
   }
 }
 const mutations = {
@@ -62,6 +79,19 @@ const mutations = {
   },
   setCloseAppointmentPatientsModal (state) {
     state.isVisibleAppointmentPatients = false
+  },
+  openAddAppointmentForm (state) {
+    state.isVisibleAddAppointmentForm = true
+    console.log('state.isVisibleAddAppointmentForm', state.isVisibleAddAppointmentForm)
+  },
+  closeAddAppointmentForm (state) {
+    state.isVisibleAddAppointmentForm = false
+  },
+  openSelectMedicalInstructionModal (state) {
+    state.isVisibleSelectMedicalInstruction = true
+  },
+  closeSelectMedicalInstructionModal (state) {
+    state.isVisibleSelectMedicalInstruction = false
   }
 }
 

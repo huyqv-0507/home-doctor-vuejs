@@ -14,15 +14,9 @@
       <span v-show="medicalInstructionStatus === false" class="wrapper_shortcut-items">
         <h4>Danh sách bệnh nhân</h4>
         <div
-          v-on:click="selectPatient(
-              {
-                patientId: patient.patientId,
-                patientName: patient.patientName,
-                diagnoseLatest: patient.diagnoseLatest,
-                healthRecordId: patient.healthRecordId
-              })"
+          v-on:click="selectPatient(patient)"
           v-for="patient in approvedPatients"
-          :key="patient.patientId"
+          :key="`approved-patient-${patient.patientId}`"
           class="patient-card pointer"
         >
           <el-row class="fullwidth verticalCenter">
@@ -37,8 +31,8 @@
                 <span class="patient-disease">
                   <strong>Bệnh lý:</strong>
                   <span v-if="patient.diseaseContract.length === 0">Chưa cập nhật</span>
-                  <span v-else v-for="patient in patient.diseaseContract" :key="patient">
-                    <p>- {{patient}}</p>
+                  <span v-else v-for="(disease, index) in patient.diseaseContract" :key="`disease-${index}`">
+                    <p>- ({{disease.diseaseId}}) {{disease.diseaseName}}</p>
                   </span>
                 </span>
               </p>

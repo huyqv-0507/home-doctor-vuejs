@@ -2,6 +2,12 @@ import request from '../utils/request.js'
 import contractSample from '../assets/data/contract-sample.json'
 
 export default {
+  async getContracts (userId) {
+    return await request({
+      url: `/Contracts?doctorId=${userId}`,
+      method: 'get'
+    })
+  },
   async getActiveContracts (userId) {
     return await request({
       url: `/Contracts?doctorId=${userId}&status=active`,
@@ -40,17 +46,17 @@ export default {
     })
   },
   // Cập nhật lại (Xác nhận) hợp đồng bệnh nhân đã yêu cầu
-  async createContract (contract) {
+  async createContract (contractData) {
     return await request({
-      url: `/Contracts/${contract.contractId}?doctorId=${contract.doctorId}&patientId=${contract.patientId}&status=APPROVED&dateStart=${contract.dateStarted}&daysOfTracking=${contract.daysOfTracking}`,
-      method: 'put'
+      url: `/Contracts/${contractData.contract.contractId}?doctorId=${contractData.contract.doctorId}&patientId=${contractData.contract.patientId}&status=APPROVED&dateStart=${contractData.contract.dateStarted}&daysOfTracking=${contractData.contract.daysOfTracking}`,
+      method: 'put',
+      data: contractData.medicalInstructionOfNewHealthRecord
     })
   },
   // Cập nhật lại (Huỷ) hợp đồng bệnh nhân đã yêu cầu
-  async cancelContract (contractId) {
-    console.log('contractId (Reject contract):', contractId)
+  async cancelContract (contract) {
     return await request({
-      url: `/Contracts?contractId=${contractId}&status=CANCEL`,
+      url: `/Contracts/${contract.contractId}?doctorId=${contract.doctorId}&patientId=${contract.patientId}&status=CANCELD`,
       method: 'put'
     })
   },

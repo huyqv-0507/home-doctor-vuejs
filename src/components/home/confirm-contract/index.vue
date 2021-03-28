@@ -78,8 +78,8 @@
           <b>Điều 1: {{contractSample.timeAndMission.title}}:</b>
         </el-row>
         <el-row class="margin-line">
-          <p>- Hợp đồng có hiệu lực từ ngày {{contractSample.dateStarted}} đến  ngày {{contractSample.dateContractFinished.day}} tháng {{contractSample.dateContractFinished.month}} năm {{contractSample.dateContractFinished.year}}.</p>
-          <p>- Theo yêu cầu của bên A về việc thực hiện khám và theo dõi bệnh, bên B đám nhận và thực hiện yêu cầu bên A</p>
+          <p>- Hợp đồng có hiệu lực từ ngày {{contractSample.dateStarted.split('-')[2]}} tháng {{contractSample.dateStarted.split('-')[1]}} năm {{contractSample.dateStarted.split('-')[0]}} đến  ngày {{contractSample.dateContractFinished.day}} tháng {{contractSample.dateContractFinished.month}} năm {{contractSample.dateContractFinished.year}}.</p>
+          <p>- Theo yêu cầu của bên A về việc thực hiện khám và theo dõi bệnh, bên B đảm nhận và thực hiện yêu cầu bên A</p>
         </el-row>
         <el-row class="margin-line">
           <p class="margin-line" v-for="(des, index) in contractSample.timeAndMission.description" :key="`tamd${index}`">- {{des}}.</p>
@@ -133,13 +133,14 @@
           <b>Điều 6: Tiền dịch vụ và phương thức thanh toán:</b>
         </el-row>
         <el-row class="margin-line">
-          <p>- Tiền dịch vụ: <b>{{ contractSample.price }} VNĐ.</b></p>
+          <p>- Tiền dịch vụ: <b>{{ contractSample.price }} VNĐ</b> từ ngày {{contractSample.dateStarted.split('-')[2]}} tháng {{contractSample.dateStarted.split('-')[1]}} năm {{contractSample.dateStarted.split('-')[0]}} đến  ngày {{contractSample.dateContractFinished.day}} tháng {{contractSample.dateContractFinished.month}} năm {{contractSample.dateContractFinished.year}}</p>
           <p>- Phương thức thanh toán: Chuyển khoản trực tiếp vào tài khoản của HDr (Tên TK: Home Doctor Vietnam, Số TK: 123456789, Ngân hàng TP Bank)</p>
         </el-row>
         <el-row class="margin-line">
           <b>Điều 7: {{contractSample.collectiveCommitment.title}}:</b>
         </el-row>
         <el-row class="margin-line">
+          <p class="margin-line">- Hai bên cam kết thực hiện đúng những điều khoản trong hợp đồng từ ngày {{contractSample.dateStarted.split('-')[2]}} tháng {{contractSample.dateStarted.split('-')[1]}} năm {{contractSample.dateStarted.split('-')[0]}} đến  ngày {{contractSample.dateContractFinished.day}} tháng {{contractSample.dateContractFinished.month}} năm {{contractSample.dateContractFinished.year}}.</p>
           <p class="margin-line" v-for="(des, index) in contractSample.collectiveCommitment.description" :key="`tamd${index}`">- {{des}}.</p>
         </el-row>
       </el-row>

@@ -41,7 +41,7 @@ const actions = {
             }) // Báo cho mutation thành công để render view
             userRepository.createTokenFirebase(tokenInfo.accountId, getTokenFirebase()).then(response => {
               if (response.status === 201) {
-              //  router.push('/home') // Chuyển qua trang home
+                //  router.push('/home') // Chuyển qua trang home
               }
             }).catch()
             router.push('/home')

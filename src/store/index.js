@@ -7,9 +7,10 @@ import modals from './modules/modals'
 import medicalInstruction from './modules/medicalInstruction'
 import slideshows from './modules/slideshows'
 import suggestions from './modules/suggestions'
-import schedules from './modules/schedules'
 import appointments from './modules/appointments'
 import vitalSign from './modules/vitalSign'
+import systemHandler from './modules/systemHandler'
+import historyActivities from './modules/historyActivities'
 // eslint-disable-next-line quotes
 import createPersistedState from 'vuex-persistedstate'
 import notifications from './modules/notifications'
@@ -24,10 +25,11 @@ export default new Vuex.Store({
     medicalInstruction,
     slideshows,
     suggestions,
-    schedules,
     notifications,
     appointments,
-    vitalSign
+    vitalSign,
+    systemHandler,
+    historyActivities
   },
   plugins: [createPersistedState()]
 })

@@ -26,7 +26,7 @@
               v-for="(item, index) in approvedPatient.diseaseContract"
               :key="index"
               class="wrapper_shortcut-items_item-description"
-            >{{item}}</p>
+            >({{item.diseaseId}}) {{item.diseaseName}}</p>
           </el-row>
         </el-col>
       </el-row>

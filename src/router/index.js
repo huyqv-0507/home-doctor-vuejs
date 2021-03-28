@@ -31,6 +31,8 @@ import NewMedicalScheduleByReuse from '../components/home/medical-instruction/Ne
 import ActivityPatient from '../components/patient-detail/activity'
 import Appointment from '../components/home/appointment'
 import ActivedContract from '../components/home/components/ActivedContract.vue'
+import ApprovedContract from '../components/home/components/ApprovedContract.vue'
+import AppointmentHistory from '../components/history/appointment-history'
 
 Vue.use(VueRouter)
 
@@ -122,6 +124,10 @@ const routes = [
       {
         path: 'actived-contract',
         component: ActivedContract
+      },
+      {
+        path: 'approved-contract',
+        component: ApprovedContract
       }
     ]
   },
@@ -145,6 +151,10 @@ const routes = [
       {
         path: 'prescription-history',
         component: PrescriptionHistory
+      },
+      {
+        path: 'appointment-history',
+        component: AppointmentHistory
       }
     ]
   },

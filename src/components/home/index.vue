@@ -19,20 +19,18 @@
           </el-row>
         </el-col>
         <el-col :span="3">
-          <span>{{nextSchedule.dateStarted}}</span>
+          <span>nextSchedule.dateStarted</span>
         </el-col>
       </el-row>
       <el-row style="margin: .5em; margin-left: 1em;">
         <el-col :span="21">
           <el-row>
-            <p>{{nextSchedule.title}}</p>
-            <p>{{nextSchedule.description}}</p>
+            <p>nextSchedule.title</p>
+            <p>nextSchedule.description</p>
           </el-row>
         </el-col>
         <el-col :span="3">
-          <div
-            class="next-time"
-          >{{nextSchedule.hourStarted}}-{{nextSchedule.hourEnded}}</div>
+          <div class="next-time">nextSchedule.hourStarted-nextSchedule.hourEnded</div>
         </el-col>
       </el-row>
     </el-row>
@@ -54,7 +52,7 @@
       <el-row class="patient-health-wrapper">
         <el-card
           class="patient-health-wrapper_card"
-          v-for="(item, index) in patientTracking"
+          v-for="(item, index) in approvedPatients"
           :key="index"
           shadow="never"
         >
@@ -93,7 +91,10 @@
             <el-col :span="23">
               <div>
                 Ngày tái khám:
-                <strong>{{item.timeAppointment.split('-').reverse().join('-')}}</strong>
+                <strong
+                  v-if="item.dateAppointment !== null"
+                >{{item.dateAppointment}} vào lúc {{item.hourAppointment}} giờ {{item.minuteAppointment}} phút.</strong>
+                <el-link class="pointer" type="primary" v-else @click="addAppointment(item)">Thêm ngày tái khám</el-link>
               </div>
             </el-col>
           </el-row>
@@ -107,10 +108,10 @@
           </el-row>
           <p
             class="patient-health-wrapper_card_item"
-            v-for="(disease, indexDisease) in item.diseases"
+            v-for="(disease, indexDisease) in item.diseaseContract"
             :key="indexDisease"
           >
-            <strong>- ({{disease.diseaseId}}) {{disease.name}}</strong>
+            <strong>- ({{disease.diseaseId}}) {{disease.diseaseName}}</strong>
           </p>
         </el-card>
       </el-row>
@@ -123,21 +124,21 @@ import { mapState, mapActions } from 'vuex'
 import LineChart from '../home/chart/LineChart.js'
 export default {
   data () {
-    return {
-    }
+    return {}
   },
   components: [LineChart],
   computed: {
-    ...mapState('schedules', ['nextSchedule', 'patientHealth']),
-    ...mapState('patients', ['patientTracking'])
+    ...mapState('patients', ['approvedPatients'])
   },
   mounted () {
-    this.getNextSchedule()
-    this.getPatientTracking()
+    this.getPatientApproved()
+    this.getContractsWithStatus()
   },
   methods: {
-    ...mapActions('schedules', ['getNextSchedule']),
-    ...mapActions('patients', ['getPatientTracking'])
+    ...mapActions('patients', ['getPatientApproved']),
+    ...mapActions('vitalSign', ['getVitalSignOverviews']),
+    ...mapActions('appointments', ['getActiveAppointments', 'addAppointment']),
+    ...mapActions('contracts', ['getContractsWithStatus'])
   }
 }
 </script>

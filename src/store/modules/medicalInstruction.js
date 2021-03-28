@@ -7,7 +7,7 @@ const medicalInstructionRepository = RepositoryFactory.get('medicalInstructionRe
 const state = () => ({
   medicalInstructionStatus: false, // Trạng thái của modal Y lệnh. Xác định trang được hiển thị (Chọn bệnh nhân/ Chọn chức năng cho y lệnh)
   medicalInstructionHistory: [],
-  patientSelected: {}, // Bệnh nhân được chọn
+  patientSelected: {}, // Bệnh nhân được chọn để cho Y lệnh
   prescriptionDetails: null,
   prescriptionDetail: {},
   visibleSelectMedicine: false,
@@ -39,13 +39,15 @@ const state = () => ({
     dateFinished: '',
     dateCanceled: ''
   },
-  medicalInstructionHistories: []
+  medicalInstructionHistories: [], // Danh sách lịch sử đơn thuốc
+  medicalInstructionOfNewHealthRecord: []
 })
 const getters = {}
 const actions = {
   // Đi đến trang xét lịch uống thuốc cho bệnh nhân
   setMedicalSchedule ({ dispatch }) {
     dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
+    dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
     router.push('medical-schedule').catch(error => {
       if (error.name !== 'NavigationDuplicated') {
         throw error
@@ -55,6 +57,7 @@ const actions = {
   // Đi đến trang đo sinh hiệu cho bệnh nhân
   setVitalSign ({ dispatch }) {
     dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
+    dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
     router.push('vital-sign').catch(error => {
       if (error.name !== 'NavigationDuplicated') {
         throw error
@@ -93,6 +96,7 @@ const actions = {
       dateStart: data.dateStarted,
       dateFinish: data.dateFinished,
       description: data.description,
+      contractId: data.contractId,
       medicationScheduleCreates: state.prescriptionDetails.map(p => {
         return {
           medicationName: p.medicineName,
@@ -201,6 +205,22 @@ const actions = {
         dispatch('getMedicalInstructionHistory')
       }
     })
+  },
+  // Chọn nhữn phiếu Y lệnh cần lưu
+  saveMedicalInstruction ({ commit, rootState }, medicalInstructions) {
+    var medicalInstructionForSave = []
+    if (medicalInstructions.length === 0) {
+      rootState.contracts.requestDetail.medicalInstructionTypes.forEach(
+        element => {
+          element.medicalInstructions.forEach(m => {
+            medicalInstructionForSave.push(m.medicalInstructionId)
+          })
+        }
+      )
+    } else {
+      medicalInstructionForSave = medicalInstructions
+    }
+    commit('setMedicalInstructionOfNewHealthRecord', medicalInstructionForSave)
   }
 }
 const mutations = {
@@ -237,7 +257,22 @@ const mutations = {
     state.patientSelected = null // Xoá bệnh nhân đã đc chọn
   },
   setPatientSelected (state, payloadPatient) {
-    state.patientSelected = payloadPatient
+    console.log('setPatientSelected>>>', payloadPatient)
+    state.patientSelected = {
+      accountPatientId: payloadPatient.accountPatientId,
+      contractId: payloadPatient.contractId,
+      dateAppointment: payloadPatient.dateAppointment,
+      diseaseContract: payloadPatient.diseaseContract.map(disease => {
+        return {
+          diseaseId: disease.diseaseId,
+          diseaseName: disease.diseaseName
+        }
+      }),
+      healthRecordId: payloadPatient.healthRecordId,
+      patientId: payloadPatient.patientId,
+      patientName: payloadPatient.patientName,
+      status: payloadPatient.status
+    }
     console.log('patientSelected: ', state.patientSelected)
   },
   // Thêm 1 thuốc vào danh sách thuốc
@@ -446,6 +481,10 @@ const mutations = {
     var cancelMedicalInstruction = state.medicalInstructionHistory.find(medicalInstruction => medicalInstruction.medicalInstructionId === medicalInstructionId) // Tìm medicalInstruction để huỷ
     var index = state.medicalInstructionHistory.indexOf(cancelMedicalInstruction) // vị trí của medicalInstruction
     state.medicalInstructionHistory.splice(index, 1) // Xoá 1 phần tử ở vị trí index
+  },
+  setMedicalInstructionOfNewHealthRecord (state, medicalInstructions) {
+    state.medicalInstructionOfNewHealthRecord = medicalInstructions
+    console.log('state.medicalInstructionOfNewHealthRecord', state.medicalInstructionOfNewHealthRecord)
   }
 }
 

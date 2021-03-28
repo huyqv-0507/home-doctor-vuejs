@@ -28,7 +28,7 @@ const state = () => ({
     dateFinished: '', // Ngày kết thúc theo dõi
     nameLicense: '', // Tên của gói
     priceLicense: '',
-    daysOfTracking: 0, // Số ngày theo dõi
+    daysOfTracking: 30, // Số ngày theo dõi
     diseases: [], // Bệnh lý của bệnh nhân
     doctorId: '', // Id của bác sĩ
     patientId: '', // Id của bệnh nhân
@@ -200,9 +200,13 @@ const state = () => ({
   navigateContract: {
     statusContract: '',
     patientId: ''
-  } // Kiểm tra status của contract để chuyển trang
+  }, // Kiểm tra status của contract để chuyển trang
+  contractsWithStatus: []
 })
 const getters = {
+  getContractStatusById: state => (contractId) => {
+    return state.contractsWithStatus.find(contract => contract.contractId === contractId)
+  }
 }
 const actions = {
   setDateStartedContract ({ commit }, dateStarted) {
@@ -218,6 +222,15 @@ const actions = {
       }
     }).catch((error) => {
       console.log('error at contracts - CheckStatusContract', error)
+    })
+  },
+  getContractsWithStatus ({ commit, rootState }) {
+    contractRepository.getContracts(rootState.users.user.userId).then(response => {
+      if (response.status === 200) {
+        commit('setContractsWithStatus', response.data)
+      }
+    }).catch((error) => {
+      console.log(error)
     })
   },
   // Lấy hơp đồng mẫu
@@ -248,7 +261,7 @@ const actions = {
 
   // Get request detail by patientId when doctor click [0] is patientId, [1] is contractCode
   getRequestDetail ({ commit, dispatch, rootState, state }, payloadContractId) {
-    console.log(`Action - getRequestDetail() - payloadPatientId: ${payloadContractId}`)
+    console.log(`Action - getRequestDetail() - payloadContractId: ${payloadContractId}`)
     rootState.contracts.contract.contractId = payloadContractId
     // Gọi repository để lấy thông tin yêu cầu
     contractRepository.getRequestDetail(payloadContractId).then(response => {
@@ -280,15 +293,20 @@ const actions = {
   continueAssignContract ({ commit }) {
     commit('continueAssignContract')
   },
-  confirmRejectContract ({ commit }, contractId) {
+  confirmRejectContract ({ commit, state, rootState }, contractId) {
     // set state pending to rejected (database)
-    contractRepository.cancelContract(contractId).then(response => {
-      if (response.status === 200) {
-        Notification.success({ title: 'Thông báo', message: 'Huỷ hợp đồng thành công!', duration: 6000, position: 'bottom-right' })
+    var contract = {
+      contractId: contractId,
+      patientId: state.patientDetail.patientId,
+      doctorId: rootState.users.user.userId
+    }
+    contractRepository.cancelContract(contract).then(response => {
+      if (response.status === 204) {
+        Notification.success({ title: 'Thông báo', message: 'Từ chối hợp đồng thành công!', duration: 7000 })
       }
     }).catch(error => {
       console.log(error)
-      Notification.error({ title: 'Thông báo', message: 'Huỷ hợp đồng thất bại!', duration: 6000, position: 'bottom-right' })
+      Notification.error({ title: 'Thông báo', message: 'Huỷ hợp đồng thất bại!', duration: 7000 })
     })
     commit('confirmRejectContract')
   },
@@ -310,19 +328,22 @@ const actions = {
     router.go(-1) // Trở về trang trưóc
   },
   // Confirm contract and insert db [0] is contract, [1] is value of disease type, [2] is value of note
-  confirmContract ({ commit, dispatch }, payload) {
-    contractRepository.createContract(payload[0]).then(response => {
+  confirmContract ({ commit, dispatch, rootState }, payload) {
+    contractRepository.createContract({
+      contract: payload[0],
+      medicalInstructionOfNewHealthRecord: rootState.medicalInstruction.medicalInstructionOfNewHealthRecord
+    }).then(response => {
       console.log('status code:', response.status)
       if (response.status === 204) {
-        Notification.success({ title: 'Thông báo', message: 'Tạo hợp đồng thành công. Vui lòng chờ bệnh nhân xác nhận lại hợp đồng!', duration: 6000, position: 'bottom-right' })
+        Notification.success({ title: 'Thông báo', message: 'Tạo hợp đồng thành công. Vui lòng chờ bệnh nhân xác nhận lại hợp đồng!', duration: 7000 })
         dispatch('contracts/getActiveContracts', null, { root: true })
         router.push('/home')
       } else if (response.status === 405) {
-        Notification.error({ title: 'Thông báo', message: 'Xin lỗi, hiện tại bạn đã đủ 5 hợp đồng!', duration: 6000, position: 'bottom-right' })
+        Notification.error({ title: 'Thông báo', message: 'Xin lỗi, hiện tại bạn đã đủ 5 hợp đồng!', duration: 7000 })
       }
     }).catch(error => {
       console.log(error)
-      Notification.error({ title: 'Thông báo', message: 'Tạo hợp đồng thất bại!', duration: 6000, position: 'bottom-right' })
+      Notification.error({ title: 'Thông báo', message: 'Tạo hợp đồng thất bại!', duration: 6000 })
     })
   },
   // Lấy tất cả các hợp đồng đang theo dõi
@@ -400,6 +421,14 @@ const mutations = {
       patientId: data.patientId,
       statusContract: data.statusContract
     }
+  },
+  setContractsWithStatus (state, contracts) {
+    state.contractsWithStatus = contracts.map(contract => {
+      return {
+        contractId: contract.contractId,
+        status: contract.status
+      }
+    })
   },
   setActiveContractsFailure (state) {
     state.activeContracts = []
@@ -605,13 +634,14 @@ const mutations = {
     state.requestDetail.fullNamePatient = payloadRequestDetail.fullNamePatient
     state.requestDetail.phoneNumberPatient = payloadRequestDetail.phoneNumberPatient
     state.requestDetail.addressPatient = payloadRequestDetail.addressPatient
-    state.requestDetail.dobPatient = payloadRequestDetail.dobPatient.split('T')[0].split('-').reverse().join('-')
+    state.requestDetail.dobPatient = payloadRequestDetail.dobPatient.split('T')[0].split('-').reverse().join('/')
     state.requestDetail.contractCode = payloadRequestDetail.contractCode
     state.requestDetail.note = payloadRequestDetail.note
     state.requestDetail.status = payloadRequestDetail.status
     state.requestDetail.dateCreated = payloadRequestDetail.dateCreated
-    state.requestDetail.dateStarted = payloadRequestDetail.dateStarted
+    state.requestDetail.dateStarted = payloadRequestDetail.dateStarted.split('T')[0].split('-').reverse().join('/')
     state.requestDetail.nameLicense = payloadRequestDetail.nameLicense
+    state.requestDetail.daysOfTracking = 30
     state.requestDetail.priceLicense = payloadRequestDetail.priceLicense
     state.requestDetail.licenseId = payloadRequestDetail.licenseId
     state.requestDetail.doctorId = payloadRequestDetail.doctorId
@@ -627,6 +657,9 @@ const mutations = {
         medicalInstructionTypeName: mit.medicalInstructionTypeName,
         medicalInstructions: mit.medicalInstructions.map(mi => {
           return {
+            isChoose: false,
+            isSelected: false,
+            medicalInstructionId: mi.medicalInstructionId,
             image: `http://45.76.186.233:8000/api/v1/Images?pathImage=${mi.image}`,
             description: mi.description,
             diagnose: mi.diagnose
@@ -653,7 +686,7 @@ const mutations = {
     state.contract.status = 'active'
     state.contract.patientId = payload.patientId
     state.contract.daysOfTracking = payload.daysOfTracking
-    state.contract.dateStarted = payload.dateStarted
+    state.contract.dateStarted = payload.dateStarted.includes('/') ? payload.dateStarted.split('/').reverse().join('-') : payload.dateStarted
     console.log('date started:::', state.contract.dateStarted)
     var dateFinished = new Date(state.contract.dateStarted)
     dateFinished = dateFinished.setDate(dateFinished.getDate() + state.contract.daysOfTracking)
@@ -664,8 +697,6 @@ const mutations = {
     } // Cập nhật ngày kết thúc của hợp đồng
     var price = parseInt(state.contract.daysOfTracking) * state.license.price
     state.contractSample.price = formatPrice(`${price}`, '.') // format giá tiền để hiển thị trong hợp đồng
-    console.log('date finish', state.contractSample.price)
-    console.log('date finish', state.contractSample.dateContractFinished)
     console.log('contract:::: ', state.contract)
   },
   // set thông tin bệnh nhân để show trong hợp đồng khi ký
@@ -679,6 +710,7 @@ const mutations = {
   },
   // set thông tin hợp đồng khi xem trong nhật ký hoạt động
   setContractDetail (state, payloadContractDetail) {
+    console.log(payloadContractDetail)
     state.contractDetail = {}
     state.contractDetail.contractId = payloadContractDetail.contractId
     state.contractDetail.fullNameDoctor = payloadContractDetail.contract.fullNameDoctor
@@ -725,6 +757,7 @@ const mutations = {
   },
   // Cập nhật hợp đồng khi xem trong nhật ký hoạt động
   setContractDetailHistory (state, contractObject) {
+    console.log('contractObj', contractObject)
     state.contractDetailHistory.baseLaw = contractObject.contractSample.baseLaw
     state.contractDetailHistory.today.weekDay = 'Thứ 7'
     state.contractDetailHistory.today.day = 13
@@ -733,7 +766,7 @@ const mutations = {
     state.contractDetailHistory.descriptionSum = contractObject.contractSample.descriptionSum
     state.contractDetailHistory.dateStarted = contractObject.contractDetailInfo.dateStarted.split('T')[0].split('-').reverse().join('/')
     state.contractDetailHistory.dateFinished = contractObject.contractDetailInfo.dateFinished.split('T')[0].split('-').reverse().join('/')
-    state.contractDetailHistory.partyA.name = 'Bênh nhân'
+    state.contractDetailHistory.partyA.name = 'Bệnh nhân'
     state.contractDetailHistory.priceLicense = contractObject.contractDetailInfo.priceLicense
     state.contractDetailHistory.partyA.fullName = contractObject.contractDetailInfo.fullNamePatient
     state.contractDetailHistory.partyA.address = contractObject.contractDetailInfo.addressPatient
@@ -759,7 +792,7 @@ const mutations = {
     state.contractDetailHistory.dutyAndInterest[1].interest = contractObject.contractSample.dutyAndInterest[1].interest
     state.contractDetailHistory.disputeResolution.title = contractObject.contractSample.disputeResolution.title
     state.contractDetailHistory.disputeResolution.description = contractObject.contractSample.disputeResolution.description
-    state.contractDetailHistory.collectiveCommitment.title = contractObject.contractSample.collectiveCommitment.description
+    state.contractDetailHistory.collectiveCommitment.title = contractObject.contractSample.collectiveCommitment.title
     state.contractDetailHistory.collectiveCommitment.description = contractObject.contractSample.collectiveCommitment.description
 
     console.log('Thông tin hợp đồng (contractDetailHistory):::', state.contractDetailHistory)

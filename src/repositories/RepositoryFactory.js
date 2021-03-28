@@ -2,7 +2,7 @@ import UserRepository from '../repositories/UserRepository'
 import ContractRepository from '../repositories/ContractRepository'
 import PatientRepository from '../repositories/PatientRepository'
 import MedicalInstructionRepository from '../repositories/MedicalInstructionRepository'
-import ScheduleRepository from '../repositories/ScheduleRepository'
+import AppointmentRepository from './AppointmentRepository'
 import NotificationRepository from '../repositories/NotificationRepository'
 import VitalSignRepository from '../repositories/VitalSignRepository'
 
@@ -11,7 +11,7 @@ const repositories = {
   contractRepository: ContractRepository,
   patientRepository: PatientRepository,
   medicalInstructionRepository: MedicalInstructionRepository,
-  scheduleRepository: ScheduleRepository,
+  appointmentRepository: AppointmentRepository,
   notificationRepository: NotificationRepository,
   vitalSignRepository: VitalSignRepository
 }

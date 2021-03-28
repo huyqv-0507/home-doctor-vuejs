@@ -4,46 +4,48 @@
       <el-breadcrumb-item :to="{ path: '/' }">Trang chủ</el-breadcrumb-item>
       <el-breadcrumb-item>Quản lý hợp đồng</el-breadcrumb-item>
     </el-breadcrumb>
-    <h1 >Quản lý hợp đồng</h1>
-    <br />
-    <el-row class="tab">
-      <div
-        v-bind:class="{active: activeTab}"
-        class="tab__item router-pointer"
-        v-on:click="handleActive()"
-      >
-        <div :span="8" class="horizontalCenter">Đang theo dõi</div>
-      </div>
-      <div
-        v-bind:class="{active: finishTab}"
-        class="tab__item router-pointer"
-        v-on:click="handleFinish()"
-      >
-        <div :span="8" class="horizontalCenter">Đã hết hạn</div>
-      </div>
-      <div
-        v-bind:class="{active: rejectTab}"
-        class="tab__item router-pointer"
-        v-on:click="handleReject()"
-      >
-        <div :span="8" class="horizontalCenter">Đã từ chối</div>
-      </div>
-      <div
-        v-bind:class="{active: pendingTab}"
-        class="tab__item router-pointer"
-        v-on:click="handlePending()"
-      >
-        <div :span="8" class="horizontalCenter">Chờ xét duyệt</div>
-      </div>
-      <div
-        v-bind:class="{active: approvedTab}"
-        class="tab__item router-pointer"
-        v-on:click="handleApproved()"
-      >
-        <div :span="8" class="horizontalCenter">Chờ đồng ý</div>
-      </div>
-    </el-row>
-    <router-view />
+    <div class="bg-theme">
+      <h1>Quản lý hợp đồng</h1>
+      <br />
+      <el-row class="tab">
+        <div
+          v-bind:class="{active: activeTab}"
+          class="tab__item router-pointer"
+          v-on:click="handleActive()"
+        >
+          <div :span="8" class="horizontalCenter">Đang theo dõi</div>
+        </div>
+        <div
+          v-bind:class="{active: finishTab}"
+          class="tab__item router-pointer"
+          v-on:click="handleFinish()"
+        >
+          <div :span="8" class="horizontalCenter">Đã hết hạn</div>
+        </div>
+        <div
+          v-bind:class="{active: rejectTab}"
+          class="tab__item router-pointer"
+          v-on:click="handleReject()"
+        >
+          <div :span="8" class="horizontalCenter">Đã từ chối</div>
+        </div>
+        <div
+          v-bind:class="{active: pendingTab}"
+          class="tab__item router-pointer"
+          v-on:click="handlePending()"
+        >
+          <div :span="8" class="horizontalCenter">Chờ xét duyệt</div>
+        </div>
+        <div
+          v-bind:class="{active: approvedTab}"
+          class="tab__item router-pointer"
+          v-on:click="handleApproved()"
+        >
+          <div :span="8" class="horizontalCenter">Chờ đồng ý</div>
+        </div>
+      </el-row>
+      <router-view />
+    </div>
   </div>
 </template>
 

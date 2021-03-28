@@ -12,13 +12,17 @@
         </div>
       </router-link>
       <div class="heading__nav-bar">
-        <el-row class="heading__nav-bar_items">
+        <el-row class="heading__nav-bar_items horizontalCenter">
           <el-col>
-            <img
-              src="../../assets/icons/ic-msg-selected.png"
-              style="margin-left: 0;"
-              class="icon-heading"
-            />
+            <el-badge :value="numBadgeSystem" class="badge-heading">
+              <img
+                v-on:click="handleShowSystemNotification()"
+                src="../../assets/icons/ic-control-system.png"
+                style="margin-left: 0;"
+                class="icon-heading pointer"
+              />
+            </el-badge>
+            <system-handler-notification />
           </el-col>
           <el-col>
             <el-badge :value="numBadge" class="badge-heading">
@@ -42,7 +46,7 @@
                   style=" cursor: pointer;"
                 >
                   <div v-if="noti.status">
-                    <el-row class="heading__nav-bar_badge-wrapper">
+                    <el-row class="heading__nav-bar_badge-wrapper margin-03">
                       <el-col :span="4">
                         <img src="../../assets/icons/ic-noti-selected.png" style="margin: 0" />
                       </el-col>
@@ -64,13 +68,15 @@
                       </el-col>
                     </el-row>
                   </div>
-                  <el-row v-else class="heading__nav-bar_badge-wrapper unseen-notification">
+                  <el-row v-else class="heading__nav-bar_badge-wrapper unseen-notification margin-03">
                     <el-col :span="4">
                       <img src="../../assets/icons/ic-noti-selected.png" style="margin: 0" />
                     </el-col>
                     <el-col :span="20">
                       <div
-                        v-on:click="handleNotificationLink({ contractId: noti.contractId, dateIndex: dateIndex, notificationId: noti.notificationId })"
+                        v-on:click="handleNotificationLink({
+                              dateIndex: dateIndex,
+                              notification: noti })"
                       >
                         <div slot="header">
                           <h4>{{noti.title}}</h4>
@@ -78,7 +84,7 @@
                         <!-- card body -->
                         <p style="color: grey;">{{noti.description}}</p>
                         <p style="color: grey; font-size: 9px; margin: .3em 0;">
-                          <i>{{noti.timeAgo}} trước</i>
+                          <i>{{noti.timeAgo}}</i>
                         </p>
                       </div>
                     </el-col>
@@ -88,12 +94,19 @@
             </div>
           </el-col>
           <el-col>
+            <img
+              src="../../assets/icons/ic-msg-selected.png"
+              style="margin-left: 0;"
+              class="icon-heading pointer"
+            />
+          </el-col>
+          <el-col>
             <el-popover placement="bottom" title="Tải khoản" width="200" trigger="click">
               <img
                 src="../../assets/icons/avatar-default.jpg"
                 slot="reference"
                 style="border-radius: 30px;"
-                class="icon-heading"
+                class="icon-heading pointer"
               />
               <router-link to="/account-manage">
                 <el-button>Cài đặt</el-button>
@@ -108,47 +121,36 @@
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
+import SystemHandler from '../header/system-handler'
 export default {
   name: 'HeaderDefault',
+  components: {
+    'system-handler-notification': SystemHandler
+  },
   computed: {
-    ...mapState('notifications', ['numBadge', 'isShowNotify', 'notifications'])
+    ...mapState('notifications', ['numBadge', 'isShowNotify', 'notifications']),
+    ...mapState('systemHandler', ['numBadgeSystem'])
   },
   methods: {
-    ...mapActions('notifications', ['handleShowNotification', 'handleNotificationLink']),
+    ...mapActions('notifications', [
+      'handleShowNotification',
+      'handleNotificationLink'
+    ]),
     ...mapActions('users', ['handleLogout']),
-    ...mapActions('contracts', ['checkNavigateContract'])
+    ...mapActions('contracts', ['checkNavigateContract']),
+    ...mapActions('systemHandler', ['handleShowSystemNotification'])
     /*
     handleNotificationLink (notificationSelected) {
-      if (notificationSelected.contractId !== null) {
-        this.checkNavigateContract(notificationSelected.contractId)
-        switch (this.$store.state.contracts.navigateContract.statusContract) {
-          case 'PENDING': {
-            router.push({
-              name: 'request-detail',
-              params: { contractId: notificationSelected.contractId }
-            })
-            break
-          }
-          case 'ACTIVE': {
-            router.push('/home/actived-contract')
-            break
-          }
-        }
-      }
-      this.$store.dispatch(
-        'notifications/seeNotify',
-        {
-          dateIndex: notificationSelected.dateIndex,
-          notificationId: notificationSelected.notificationId
-        },
-        { root: true }
-      )
     } */
   }
 }
 </script>
 
 <style style="scss" scoped>
+.horizontalCenter {
+  display: flex;
+  width: 300px;
+}
 .heading__nav-bar {
   display: flex;
   justify-content: space-between;
@@ -162,7 +164,7 @@ export default {
   position: absolute;
   z-index: 3000;
   top: 30px;
-  right: 140px;
+  right: 200px;
   padding: 1em;
   font-size: 13px;
   max-height: 400px;
@@ -199,7 +201,6 @@ export default {
   margin-top: 3px;
 }
 .heading__nav-bar_items img {
-  margin-left: 5em;
 }
 .router-items {
   text-decoration: none;
@@ -214,5 +215,8 @@ export default {
 }
 .unseen-notification {
   background-color: #cecece;
+}
+.margin-03 {
+  margin: 0.3em 0;
 }
 </style>

@@ -43,10 +43,18 @@ export default {
       data: formData
     })
   },
+  // Lấy tất cả nhật ký hoạt động
   async getActivities (accountId) {
     return await request({
       method: 'get',
       url: `/Notifications/GetHistoryByAccountId?accountId=${accountId}`
+    })
+  },
+  // Lấy trạng thái hoạt đồng đầu tiên sau khi ký hợp đồng
+  async getFirstActivities (doctorId) {
+    return await request({
+      method: 'get',
+      url: `/Activities/${doctorId}`
     })
   }
 }

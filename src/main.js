@@ -44,7 +44,7 @@ messaging.requestPermission().then(function () {
   })
 messaging.onMessage(payload => {
   console.log('Message from firebase:::', payload)
-  store.dispatch('notifications/newMessage', null, { root: true })
+  store.dispatch('notifications/newMessage', payload, { root: true })
   ElementUI.Message.info({ dangerouslyUseHTMLString: true, message: `<h4 style="color: black;">${payload.notification.title}</h4><div style="width: 100%; height: 1px; background-color: grey;"></div><p style="margin-top: .5em; color: black;">${payload.notification.body}</p>`, duration: 0, showClose: true })
 })
 

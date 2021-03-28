@@ -138,7 +138,7 @@
     <el-button
       v-else
       type="primary"
-      @click="savePrescription({diagnose: diagnoseNewPrescription, dateStarted: dateStarted, dateFinished: dateFinished, desscription: descriptionNewPrescription})"
+      @click="savePrescription({diagnose: diagnoseNewPrescription, dateStarted: dateStarted, dateFinished: dateFinished, description: descriptionNewPrescription, contractId: patientSelected.contractId})"
     >Lưu</el-button>
   </div>
 </template>

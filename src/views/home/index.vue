@@ -6,73 +6,14 @@
       </template>
       <template v-slot:main-content>
         <router-view></router-view>
-        <div v-show="isShowImg" class="image-view">
-          <div class="image-view__content_exit pointer" v-on:click="closeImgShow()">
-            <strong>x</strong>
-          </div>
-          <div class="image-view__content_images">
-            <div class="image-view__content_images-image">
-              <el-image :src="imageInfo.imgUrl" style="width: 600px;" fit="scale-down" ></el-image>
-            </div>
-          </div>
-          <div class="image-view__content_body">
-            <div class="bg-theme" style="margin-top: 3em;">
-              <el-row class="image-view__content_body-title margin-all">
-                <p>Bệnh lý: <strong v-for="(disease, index) in imageShow.diseases" :key="`disease-${index}`">({{disease.diseaseId}}) {{disease.nameDisease}};</strong></p>
-              </el-row>
-              <el-row class="image-view__content_body-diagnose margin-all">
-                <p>Loại y lệnh: <strong>{{imageShow.medicalInstructionTypeName}}</strong></p>
-              </el-row>
-              <el-row class="image-view__content_body-diagnose margin-all">
-                <p>Chuẩn đoán: <strong>{{imageShow.diagnose}}</strong></p>
-              </el-row>
-              <el-row class="image-view__content_body-description margin-all">
-                <p>Mô tả: <strong>{{imageShow.description}}</strong></p>
-              </el-row>
-            </div>
-          </div>
-        </div>
-        <div v-show="visibleAllImages" class="image-view">
-          <div class="image-view__content_exit pointer" v-on:click="closeAllImages()">
-            <strong>x</strong>
-          </div>
-          <el-carousel
-            class="image-view__content_images"
-            arrow="always"
-            height="800px"
-            :autoplay="false"
-            @change="imageChange"
-          >
-            <el-carousel-item
-              v-for="(item, index) in allMedicalInstructionShared"
-              :key="`allImg-${index}`"
-            >
-              <div class="image-view__content_images-image">
-                <el-image :src="imageInfo.imgUrl" style="width: 600px;" fit="scale-down"></el-image>
-              </div>
-            </el-carousel-item>
-          </el-carousel>
-          <div class="image-view__content_body">
-            <div class="bg-theme" style="margin-top: 3em;">
-              <el-row class="image-view__content_body-title margin-all">
-                <p>Bệnh lý: <strong v-for="(disease, index) in imageInfo.diseases" :key="`disease-${index}`">({{disease.diseaseId}}) {{disease.nameDisease}};</strong></p>
-              </el-row>
-              <el-row class="image-view__content_body-diagnose margin-all">
-                <p>Loại y lệnh: <strong>{{imageInfo.medicalInstructionTypeName}}</strong></p>
-              </el-row>
-              <el-row class="image-view__content_body-diagnose margin-all">
-                <p>Chuẩn đoán: <strong>{{imageInfo.diagnose}}</strong></p>
-              </el-row>
-              <el-row class="image-view__content_body-description margin-all">
-                <p>Mô tả: <strong>{{imageInfo.description}}</strong></p>
-              </el-row>
-            </div>
-          </div>
-        </div>
+        <one-image-show/>
+        <multiple-image-show/>
         <medical-instruction-dialog />
         <add-medicine-form />
         <edit-medicine-form />
         <patient-select-diaglog />
+        <medical-instruction-patient/>
+        <add-appointment-form/>
       </template>
       <template v-slot:right-content>
         <right-content />
@@ -90,33 +31,21 @@ import MedicalInstruction from '../../components/home/dialog/MedicalInstruction.
 import AddMedicineForm from '../../components/home/dialog/AddMedicineForm.vue'
 import EditMedicineForm from '../../components/home/dialog/EditMedicineForm.vue'
 import PatientSelectDialog from '../../components/home/appointment/patient-select-dialog'
-
+import OneImageShow from '../../components/home/components/OneImageShow.vue'
+import MultipleImageShow from '../../components/home/components/MultipleImageShow.vue'
+import MedicalInstructionPatient from '../../components/home/dialog/MedicalInstructionPatient.vue'
+import AddAppointmentForm from '../../components/home/appointment/patient-select-dialog/AddAppointmentForm.vue'
 export default {
   data () {
     return {}
   },
   computed: {
-    ...mapState('slideshows', [
-      'allMedicalInstructionShared',
-      'visibleAllImages',
-      'imageInfo',
-      'isShowImg',
-      'imageShow'
-    ]),
     ...mapState('contracts', ['contractImgs', 'requestDetail'])
   },
   methods: {
     ...mapActions('modals', [
       'closeEditMedicine' // Đóng modal sửa thuốc
-    ]),
-    ...mapActions('slideshows', [
-      'closeZoom',
-      'closeAllImages',
-      'closeImgShow'
-    ]),
-    imageChange (index) {
-      this.$store.dispatch('slideshows/setImageInfo', index, { root: true })
-    }
+    ])
   },
   components: {
     'base-layout': BaseLayout,
@@ -125,7 +54,11 @@ export default {
     'medical-instruction-dialog': MedicalInstruction,
     'add-medicine-form': AddMedicineForm,
     'edit-medicine-form': EditMedicineForm,
-    'patient-select-diaglog': PatientSelectDialog
+    'patient-select-diaglog': PatientSelectDialog,
+    'one-image-show': OneImageShow,
+    'multiple-image-show': MultipleImageShow,
+    'medical-instruction-patient': MedicalInstructionPatient,
+    'add-appointment-form': AddAppointmentForm
   }
 }
 </script>
