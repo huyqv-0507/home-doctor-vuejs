@@ -6,14 +6,13 @@
       </template>
       <template v-slot:main-content>
         <router-view></router-view>
-        <one-image-show/>
         <multiple-image-show/>
         <medical-instruction-dialog />
-        <add-medicine-form />
         <edit-medicine-form />
         <patient-select-diaglog />
         <medical-instruction-patient/>
         <add-appointment-form/>
+        <medical-instruction-patien/>
       </template>
       <template v-slot:right-content>
         <right-content />
@@ -26,38 +25,31 @@
 import BaseLayout from '../../layouts/BaseLayout.vue'
 import LeftContent from '../../components/left-content'
 import RightContent from '../../components/right-content'
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import MedicalInstruction from '../../components/home/dialog/MedicalInstruction.vue'
-import AddMedicineForm from '../../components/home/dialog/AddMedicineForm.vue'
 import EditMedicineForm from '../../components/home/dialog/EditMedicineForm.vue'
 import PatientSelectDialog from '../../components/home/appointment/patient-select-dialog'
-import OneImageShow from '../../components/home/components/OneImageShow.vue'
 import MultipleImageShow from '../../components/home/components/MultipleImageShow.vue'
 import MedicalInstructionPatient from '../../components/home/dialog/MedicalInstructionPatient.vue'
+import MedicalInstructionPatien from '../../components/home/dialog/MedicalInstructionPatien.vue'
 import AddAppointmentForm from '../../components/home/appointment/patient-select-dialog/AddAppointmentForm.vue'
 export default {
-  data () {
-    return {}
-  },
-  computed: {
-    ...mapState('contracts', ['contractImgs', 'requestDetail'])
+  mounted () {
+    this.initState()
   },
   methods: {
-    ...mapActions('modals', [
-      'closeEditMedicine' // Đóng modal sửa thuốc
-    ])
+    ...mapActions('systemHandler', ['initState'])
   },
   components: {
     'base-layout': BaseLayout,
     'left-content': LeftContent,
     'right-content': RightContent,
     'medical-instruction-dialog': MedicalInstruction,
-    'add-medicine-form': AddMedicineForm,
     'edit-medicine-form': EditMedicineForm,
     'patient-select-diaglog': PatientSelectDialog,
-    'one-image-show': OneImageShow,
     'multiple-image-show': MultipleImageShow,
     'medical-instruction-patient': MedicalInstructionPatient,
+    'medical-instruction-patien': MedicalInstructionPatien,
     'add-appointment-form': AddAppointmentForm
   }
 }

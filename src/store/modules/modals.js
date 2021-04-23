@@ -4,13 +4,67 @@ const state = () => ({
   visibleEditMedicineForm: false, // Modal khi bác sĩ sửa thuốc
   isVisibleAppointmentPatients: false, // Modal danh sách bệnh nhân khi xét lịch tái khám
   isVisibleSelectMedicalInstruction: false, // Modal chọn bệnh nhân để xét lich tái khám
-  isVisibleAddAppointmentForm: false // Modal xét lịch tái khám khi đã chọn bệnh nhân ở trang chủ
+  isVisibleSelectMedicalInstructionSub: false, // Modal chọn bệnh nhân để xét lich tái khám
+  isVisibleAddAppointmentForm: false, // Modal xét lịch tái khám khi đã chọn bệnh nhân ở trang chủ
+  isVisibleAddAppointmentFormPatientDetail: false, // Modal xét lịch tái khám khi đã chọn bệnh nhân ở patient-detail
+  isAutoVitalSign: true,
+  isVisibleAddVitalSign: false,
+  isPrescriptionShow: false,
+  isUpdateAppointmentShow: false,
+  isChartView: false,
+  isRequestMedicalInstruction: false,
+  isRequestMedicalInstructionList: false,
+  isFinishAppointmentShow: false
 })
 const getters = {}
 const actions = {
-  openMedicalInstruction ({ commit, dispatch }) {
+  openFinishAppointmentShow ({ commit }) {
+    commit('openFinishAppointmentShow')
+  },
+  closeFinishAppointmentShow ({ commit }) {
+    commit('closeFinishAppointmentShow')
+  },
+  openRequestMedicalInstructionList ({ commit }) {
+    console.log('openRequestMedicalInstructionList')
+    commit('openRequestMedicalInstructionList')
+  },
+  closeRequestMedicalInstructionList ({ commit }) {
+    commit('closeRequestMedicalInstructionList')
+  },
+  openRequestMedicalInstruction ({ commit }) {
+    commit('openRequestMedicalInstruction')
+  },
+  closeRequestMedicalInstruction ({ commit }) {
+    commit('closeRequestMedicalInstruction')
+  },
+  openChartView ({ commit }) {
+    commit('openChartView')
+  },
+  closeChartView ({ commit }) {
+    commit('closeChartView')
+  },
+  openUpdateAppointmentShow ({ commit }) {
+    commit('openUpdateAppointmentShow')
+  },
+  closeUpdateAppointmentShow ({ commit }) {
+    commit('closeUpdateAppointmentShow')
+  },
+  openPrescriptionShow ({ commit }) {
+    commit('openPrescriptionShow')
+  },
+  closePrescriptionShow ({ commit }) {
+    commit('closePrescriptionShow')
+  },
+  openVitalSignShow ({ commit }) {
+    commit('openVitalSignShow')
+  },
+  closeVitalSignShow ({ commit }) {
+    commit('closeVitalSignShow')
+  },
+  async openMedicalInstruction ({ commit, dispatch }) {
     commit('openMedicalInstruction')
-    dispatch('patients/getPatientApproved', null, { root: true })
+    await dispatch('patients/getPatientApproved', null, { root: true })
+    await dispatch('medicalInstruction/backToSelectPatient', null, { root: true })
   },
   closeMedicalInstruction ({ commit, rootState }) {
     rootState.medicalInstruction.medicalInstructionStatus = false
@@ -45,17 +99,87 @@ const actions = {
     rootState.appointments.patientInfoForAppointment = {}
     commit('openAddAppointmentForm')
   },
+  openAddAppointmentFormPatientDetail ({ commit, rootState }) {
+    rootState.appointments.patientInfoForAppointment = {}
+    commit('openAddAppointmentFormPatientDetail')
+  },
   closeAddAppointmentForm ({ commit }) {
     commit('closeAddAppointmentForm')
+  },
+  closeAddAppointmentFormPatientDetail ({ commit }) {
+    commit('closeAddAppointmentFormPatientDetail')
   },
   openSelectMedicalInstructionModal ({ commit }) {
     commit('openSelectMedicalInstructionModal')
   },
   closeSelectMedicalInstructionModal ({ commit }) {
     commit('closeSelectMedicalInstructionModal')
+  },
+  openSelectMedicalInstructionModalSub ({ commit }) {
+    commit('openSelectMedicalInstructionModalSub')
+  },
+  closeSelectMedicalInstructionModalSub ({ commit }) {
+    commit('closeSelectMedicalInstructionModalSub')
+  },
+  openAddNewVitalSign ({ commit }) {
+    commit('openAddNewVitalSign')
+  },
+  closeAddNewVitalSign ({ commit }) {
+    commit('closeAddNewVitalSign')
+  },
+  autoVitalSign ({ commit }) {
+    commit('setAutoVitalSign')
+  },
+  unAutoVitalSign ({ commit }) {
+    commit('setUnAutoVitalSign')
+  },
+  clearState ({ commit }) {
+    commit('clearState')
   }
 }
 const mutations = {
+  openFinishAppointmentShow (state) {
+    state.isFinishAppointmentShow = true
+  },
+  closeFinishAppointmentShow (state) {
+    state.isFinishAppointmentShow = false
+  },
+  openRequestMedicalInstructionList (state) {
+    state.isRequestMedicalInstructionList = true
+  },
+  closeRequestMedicalInstructionList (state) {
+    state.isRequestMedicalInstructionList = false
+  },
+  openRequestMedicalInstruction (state) {
+    state.isRequestMedicalInstruction = true
+  },
+  closeRequestMedicalInstruction (state) {
+    state.isRequestMedicalInstruction = false
+  },
+  openChartView (state) {
+    state.isChartView = true
+  },
+  closeChartView (state) {
+    state.isChartView = false
+  },
+  openUpdateAppointmentShow (state) {
+    state.isUpdateAppointmentShow = true
+  },
+  closeUpdateAppointmentShow (state) {
+    state.isUpdateAppointmentShow = false
+  },
+  openPrescriptionShow (state) {
+    state.isPrescriptionShow = true
+  },
+  closePrescriptionShow (state) {
+    state.isPrescriptionShow = false
+  },
+  openVitalSignShow (state) {
+    state.isVitalSignShow = true
+  },
+  closeVitalSignShow (state) {
+    state.isVitalSignShow = false
+  },
   openMedicalInstruction (state) {
     state.visibleMedicalInstruction = true
   },
@@ -82,16 +206,43 @@ const mutations = {
   },
   openAddAppointmentForm (state) {
     state.isVisibleAddAppointmentForm = true
-    console.log('state.isVisibleAddAppointmentForm', state.isVisibleAddAppointmentForm)
+  },
+  openAddAppointmentFormPatientDetail (state) {
+    state.isVisibleAddAppointmentFormPatientDetail = true
   },
   closeAddAppointmentForm (state) {
     state.isVisibleAddAppointmentForm = false
+  },
+  closeAddAppointmentFormPatientDetail (state) {
+    state.isVisibleAddAppointmentFormPatientDetail = false
   },
   openSelectMedicalInstructionModal (state) {
     state.isVisibleSelectMedicalInstruction = true
   },
   closeSelectMedicalInstructionModal (state) {
     state.isVisibleSelectMedicalInstruction = false
+  },
+  openSelectMedicalInstructionModalSub (state) {
+    state.isVisibleSelectMedicalInstructionSub = true
+  },
+  closeSelectMedicalInstructionModalSub (state) {
+    state.isVisibleSelectMedicalInstructionSub = false
+  },
+  openAddNewVitalSign (state) {
+    state.isVisibleAddVitalSign = true
+    state.isAutoVitalSign = true
+  },
+  closeAddNewVitalSign (state) {
+    state.isVisibleAddVitalSign = false
+  },
+  setAutoVitalSign (state) {
+    state.isAutoVitalSign = true
+  },
+  setUnAutoVitalSign (state) {
+    state.isAutoVitalSign = false
+  },
+  clearState (state) {
+    state = () => ({})
   }
 }
 

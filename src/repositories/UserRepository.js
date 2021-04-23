@@ -33,10 +33,18 @@ export default {
     })
   },
   async createTokenFirebase (accountId, token) {
-    console.log('createTokenFirebase:', { accountId: parseInt(accountId), token: token })
-    var formData = new FormData()
+    const formData = new FormData()
     formData.append('accountId', accountId)
     formData.append('token', token)
+    return await request({
+      method: 'post',
+      url: `/FireBases`,
+      data: formData
+    })
+  },
+  async removeTokenFirebase (accountId) {
+    const formData = new FormData()
+    formData.append('accountId', accountId)
     return await request({
       method: 'post',
       url: `/FireBases`,

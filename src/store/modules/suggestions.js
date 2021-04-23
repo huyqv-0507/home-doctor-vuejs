@@ -35,6 +35,9 @@ const actions = {
     }) */
     const diagnoses = medicalInstructionRepository.getDiagnoses()
     commit('setDiagnoses', diagnoses)
+  },
+  clearState ({ commit }) {
+    commit('clearState')
   }
 }
 const mutations = {
@@ -68,6 +71,9 @@ const mutations = {
       }
     })
     console.log('Diagnoses:::', state.diagnoses)
+  },
+  clearState (state) {
+    state = () => ({})
   }
 }
 export default {

@@ -2,10 +2,10 @@
   <div class="mainContent">
     <el-breadcrumb separator="/" class="breadcrumb">
       <el-breadcrumb-item :to="{ path: '/' }">Trang chủ</el-breadcrumb-item>
-      <el-breadcrumb-item>Lịch tái khám</el-breadcrumb-item>
+      <el-breadcrumb-item>Lịch hẹn</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="content bg-theme">
-      <h1 class="content__heading_title">Lịch tái khám</h1>
+      <h1 class="content__heading_title">Lịch hẹn</h1>
       <div class="content__body">
         <el-button
           class="content__body_add"
@@ -17,16 +17,7 @@
             <p>{{data.day.split('-')[2]}}</p>
             <div v-for="(appointment, index) in appointments" :key="`appointment-${index}`">
               <div v-if="data.day.split('-').reverse().join('/') === appointment.dateExamination">
-                <el-popover placement="top">
-                  <div class="active-activity" slot="reference"></div>
-                  <div class="bg-theme">
-                    <el-table :data="appointment.appointments">
-                      <el-table-column label="Họ tên" width="200" prop="patientName"></el-table-column>
-                      <el-table-column label="Công việc" width="400" prop="note"></el-table-column>
-                      <el-table-column label="Trạng thái" width="200" prop="status"></el-table-column>
-                    </el-table>
-                  </div>
-                </el-popover>
+                  <div class="active-activity" @click="appointmentDateChoose(appointment)"></div>
               </div>
             </div>
           </template>
@@ -44,7 +35,7 @@ export default {
   },
   methods: {
     ...mapActions('modals', ['openAppointmentPatientsModal']),
-    ...mapActions('appointments', ['getAppointments'])
+    ...mapActions('appointments', ['getAppointments', 'appointmentDateChoose'])
   },
   mounted () {
     this.getAppointments()

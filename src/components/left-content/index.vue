@@ -49,7 +49,7 @@
               <img src="../../assets/icons/ic-calendar.png"/>
             </el-col>
             <el-col :span="20">
-              <el-row><span class="wrapper_shortcut-items_item-title">Lịch tái khám</span></el-row>
+              <el-row><span class="wrapper_shortcut-items_item-title">Lịch hẹn</span></el-row>
               <el-row><span class="wrapper_shortcut-items_item-description">Đặt lịch nhắc hẹn với bệnh nhân</span></el-row>
             </el-col>
           </el-row>
@@ -76,10 +76,11 @@ export default {
   name: 'LeftContent',
   computed: {
     ...mapState('users', ['user']),
-    ...mapState('modals', ['visibleMedicalInstruction'])
+    ...mapState('modals', ['visibleMedicalInstruction']),
+    ...mapState('time', ['timeNow'])
   },
   data () {
-    const now = new Date()
+    const now = new Date(this.$store.state.time.timeNow)
     var weekDay = ''
     if (now.getDay() === 0) { // weekDay [0-6]
       weekDay = 'Chủ nhật'
@@ -107,8 +108,12 @@ export default {
       isShow: false
     }
   },
+  mounted () {
+    this.getTimeSystem()
+  },
   methods: {
-    ...mapActions('modals', ['openMedicalInstruction', 'show'])
+    ...mapActions('modals', ['openMedicalInstruction']),
+    ...mapActions('time', ['getTimeSystem'])
   }
 }
 </script>

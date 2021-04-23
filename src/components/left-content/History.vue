@@ -68,7 +68,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../style/index.scss";
 .history {
-  max-height: 800px;
+  max-height: 700px;
   overflow: auto;
 }
 .main-history {

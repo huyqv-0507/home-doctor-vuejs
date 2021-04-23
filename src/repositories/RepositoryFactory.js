@@ -5,6 +5,7 @@ import MedicalInstructionRepository from '../repositories/MedicalInstructionRepo
 import AppointmentRepository from './AppointmentRepository'
 import NotificationRepository from '../repositories/NotificationRepository'
 import VitalSignRepository from '../repositories/VitalSignRepository'
+import TimeRepository from '../repositories/TimeRepository'
 
 const repositories = {
   userRepository: UserRepository,
@@ -13,7 +14,8 @@ const repositories = {
   medicalInstructionRepository: MedicalInstructionRepository,
   appointmentRepository: AppointmentRepository,
   notificationRepository: NotificationRepository,
-  vitalSignRepository: VitalSignRepository
+  vitalSignRepository: VitalSignRepository,
+  timeRepository: TimeRepository
 }
 
 export const RepositoryFactory = {

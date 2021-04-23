@@ -1,5 +1,6 @@
 import request from '../utils/request.js'
 import contractSample from '../assets/data/contract-sample.json'
+import contractCondition from '../assets/data/condition-create-contract.json'
 
 export default {
   async getContracts (userId) {
@@ -22,7 +23,7 @@ export default {
   },
   async getRejectContracts (userId) {
     return await request({
-      url: `/Contracts?doctorId=${userId}&status=cancel`,
+      url: `/Contracts?doctorId=${userId}&status=canceld`,
       method: 'get'
     })
   },
@@ -38,6 +39,12 @@ export default {
       method: 'get'
     })
   },
+  async getSignContracts (userId) {
+    return await request({
+      url: `/Contracts?doctorId=${userId}&status=signed`,
+      method: 'get'
+    })
+  },
   // Lấy thông tin hợp đồng bằng ID của Contract
   async getRequestDetail (contractId) {
     return await request({
@@ -47,23 +54,38 @@ export default {
   },
   // Cập nhật lại (Xác nhận) hợp đồng bệnh nhân đã yêu cầu
   async createContract (contractData) {
+    const dateStarted = new Date(contractData.contract.dateStarted)
+    const contract = {
+      doctorId: contractData.contract.doctorId,
+      patientId: contractData.contract.patientId,
+      status: 'APPROVED',
+      dateStart: `${dateStarted.getFullYear()}-${(dateStarted.getMonth() + 1) < 10 ? '0' + (dateStarted.getMonth() + 1) : (dateStarted.getMonth() + 1)}-${dateStarted.getDate() < 10 ? '0' + dateStarted.getDate() : dateStarted.getDate()}`,
+      daysOfTracking: contractData.contract.daysOfTracking,
+      medicalInstructionChooses: contractData.medicalInstructionOfNewHealthRecord
+    }
+    console.log(' repo contract>>>', contract)
     return await request({
-      url: `/Contracts/${contractData.contract.contractId}?doctorId=${contractData.contract.doctorId}&patientId=${contractData.contract.patientId}&status=APPROVED&dateStart=${contractData.contract.dateStarted}&daysOfTracking=${contractData.contract.daysOfTracking}`,
+      url: `/Contracts/${parseInt(contractData.contract.contractId)}`,
       method: 'put',
-      data: contractData.medicalInstructionOfNewHealthRecord
+      data: contract
     })
   },
   // Cập nhật lại (Huỷ) hợp đồng bệnh nhân đã yêu cầu
   async cancelContract (contract) {
+    const contractData = {
+      doctorId: parseInt(contract.doctorId),
+      patientId: parseInt(contract.patientId),
+      status: 'CANCELD'
+    }
     return await request({
-      url: `/Contracts/${contract.contractId}?doctorId=${contract.doctorId}&patientId=${contract.patientId}&status=CANCELD`,
-      method: 'put'
+      url: `/Contracts/${contract.contractId}`,
+      method: 'put',
+      data: contractData
     })
   },
   // Lấy các medicalInstruction (Đơn thuốc, phiếu xét nghiệm) được bệnh nhân share trong khi tạo Contract
   async getMedicalInstructionShared (contractId, diseaseId) {
-    console.log('ContractRepository - getMedicalInstructionShared - contractId:', contractId)
-    console.log('ContractRepository - getMedicalInstructionShared - diseaseId:', diseaseId)
+    console.log('ContractRepository - getMedicalInstructionShared - contractId:', contractId, diseaseId)
     return await request({
       url: `/MedicalInstructionShares?contractId=${contractId}&diseaseId=${diseaseId}`,
       // url: `http://45.76.186.233:8000/api/MedicalInstructionShares?contractId=${contractId}`,
@@ -74,10 +96,20 @@ export default {
     return contractSample
   },
   async getPriceOfContract (days) {
-    console.log('days', typeof days)
     return await request({
       url: `/Licenses/GetLicenseByDays?days=${days}`,
       method: 'get'
+    })
+  },
+  getContractCondition () {
+    return contractCondition
+  },
+  async updateMedicalInstructionToContract (data) {
+    console.log('updatemic>', data)
+    return await request({
+      method: 'post',
+      url: `/MedicalInstructions/AddMedicalInstructionFromContract?contractId=${data.contractId}`,
+      data: data.medicalInstructions
     })
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div v-show="visibleAllImages" class="image-view">
-    <div class="image-view__content_exit pointer" v-on:click="closeAllImages(checkedImgs)">
+    <div class="image-view__content_exit pointer" v-on:click="closeImages()">
       <strong>x</strong>
     </div>
     <el-carousel
@@ -12,11 +12,12 @@
     >
       <el-carousel-item
         style="height: 100%;"
-        v-for="(item, index) in allMedicalInstructionShared"
+        v-for="(item, index) in images"
         :key="`allImg-${index}`"
       >
+      <div>{{item}}</div>
         <div class="image-view__content_images-image">
-          <el-image :src="imageInfo.imgUrl" style="height: 650px;" fit="scale-down"></el-image>
+          <el-image :src="imageInfo.url" style="height: 650px;" fit="scale-down"></el-image>
         </div>
       </el-carousel-item>
     </el-carousel>
@@ -26,9 +27,7 @@
         <div class="disease">
           <el-row class="image-view__content_body-title margin-all margin-text">
             Bệnh lý:
-            <p v-for="(disease, index) in imageInfo.diseases" :key="`disease-${index}`">
-              <strong class="margin-text">- ({{disease.diseaseId}}) {{disease.nameDisease}};</strong>
-            </p>
+            <strong>{{imageInfo.diseases}}</strong>
           </el-row>
           <el-row class="image-view__content_body-diagnose margin-all margin-text">
             <p>
@@ -56,39 +55,76 @@
           <i>Bác sĩ chọn những Y lệnh để thêm vào hồ sơ bệnh án mới sau khi hợp đồng được ký kết.</i>
           <i style="color: grey;">(Mặc định hệ thống sẽ chọn tất cả nếu bác sĩ không chọn).</i>
         </div>
+        <el-button
+          style="margin-bottom: .5em;"
+          type="primary"
+          size="mini"
+          @click="handleSaveImages(checkedImgs)"
+        >Lưu</el-button>
         <div class="medical-instruction">
-          <div
-            v-for="(medicalInstructionType, index) in requestDetail.medicalInstructionTypes"
-            :key="`medicalInstructionType-${index}`"
-          >
-            <h4 class="margin-vertical">{{medicalInstructionType.medicalInstructionTypeName}}</h4>
-            <div
-              v-for="(medicalInstruction, indexMi) in medicalInstructionType.medicalInstructions"
-              :key="`medicalInstruction-${indexMi}`"
+          <el-collapse accordion>
+            <el-collapse-item
+              :name="indexDisease"
+              v-for="(medicalInstructionDisease, indexDisease) in requestDetail.medicalInstructionDiseases"
+              :key="`medicalInstructionType-${indexDisease}`"
             >
-              <div>
-                <input
-                  type="checkbox"
-                  :id="medicalInstruction.medicalInstructionId"
-                  :value="medicalInstruction.medicalInstructionId"
-                  v-model="checkedImgs"
-                />
-                <el-image
-                  class="pointer"
-                  v-bind:class="{ borderChoose: medicalInstruction.isChoose }"
-                  :src="medicalInstruction.image"
-                  style="width: 100px"
-                  fit="scale-down"
-                  v-on:click="handleChooseImg(
+              <template slot="title">
+                <p
+                  style="font-size: 13px; margin-left: .5em;"
+                >- ({{medicalInstructionDisease.diseaseId}}) {{medicalInstructionDisease.diseaseName}}</p>
+              </template>
+              <el-row style="display: flex; align-items: center; overflow-x: auto; margin: .5em;">
+                <div
+                  v-for="(medicalInstruction, indexMi) in medicalInstructionDisease.medicalInstructions"
+                  :key="`medicalInstruction-${indexMi}`"
+                >
+                  <p>{{medicalInstruction.medicalInstructionTypeName}}</p>
+                  <div
+                    v-for="(mi, index) in medicalInstruction.medicalInstruction"
+                    :key="`mi${index}`"
+                  >
+                    <input
+                      v-if="isShowChkChoose"
+                      type="checkbox"
+                      :id="`${mi.medicalInstructionId}-${medicalInstructionDisease.diseaseId}`"
+                      :value="{
+                    medicalInstructionId: mi.medicalInstructionId,
+                    medicalInstructionTypeName: medicalInstruction.medicalInstructionTypeName,
+                    diseaseId: medicalInstructionDisease.diseaseId,
+                    diseaseName: medicalInstructionDisease.diseaseName
+                    }"
+                      v-model="checkedImgs"
+                    />
+                    <el-row
+                      style="margin: 0.4em; display: inline-flex; overflow: auto;"
+                      v-show="medicalInstruction.image !== null"
+                    >
+                      <el-row
+                        v-for="(i, index) in mi.images"
+                        :key="`i${index}`"
+                        style="margin-right: .3em;"
+                      >
+                        <el-image
+                          class="pointer"
+                          v-bind:class="{ borderChoose: i.isChoose }"
+                          :src="i.url"
+                          style="width: 100px"
+                          fit="scale-down"
+                          v-on:click="handleChooseImg(
             {
               medicalInstructionTypeName: medicalInstructionType.medicalInstructionTypeName,
-              medicalInstruction: medicalInstruction
+              medicalInstruction: medicalInstruction,
+              imgUrl: i.url
             }
           )"
-                />
-              </div>
-            </div>
-          </div>
+                        />
+                      </el-row>
+                    </el-row>
+                  </div>
+                </div>
+              </el-row>
+            </el-collapse-item>
+          </el-collapse>
         </div>
       </div>
     </div>
@@ -105,27 +141,41 @@ export default {
   },
   computed: {
     ...mapState('slideshows', [
-      'allMedicalInstructionShared',
+      'images',
       'visibleAllImages',
       'imageInfo',
-      'medicalInstructionChoose'
+      'medicalInstructionChoose',
+      'isShowChkChoose'
     ]),
     ...mapState('contracts', ['requestDetail']),
     ...mapGetters('slideshows', ['getImage'])
   },
   mounted () {},
   methods: {
-    ...mapActions('slideshows', ['closeZoom', 'closeAllImages']),
+    ...mapActions('slideshows', ['closeZoom', 'closeAllImages', 'saveImgChks', 'closeImages']),
     ...mapActions('medicalInstruction'),
     imageChange (index) {
       this.$store.dispatch('slideshows/setImageInfo', index, { root: true })
     },
     handleChooseImg (imgChoose) {
-      var indexImgSelected = this.getImage(imgChoose.medicalInstruction.image) // Vị trí của img trong allMedicalInstructionShared
+      console.log(imgChoose)
+      var indexImgSelected = this.getImage(imgChoose.imgUrl) // Vị trí của img trong allMedicalInstructionShared
       this.$store.dispatch('slideshows/setImageInfo', indexImgSelected, {
         root: true
       })
       this.$refs.carousel.setActiveItem(indexImgSelected)
+    },
+    handleSaveImages (imgChecks) {
+      this.$confirm(
+        'Bác sĩ đã chắc chắn chọn những Y lệnh này không?',
+        'Xác nhận',
+        {
+          confirmButtonText: 'Đồng ý',
+          cancelButtonText: 'Trở lại'
+        }
+      ).then(() => {
+        this.closeAllImages(imgChecks)
+      })
     }
   }
 }
@@ -137,7 +187,8 @@ export default {
   margin: 0.3em 0 0.8em 0;
 }
 .medical-instruction {
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   max-height: 325px;
   height: auto;
   text-overflow: ellipsis;

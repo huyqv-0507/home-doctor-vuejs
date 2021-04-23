@@ -6,6 +6,7 @@
     center
     @close="closeEditMedicine()"
   >
+  <p>{{medicineEdit.medicine}}</p>
     <el-form ref="newMedicineForm" :model="newMedicineForm" size="mini" class="form">
       <el-form-item class="form__item">
         <el-row>
@@ -150,7 +151,7 @@
 
     <span slot="footer">
       <el-row>
-        <el-button type="primary" @click="addMedicineEditToPrescription()">Xác nhận</el-button>
+        <el-button type="primary" @click="addMedicineEditToPrescription()" size="mini">Xác nhận</el-button>
       </el-row>
     </span>
   </el-dialog>
@@ -196,6 +197,7 @@ export default {
     ...mapState('medicalInstruction', ['medicineEdit'])
   },
   mounted () {
+    // this.handleDefaultMedicine()
     this.medicines = this.$store.state.suggestions.medicines.map(medicine => {
       return {
         medicineName: medicine.medicineName,
@@ -270,6 +272,9 @@ export default {
             .indexOf(queryString.toString().toLowerCase()) > -1
         )
       }
+    },
+    handleDefaultMedicine () {
+      this.medicineDescription = this.medicineEdit.medicine.medicineName
     }
   }
 }

@@ -1,12 +1,8 @@
+import { RepositoryFactory } from '../../repositories/RepositoryFactory'
+const medicalInstructionRepository = RepositoryFactory.get('medicalInstructionRepository')
 const state = () => ({
   visibleAllImages: false,
-  imageInfo: {
-    diseases: [],
-    medicalInstructionTypeName: '',
-    diagnose: '',
-    description: '',
-    imgUrl: ''
-  },
+  imageInfo: null,
   isShowImg: false,
   imageShow: {
     diseases: [],
@@ -16,41 +12,47 @@ const state = () => ({
     imgUrl: ''
   },
   allMedicalInstructionShared: [],
-  medicalInstructionChoose: []
+  medicalInstructionChoose: [],
+  isShowChkChoose: false,
+  images: [],
+  isImageShow: false,
+  isImageRequestShow: false
+
 })
 const getters = {
   getImage: state => (imgUrl) => {
-    return state.allMedicalInstructionShared.findIndex(i => i.imgUrl === imgUrl)
+    return state.images.findIndex(i => i.imgObj.url === imgUrl)
   }
 }
 const actions = {
-  setImageInfo ({ commit, state, rootState }, index) {
-    commit('setImageInfo', state.allMedicalInstructionShared[index])
-    rootState.contracts.requestDetail.medicalInstructionTypes.forEach(
-      element => {
-        element.medicalInstructions.forEach(m => {
-          if (m.image === state.imageInfo.imgUrl) {
-            m.isChoose = true
-            return
-          }
-          m.isChoose = false
-        })
+  getMedicalInstructionImageInfo ({ commit, state }, medicalInstructionId) {
+    medicalInstructionRepository.getMedicalInstructionById(medicalInstructionId).then(response => {
+      console.log(response.data)
+      commit('setImageInfo', response.data)
+    }).catch(err => {
+      if (err.message.includes('404')) {
+        state.imageInfo = null
       }
-    )
-  },
-  showAllImages ({ commit, dispatch, rootState }) {
-    console.log(rootState.contracts.requestDetail.medicalInstructionTypes)
-    commit('setAllMedicalInstructionShared', {
-      medicalInstructionTypes: rootState.contracts.requestDetail.medicalInstructionTypes,
-      diseases: rootState.contracts.requestDetail.diseases
+      console.error(err)
     })
-    rootState.contracts.requestDetail.medicalInstructionTypes[0].medicalInstructions[0].isChoose = true
-    dispatch('slideshows/setImageInfo', 0, { root: true })
-    commit('showAllImages')
   },
-  closeAllImages ({ commit, dispatch }, checkedImgs) {
-    dispatch('medicalInstruction/saveMedicalInstruction', checkedImgs, { root: true })
-    commit('closeAllImages')
+  openImageRequestShow ({ commit }) {
+    commit('openImageRequestShow')
+  },
+  closeImageRequestShow ({ commit }) {
+    commit('closeImageRequestShow')
+  },
+  openImageShow ({ commit }) {
+    commit('openImageShow')
+  },
+  closeImageShow ({ commit }) {
+    commit('closeImageShow')
+  },
+  showImages ({ commit }, images) {
+    commit('setImages', images)
+  },
+  closeImages ({ commit }) {
+    commit('closeImages')
   },
   // Bác sĩ chọn ảnh để xem
   selectImg ({ commit }, image) {
@@ -69,26 +71,53 @@ const actions = {
       }
     })
     // commit('closeZoom')
+  },
+  clearState ({ commit }) {
+    commit('clearState')
   }
 }
 const mutations = {
+  openImageRequestShow (state) {
+    state.isImageRequestShow = true
+  },
+  closeImageRequestShow (state) {
+    state.isImageRequestShow = false
+  },
+  openImageShow (state) {
+    state.isImageShow = true
+  },
+  closeImageShow (state) {
+    state.isImageShow = false
+  },
+  setImages (state, images) {
+    state.images = images
+    state.visibleAllImages = true
+    console.log('images to show:', images)
+  },
   setAllMedicalInstructionShared (state, medicalInstructionShared) {
     var tmp = []
     console.log('medicalInstructionShared', medicalInstructionShared)
-    medicalInstructionShared.medicalInstructionTypes.forEach(medicalInstructionType => {
+    medicalInstructionShared.medicalInstructionDiseases.forEach(medicalInstructionType => {
       medicalInstructionType.medicalInstructions.forEach(medicalInstruction => {
-        var obj = {
-          medicalInstructionTypeName: medicalInstructionType.medicalInstructionTypeName,
-          imgUrl: medicalInstruction.image,
-          diseases: medicalInstructionShared.diseases,
-          diagnose: medicalInstruction.diagnose,
-          description: medicalInstruction.description
-        }
-        tmp.push(obj)
+        medicalInstruction.medicalInstruction.forEach(img => {
+          img.images.forEach(i => {
+            var obj = {
+              medicalInstructionTypeName: img.medicalInstructionTypeName,
+              imgObj: i,
+              diseases: medicalInstructionType.diseaseId + '-' + medicalInstructionType.diseaseName,
+              diagnose: img.diagnose,
+              description: img.description
+            }
+            tmp.push(obj)
+          })
+        })
       })
     })
     state.allMedicalInstructionShared = tmp
     console.log('allMedicalInstructionShared', state.allMedicalInstructionShared)
+  },
+  closeImages (state) {
+    state.visibleAllImages = false
   },
   closeImgShow (state) {
     state.imageShow = ''
@@ -100,17 +129,30 @@ const mutations = {
     state.imageShow.diseases = image.diseases
     state.imageShow.medicalInstructionTypeName = image.medicalInstructionTypeName
     state.imageShow.diagnose = image.diagnose
-    state.imageShow.imgUrl = image.imgUrl
+    state.imageShow.imgUrl = image.imgObj.url
     state.imageShow.description = image.description
     state.isShowImg = true
   },
   setImageInfo (state, imageInfo) {
+    console.log('imageInfo', imageInfo)
     state.imageInfo = {}
-    state.imageInfo.diseases = imageInfo.diseases
-    state.imageInfo.medicalInstructionTypeName = imageInfo.medicalInstructionTypeName
-    state.imageInfo.diagnose = imageInfo.diagnose
-    state.imageInfo.imgUrl = imageInfo.imgUrl
-    state.imageInfo.description = imageInfo.description
+    state.imageInfo = {
+      medicalInstructionId: imageInfo.medicalInstructionId,
+      medicalInstructionTypeId: imageInfo.medicalInstructionTypeId,
+      medicalInstructionTypeName: imageInfo.medicalInstructionTypeName,
+      dateCreate: imageInfo.dateCreate,
+      patientFullName: imageInfo.patientFullName,
+      images: imageInfo.images.map(i => {
+        return {
+          isChoose: false,
+          url: `http://45.76.186.233:8000/api/v1/Images?pathImage=${i}`
+        }
+      }),
+      description: imageInfo.description,
+      diagnose: imageInfo.diagnose,
+      placeHealthRecord: imageInfo.placeHealthRecord,
+      status: imageInfo.status
+    }
     console.log('imgInfo: ', state.imageInfo)
   },
   selectImg (state, imgIndex) {
@@ -121,9 +163,14 @@ const mutations = {
   },
   showAllImages (state) {
     state.visibleAllImages = true
+    state.isShowChkChoose = true
   },
   closeAllImages (state) {
     state.visibleAllImages = false
+    state.isShowChkChoose = false
+  },
+  clearState (state) {
+    state = () => ({})
   }
 }
 

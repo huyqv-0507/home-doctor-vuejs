@@ -9,10 +9,6 @@
     </div>
     <div class="contract bg-theme">
       <el-row class="contract__today">
-        <span></span>
-        <span>
-          <i>Hôm nay, ngày {{contractDetailHistory.today.day}} tháng {{contractDetailHistory.today.month}} năm {{contractDetailHistory.today.year}}</i>
-        </span>
       </el-row>
       <el-row class="horizontalCenter">
         <b>CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM</b>

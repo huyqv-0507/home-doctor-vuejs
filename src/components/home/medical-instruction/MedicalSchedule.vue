@@ -1,13 +1,15 @@
 <template>
   <div class="mainContent">
     <el-breadcrumb separator="/" class="breadcrumb">
-      <el-breadcrumb-item :to="{ path: '/' }">Trang chủ</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/' }" v-if="routeFrom === 'HOME'">Trang chủ</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/' }" v-if="routeFrom === 'PATIENT-DETAIL'">Bệnh nhân</el-breadcrumb-item>
       <el-breadcrumb-item>Y lệnh</el-breadcrumb-item>
       <el-breadcrumb-item>Lịch uống thuốc</el-breadcrumb-item>
     </el-breadcrumb>
+    <div class="bg-theme" style="font-size: 13px;">
     <el-row class="verticalCenter">
       <el-col :span="18">
-        <h1>Lịch dùng thuốc</h1>
+        <h1 class="margin-default">Lịch dùng thuốc</h1>
       </el-col>
       <el-col :span="6"></el-col>
     </el-row>
@@ -17,7 +19,7 @@
           Hệ thống sẽ gửi thông báo nhắc nhở đến bệnh nhân
           <strong
             style="color: black;"
-          >{{patientSelected.patientName}}</strong> như lịch bác sĩ đã sắp xếp.
+          v-if="patientSelected !== null">{{patientSelected.patientName}}</strong> như lịch bác sĩ đã sắp xếp.
         </span>
       </el-col>
     </el-row>
@@ -27,10 +29,10 @@
         <div class="medical-treatment__duration-date_content"></div>
       </div>
       <div>
-        <el-button type="primary" @click="openAddNewMedicine()">Tạo mới</el-button>
+        <el-button size="mini" type="primary" @click="openAddNewMedicine()">Tạo mới</el-button>
       </div>
     </div>
-    <h1 style="margin-top: 1em;">Đơn thuốc đã sử dụng</h1>
+    <h1 class="margin-default">Đơn thuốc đã sử dụng</h1>
     <div class="filter">
       <el-select v-model="value" placeholder="Tất cả" size="mini" @change="handleStatusSelected">
         <el-option
@@ -105,7 +107,7 @@
           </el-row>
         </el-card>
       </el-timeline-item>
-    </el-timeline>
+    </el-timeline></div>
   </div>
 </template>
 
@@ -118,7 +120,8 @@ export default {
       'prescriptionDetails',
       'medicalInstructionHistory',
       'medicalInstructionHistories'
-    ])
+    ]),
+    ...mapState('systemHandler', ['routeFrom'])
   },
   data () {
     return {
@@ -143,15 +146,11 @@ export default {
       value: ''
     }
   },
-  mounted () {
-    this.getMedicalScheduleHistory()
-  },
   methods: {
     ...mapActions('patients', ['getPatientApproved']),
     ...mapActions('medicalInstruction', [
       'createMedicalSchedule',
       'usePrescription',
-      'getMedicalScheduleHistory',
       'openAddNewMedicine',
       'reusePrescription',
       'setMedicalInstructionHistory', 'cancelPrescription'
@@ -188,6 +187,7 @@ export default {
       }
     },
     handleCancelPrescription (medicalInstructionId) {
+      console.log('Huỷ đơn thuốc>>>', medicalInstructionId)
       this.$confirm(
         'Dừng sử dụng đơn thuốc này. Tiếp tục?',
         'Cảnh báo',
@@ -262,5 +262,8 @@ export default {
   width: 100%;
   display: flex;
   justify-content: flex-end;
+}
+.margin-default {
+  margin: 0.7em 0;
 }
 </style>

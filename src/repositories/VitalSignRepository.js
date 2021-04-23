@@ -17,5 +17,41 @@ export default {
       url: '/VitalSigns',
       data: vitalSign
     })
+  },
+  async getVitalSignHealthPatient (data) {
+    const params = {
+      patientId: data.patientId,
+      healthRecordId: data.healthRecordId,
+      dateTime: data.dateTime
+    }
+    return await request({
+      method: 'get',
+      url: `/VitalSigns/GetVitalSignValueByPatientId?patientId=${params.patientId}&healthRecordId=${params.healthRecordId}&dateTime=${params.dateTime}`
+    })
+  },
+  async getVitalSigns (healthRecordId) {
+    return await request({
+      method: 'get',
+      url: `/VitalSigns/GetVitalSignScheduleByHRId?healthRecordId=${healthRecordId}`
+    })
+  },
+  async getVitalSignValueByMiId (medicalInstructionId, patientId) {
+    console.log('getVitalSignValueByMiId', medicalInstructionId, patientId)
+    return await request({
+      method: 'get',
+      url: `/VitalSigns/GetVitalSignValueByMIId?medicalInstructionId=${medicalInstructionId}&patientId=${patientId}`
+    })
+  },
+  async getVitalSignSchedulePatient (patientId) {
+    return await request({
+      method: 'get',
+      url: `/VitalSigns?patientId=${patientId}&status=active`
+    })
+  },
+  async getVitalSignValueByHRId (healthRecordId) {
+    return await request({
+      method: 'get',
+      url: `/VitalSigns/GetVitalSignScheduleByHRId?healthRecordId=${healthRecordId}`
+    })
   }
 }

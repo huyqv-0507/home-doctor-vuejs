@@ -1,6 +1,7 @@
 import router from '../../router/index'
 import { RepositoryFactory } from '../../repositories/RepositoryFactory'
-import { Notification } from 'element-ui'
+import { Notification, MessageBox } from 'element-ui'
+import { groupBy } from '../../utils/common'
 
 const medicalInstructionRepository = RepositoryFactory.get('medicalInstructionRepository')
 
@@ -40,29 +41,167 @@ const state = () => ({
     dateCanceled: ''
   },
   medicalInstructionHistories: [], // Danh sách lịch sử đơn thuốc
-  medicalInstructionOfNewHealthRecord: []
+  medicalInstructionOfNewHealthRecord: [],
+  medicalInstructionOfNewHealthRecordShow: [],
+  prescriptionView: {},
+  vitalSignView: {},
+  medicalInstructionTypes: []
 })
 const getters = {}
 const actions = {
+  setPrescriptionView ({ commit }, prescription) {
+    commit('setPrescriptionView', prescription)
+  },
+  setVitalSignView ({ commit }, vitalSign) {
+    commit('setVitalSignView', vitalSign)
+  },
+  setMedicalInstructionEmpty ({ commit }) {
+    commit('setMedicalInstructionEmpty')
+  },
   // Đi đến trang xét lịch uống thuốc cho bệnh nhân
-  setMedicalSchedule ({ dispatch }) {
-    dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
-    dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
-    router.push('medical-schedule').catch(error => {
-      if (error.name !== 'NavigationDuplicated') {
-        throw error
+  setMedicalSchedule ({ dispatch, rootState, state }, from) {
+    if (!state.patientSelected.isScheduleAppointment) {
+      MessageBox.alert('Bác sĩ cần gặp bệnh nhân lần đầu để kiểm tra trước khi cho đơn thuốc.', 'Cảnh báo')
+    } else {
+      switch (from) {
+        case 'HOME':
+          dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
+          dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
+          dispatch('modals/closeSelectMedicalInstructionModalSub', null, { root: true }) // Gọi module 'modals' để đóng dialog
+          router.push('/home/medical-schedule').catch(error => {
+            if (error.name !== 'NavigationDuplicated') {
+              throw error
+            }
+          })
+          dispatch('appointments/setAppointmentIdToCreatePrescription', null, { root: true })
+          break
+
+        case 'PATIENT-DETAIL':
+          dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
+          dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
+          router.push('/patient-detail-page/medical-schedule').catch(error => {
+            if (error.name !== 'NavigationDuplicated') {
+              throw error
+            }
+          })
+          dispatch('appointments/setAppointmentIdToCreatePrescription', null, { root: true })
+          break
+        case 'APPOINTMENT':
+          dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
+          dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
+          dispatch('modals/closeFinishAppointmentShow', null, { root: true })
+          router.push('/patient-detail-page/medical-schedule').catch(error => {
+            if (error.name !== 'NavigationDuplicated') {
+              throw error
+            }
+          })
+          dispatch('appointments/setAppointmentIdToCreatePrescription', rootState.appointments.appointmentIdToCreatePrescription, { root: true })
+          break
+
+        default:
+          break
       }
-    })
+      rootState.systemHandler.routeFrom = from
+      dispatch('medicalInstruction/getMedicalScheduleHistory', null, { root: true })
+    }
   },
   // Đi đến trang đo sinh hiệu cho bệnh nhân
-  setVitalSign ({ dispatch }) {
+  setVitalSign ({ dispatch, rootState, state }, from) {
+    var isDeviceConnected = state.patientSelected.isDeviceConnected
+    switch (from) {
+      case 'HOME':
+        console.log(isDeviceConnected)
+        if (isDeviceConnected) {
+          dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
+          dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
+          dispatch('modals/closeSelectMedicalInstructionModalSub', null, { root: true }) // Gọi module 'modals' để đóng dialog
+          router.push('/home/vital-sign').catch(error => {
+            if (error.name !== 'NavigationDuplicated') {
+              throw error
+            }
+          })
+        } else {
+          MessageBox.confirm('Bệnh nhân chưa kết nối thiết bị đo sinh hiệu. Bác sĩ có muốn yêu cầu bệnh nhân kết nối thiết bị?',
+            {
+              confirmButtonText: 'Gửi',
+              cancelButtonText: 'Huỷ'
+            })
+            .then(() => {
+              console.log('GỬI')
+            })
+            .catch(() => {
+              console.log('HUỶ')
+            })
+        }
+        dispatch('appointments/setAppointmentIdToCreateVitalSign', null, { root: true })
+        break
+      case 'PATIENT-DETAIL':
+        console.log(' a', isDeviceConnected)
+        if (isDeviceConnected) {
+          dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
+          dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
+          router.push('/patient-detail-page/vital-sign').catch(error => {
+            if (error.name !== 'NavigationDuplicated') {
+              throw error
+            }
+          })
+          dispatch('appointments/setAppointmentIdToCreateVitalSign', null, { root: true })
+        } else {
+          MessageBox.confirm('Bệnh nhân chưa kết nối thiết bị đo sinh hiệu. Bác sĩ có muốn yêu cầu bệnh nhân kết nối thiết bị?',
+            {
+              confirmButtonText: 'Gửi',
+              cancelButtonText: 'Huỷ'
+            })
+            .then(() => {
+              console.log('GỬI')
+            })
+            .catch(() => {
+              console.log('HUỶ')
+            })
+        }
+        break
+      case 'APPOINTMENT':
+        console.log(isDeviceConnected)
+        if (isDeviceConnected) {
+          dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
+          dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
+          dispatch('modals/closeFinishAppointmentShow', null, { root: true })
+          router.push('/patient-detail-page/vital-sign').catch(error => {
+            if (error.name !== 'NavigationDuplicated') {
+              throw error
+            }
+          })
+        } else {
+          MessageBox.confirm('Bệnh nhân chưa kết nối thiết bị đo sinh hiệu. Bác sĩ có muốn yêu cầu bệnh nhân kết nối thiết bị?',
+            {
+              confirmButtonText: 'Gửi',
+              cancelButtonText: 'Huỷ'
+            })
+            .then(() => {
+              console.log('GỬI')
+            })
+            .catch(() => {
+              console.log('HUỶ')
+            })
+        }
+        dispatch('appointments/setAppointmentIdToCreateVitalSign', rootState.appointments.appointmentIdToCreateVitalSign, { root: true })
+        break
+      default:
+        break
+    }
+    rootState.systemHandler.routeFrom = from
+    dispatch('vitalSign/getVitalSigns', null, { root: true })
+  },
+  setAppointment ({ dispatch }) {
     dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
     dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
-    router.push('vital-sign').catch(error => {
+    dispatch('modals/closeSelectMedicalInstructionModalSub', null, { root: true }) // Gọi module 'modals' để đóng dialog
+    router.push('/home/appointment-set').catch(error => {
       if (error.name !== 'NavigationDuplicated') {
         throw error
       }
     })
+    dispatch('appointments/getPatientAppointments', null, { root: true })
   },
   // Sang trang chọn chức năng cho Y lệnh
   nextMedicalInstruction ({ commit }) {
@@ -93,10 +232,11 @@ const actions = {
       healthRecordId: state.patientSelected.healthRecordId,
       doctorAccountId: parseInt(rootState.users.user.accountId),
       diagnose: data.diagnose,
-      dateStart: data.dateStarted,
-      dateFinish: data.dateFinished,
+      dateStarted: data.dateStarted,
+      dateFinished: data.dateFinished,
       description: data.description,
       contractId: data.contractId,
+      appointmentId: rootState.appointments.appointmentIdToCreatePrescription,
       medicationScheduleCreates: state.prescriptionDetails.map(p => {
         return {
           medicationName: p.medicineName,
@@ -117,6 +257,9 @@ const actions = {
         commit('setPrescriptionExistedNew')
         dispatch('medicalInstruction/getMedicalScheduleHistory', null, { root: true })
         router.go(-1)
+        if (rootState.appointments.appointmentIdToCreatePrescription !== null) {
+          dispatch('appointments/finishAppointment', medicalInstructionSchedule.diagnose, { root: true })
+        }
       }
     }).catch(error => {
       console.log(error)
@@ -136,8 +279,9 @@ const actions = {
         dispatch('setMaxDatePrescription')
       }
     }).catch((error) => {
-      console.log(error)
-      commit('getMedicalScheduleHistoryFailure')
+      if (error.message.includes('404')) {
+        commit('getMedicalScheduleHistoryFailure')
+      }
     })
   },
   // Thêm mới thuốc
@@ -155,8 +299,8 @@ const actions = {
     router.push('reuse-medical-schedule')
   },
   // Sửa medicine
-  editMedicine ({ commit }, medicine) {
-    commit('editMedicine', medicine)
+  setEditMedicine ({ commit }, medicine) {
+    commit('setEditMedicine', medicine)
   },
   // Lấy thông tin đơn thuốc được chọn
   getPrescriptionDetailHistory ({ commit }, medicalInstructionId) {
@@ -174,16 +318,15 @@ const actions = {
   setMaxDatePrescription ({ commit }) {
     commit('setMaxDatePrescription')
   },
-  // Lấy thông tin y lệnh
-  getMedicalInstructionHistory ({ commit }, medicalInstructionId) {
-    medicalInstructionRepository.getMedicalInstructionHistory(medicalInstructionId).then(response => {
+  // Lấy thông tin tất cả đơn thuốc
+  getMedicalInstructionHistory ({ commit, state }) {
+    const params = {
+      patientId: state.patientSelected.patientId,
+      healthRecordId: state.patientSelected.healthRecordId
+    }
+    medicalInstructionRepository.getPrescriptionDetailHistory(params).then(response => {
       if (response.status === 200) {
         commit('setMedicalScheduleHistory', response.data)
-      }
-    })
-    router.push('/history/medical-instruction-history').catch(error => {
-      if (error.name !== 'NavigationDuplicated') {
-        throw error
       }
     })
   },
@@ -199,21 +342,28 @@ const actions = {
   // Huỷ đơn thuốc
   cancelPrescription ({ commit, dispatch }, payloadCancel) {
     medicalInstructionRepository.cancelPrescription(payloadCancel.medicalInstructionId, payloadCancel.reasonCancel).then(response => {
-      console.log(response.body)
       if (response.status === 200) {
-        commit('setCancelPrescription', payloadCancel.medicalInstructionId)
+        // console.log('payloadCancel', payloadCancel)
+        // commit('setCancelPrescription', payloadCancel.medicalInstructionId)
         dispatch('getMedicalInstructionHistory')
       }
     })
   },
-  // Chọn nhữn phiếu Y lệnh cần lưu
+  // Chọn những phiếu Y lệnh cần lưu
   saveMedicalInstruction ({ commit, rootState }, medicalInstructions) {
     var medicalInstructionForSave = []
     if (medicalInstructions.length === 0) {
-      rootState.contracts.requestDetail.medicalInstructionTypes.forEach(
-        element => {
-          element.medicalInstructions.forEach(m => {
-            medicalInstructionForSave.push(m.medicalInstructionId)
+      rootState.contracts.requestDetail.medicalInstructionDiseases.forEach(
+        medicalInstructionDisease => {
+          medicalInstructionDisease.medicalInstructions.forEach(medicalInstruction => {
+            medicalInstruction.medicalInstruction.forEach(mi => {
+              medicalInstructionForSave.push({
+                diseaseId: medicalInstructionDisease.diseaseId,
+                diseaseName: medicalInstructionDisease.diseaseName,
+                medicalInstructionId: mi.medicalInstructionId,
+                medicalInstructionTypeName: medicalInstruction.medicalInstructionTypeName
+              })
+            })
           })
         }
       )
@@ -221,6 +371,38 @@ const actions = {
       medicalInstructionForSave = medicalInstructions
     }
     commit('setMedicalInstructionOfNewHealthRecord', medicalInstructionForSave)
+  },
+  getMedicalInstructionTypes ({ commit, state }) {
+    medicalInstructionRepository.getMedicalInstructionTypes().then(response => {
+      commit('setMedicalInstructionTypes', response.data)
+    }).catch((error) => {
+      if (error.message.includes('404')) {
+        state.medicalInstructionTypes = null
+      }
+    })
+  },
+  confirmAddMIToHR ({ dispatch }, medicalInstructionId) {
+    medicalInstructionRepository.confirmAddMIToHR(medicalInstructionId).then(response => {
+      Notification.success({ title: 'Thông báo', message: 'Bác sĩ đã thêm y lệnh vào hồ sơ bệnh án thành công', duration: 7000 })
+      dispatch('patients/getRequestMedicalInstructions', null, { root: true })
+      dispatch('patients/getMedicalInstructionsByType', null, { root: true })
+    }).catch((err) => {
+      console.log(err)
+      Notification.error({ title: 'Thông báo', message: 'Bác sĩ đã thêm y lệnh vào hồ sơ bệnh án không thành công', duration: 7000 })
+    })
+  },
+  rejectAddMIToHR ({ dispatch }, medicalInstructionId) {
+    medicalInstructionRepository.rejectAddMIToHR(medicalInstructionId).then(response => {
+      Notification.info({ title: 'Thông báo', message: 'Bác sĩ đã từ chối thêm y lệnh vào hồ sơ bệnh án.', duration: 7000 })
+      dispatch('patients/getRequestMedicalInstructions', null, { root: true })
+      dispatch('patients/getMedicalInstructionsByType', null, { root: true })
+    }).catch((err) => {
+      console.log(err)
+      Notification.error({ title: 'Thông báo', message: 'Từ chối thêm y lệnh vào hồ sơ bệnh án không thành công', duration: 7000 })
+    })
+  },
+  clearState ({ commit }) {
+    commit('clearState')
   }
 }
 const mutations = {
@@ -257,21 +439,37 @@ const mutations = {
     state.patientSelected = null // Xoá bệnh nhân đã đc chọn
   },
   setPatientSelected (state, payloadPatient) {
-    console.log('setPatientSelected>>>', payloadPatient)
-    state.patientSelected = {
-      accountPatientId: payloadPatient.accountPatientId,
-      contractId: payloadPatient.contractId,
-      dateAppointment: payloadPatient.dateAppointment,
-      diseaseContract: payloadPatient.diseaseContract.map(disease => {
-        return {
-          diseaseId: disease.diseaseId,
-          diseaseName: disease.diseaseName
-        }
-      }),
-      healthRecordId: payloadPatient.healthRecordId,
-      patientId: payloadPatient.patientId,
-      patientName: payloadPatient.patientName,
-      status: payloadPatient.status
+    console.log('payloadPatient', payloadPatient)
+    if (payloadPatient.patientName !== undefined) {
+      state.patientSelected = {
+        accountPatientId: payloadPatient.accountPatientId,
+        contractId: payloadPatient.contractId,
+        appointmentLast: payloadPatient.appointmentLast,
+        dateAppointment: payloadPatient.dateAppointment === null ? null : payloadPatient.dateAppointment,
+        diseaseContract: payloadPatient.diseaseContract.map(disease => {
+          return {
+            diseaseId: disease.diseaseId,
+            diseaseName: disease.diseaseName
+          }
+        }),
+        healthRecordId: payloadPatient.healthRecordId,
+        patientId: payloadPatient.patientId,
+        patientName: payloadPatient.patientName,
+        status: payloadPatient.status,
+        dateUpdateStatus: payloadPatient.dateUpdateStatus,
+        isScheduleAppointment: payloadPatient.isScheduleAppointment,
+        isSchedulePrescription: payloadPatient.isSchedulePrescription,
+        isScheduleVitalSign: payloadPatient.isScheduleVitalSign,
+        isDeviceConnected: payloadPatient.isDeviceConnected
+      }
+    } else {
+      state.patientSelected = {
+        contractId: payloadPatient.contractId,
+        healthRecordId: payloadPatient.healthRecordId,
+        patientId: payloadPatient.patientId,
+        accountPatientId: payloadPatient.accountPatientId,
+        from: payloadPatient.from
+      }
     }
     console.log('patientSelected: ', state.patientSelected)
   },
@@ -406,9 +604,13 @@ const mutations = {
     state.prescriptionDetails[state.medicineEdit.index].unit = unit
     console.log(state.prescriptionDetails)
   },
-  editMedicine (state, medicine) {
-    state.medicineEdit.index = medicine.index
-    state.medicineEdit.medicine = medicine.medicineEdit
+  setEditMedicine (state, medicine) {
+    state.medicineEdit = {}
+    state.medicineEdit = {
+      index: medicine.index,
+      medicine: medicine.medicineEdit
+    }
+    console.log('medicine edit>>>', state.medicineEdit)
   },
   // Cập nhât trạng thái đơn thuốc trong lịch sử
   setPrescriptionHistory (state, prescription) {
@@ -475,7 +677,6 @@ const mutations = {
       dateFinished: dateFinishedDefault,
       dateCanceled: dateCanceledDefault
     }
-    console.log('max date:::', state.maxDatePrescription)
   },
   setCancelPrescription (state, medicalInstructionId) {
     var cancelMedicalInstruction = state.medicalInstructionHistory.find(medicalInstruction => medicalInstruction.medicalInstructionId === medicalInstructionId) // Tìm medicalInstruction để huỷ
@@ -483,8 +684,123 @@ const mutations = {
     state.medicalInstructionHistory.splice(index, 1) // Xoá 1 phần tử ở vị trí index
   },
   setMedicalInstructionOfNewHealthRecord (state, medicalInstructions) {
-    state.medicalInstructionOfNewHealthRecord = medicalInstructions
+    state.medicalInstructionOfNewHealthRecord = groupBy(medicalInstructions, 'diseaseId', 'diseaseId', 'medicalInstructions')
+    let tmp = medicalInstructions.map(mi => {
+      return {
+        disease: `(${mi.diseaseId}) ${mi.diseaseName}`,
+        medicalInstructionId: mi.medicalInstructionId,
+        medicalInstructionTypeName: mi.medicalInstructionTypeName
+      }
+    })
+    tmp = groupBy(tmp, 'disease', 'disease', 'medicalInstructions')
+    tmp = tmp.map(t => {
+      return {
+        disease: t.disease,
+        medicalInstructionDisease: groupBy(t.medicalInstructions, 'medicalInstructionTypeName', 'medicalInstructionTypeName', 'medicalInstructions')
+      }
+    })
+    state.medicalInstructionOfNewHealthRecordShow = tmp
     console.log('state.medicalInstructionOfNewHealthRecord', state.medicalInstructionOfNewHealthRecord)
+    console.log('state.medicalInstructionOfNewHealthRecordShow', state.medicalInstructionOfNewHealthRecordShow)
+  },
+  setPrescriptionView (state, prescription) {
+    try {
+      state.prescriptionView = {
+        medicalInstructionId: prescription.medicalInstructionId,
+        medicalInstructionTypeId: prescription.medicalInstructionTypeId,
+        medicalInstructionTypeName: prescription.medicalInstructionTypeName,
+        dateCreated: prescription.dateCreate,
+        patientFullName: prescription.patientFullName,
+        images: prescription.images === null ? null : prescription.images.map(i => {
+          return {
+            isChoose: false,
+            url: `http://45.76.186.233:8000/api/v1/Images?pathImage=${i}`
+          }
+        }),
+        description: prescription.description,
+        diagnose: prescription.diagnose,
+        placeHealthRecord: prescription.placeHealthRecord,
+        status: prescription.status,
+        appointmentId: prescription.appointmentId,
+        prescriptionRespone: {
+          dateStarted: prescription.prescriptionRespone.dateStarted,
+          dateFinished: prescription.prescriptionRespone.dateFinished,
+          dateCanceled: prescription.prescriptionRespone.dateCanceled === null ? null : prescription.prescriptionRespone.dateCanceled,
+          status: prescription.prescriptionRespone.status,
+          reasonCancel: prescription.prescriptionRespone.reasonCancel === null ? null : prescription.prescriptionRespone.reasonCancel,
+          medicationSchedules: prescription.prescriptionRespone.medicationSchedules === null ? null : prescription.prescriptionRespone.medicationSchedules.map(pms => {
+            return {
+              medicationName: pms.medicationName,
+              content: pms.content,
+              useTime: pms.useTime,
+              unit: pms.unit,
+              morning: pms.morning,
+              noon: pms.noon,
+              afterNoon: pms.afterNoon,
+              night: pms.night
+            }
+          })
+        }
+      }
+      console.log(prescription)
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  setVitalSignView (state, vitalSign) {
+    try {
+      state.vitalSignView = {
+        medicalInstructionId: vitalSign.medicalInstructionId,
+        medicalInstructionTypeId: vitalSign.medicalInstructionTypeId,
+        medicalInstructionTypeName: vitalSign.medicalInstructionTypeName,
+        dateCreate: vitalSign.dateCreate,
+        patientFullName: vitalSign.patientFullName,
+        images: vitalSign.images === null ? null : vitalSign.images.map(i => {
+          return {
+            isChoose: false,
+            url: `http://45.76.186.233:8000/api/v1/Images?pathImage=${i}`
+          }
+        }),
+        description: vitalSign.description,
+        diagnose: vitalSign.diagnose,
+        placeHealthRecord: vitalSign.placeHealthRecord,
+        status: vitalSign.status,
+        appointmentId: vitalSign.appointmentId,
+        vitalSignScheduleRespone: vitalSign.vitalSignScheduleRespone === null ? null : {
+          timeStared: vitalSign.vitalSignScheduleRespone.timeStared,
+          timeCanceled: vitalSign.vitalSignScheduleRespone.timeCanceled,
+          vitalSigns: vitalSign.vitalSignScheduleRespone.vitalSigns === null ? null : vitalSign.vitalSignScheduleRespone.vitalSigns.map(vts => {
+            return {
+              vitalSignTypeId: vts.vitalSignTypeId,
+              vitalSignType: vts.vitalSignType,
+              numberMax: vts.numberMax,
+              numberMin: vts.numberMin,
+              minuteDangerInterval: vts.minuteDangerInterval,
+              timeStart: vts.timeStart,
+              minuteAgain: vts.minuteAgain
+            }
+          })
+        }
+      }
+      console.log('vitalSignView: ', state.medicalInstructionView)
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  setMedicalInstructionEmpty (state) {
+    state.medicalInstructionView = {}
+  },
+  setMedicalInstructionTypes (state, medicalInstructionTypes) {
+    state.medicalInstructionTypes = medicalInstructionTypes.map(mit => {
+      return {
+        medicalInstructionTypeId: mit.medicalInstructionTypeId,
+        medicalInstructionTypeName: mit.name,
+        status: mit.status
+      }
+    })
+  },
+  clearState (state) {
+    state = () => ({})
   }
 }
 

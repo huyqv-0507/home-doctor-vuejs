@@ -1,7 +1,10 @@
 import { RepositoryFactory } from '../../repositories/RepositoryFactory'
 import router from '../../router'
+import { Message, Notification } from 'element-ui'
+import { groupBy } from '../../utils/common'
 
 const patientRepository = RepositoryFactory.get('patientRepository')
+const medicalInstructionRepository = RepositoryFactory.get('medicalInstructionRepository')
 
 const state = () => ({
   approvedPatients: [], // Danh sách bệnh nhân đang theo dõi
@@ -10,31 +13,15 @@ const state = () => ({
     'Bình thường': 3,
     'Bất thường': 2,
     'Nguy hiểm': 1
-  }, // mức độ nguy hiểm của bệnh nhân
-  patientDetailUsing: {
-    patientId: '',
-    contractId: '',
-    accountPatientId: 0,
-    conditionHealing: {
-      isConnectedBand: '', // Trạng thái kết nối của thiết bị
-      medicalInstructionTypes: [] // Danh sách y lệnh được chia sẻ
-    }
-  }, // THông tin bệnh nhân khi chọn ở trang chủ
-  healthRecordUsing: {
-    healthRecordId: ''
-  }, // Thông tin health record của bệnh nhân được chon ở trang chủ
-  healthRecordOverview: {
-    fullName: '',
-    phoneNumber: '',
-    address: '',
-    career: '',
-    dateOfBirth: '',
-    gender: '',
-    height: 0,
-    weight: 0,
-    personalMedicalHistory: '',
-    familyMedicalHistory: ''
-  } // Thông tin cá nhân bệnh nhân ở trang tổng quan
+  },
+  patientOverview: {},
+  medicalInstructionsOfHR: {
+    share: [],
+    healthRecord: []
+  },
+  requestMedicalInstructions: [],
+  medicalInstructionsByType: [],
+  contractStatus: null
 })
 const getters = {
   getPatientApproveByContract: (state) => (contractId) => {
@@ -42,33 +29,73 @@ const getters = {
   }
 }
 const actions = {
-  // Lấy trạng thái vital sign của bệnh nhân
-  getVitalSignOverviews ({ commit, rootState }) {},
-  // Lấy danh sách bệnh nhân đang được theo dõi
-  getPatientApproved ({ commit, rootState, rootGetters }) {
-    var doctorId = rootState.users.user.userId
-    patientRepository.getPatientApproved(doctorId).then(response => {
-      var data = response.data
-      commit('setPatientApproved', { data, rootGetters })
-    }).catch(error => {
-      console.log(error)
-      commit('setPatientApprovedFailure')
+  goToPatientHealth ({ commit, dispatch }, data) {
+    console.log('goToPatientHealth', data)
+    dispatch('medicalInstruction/selectPatient', data, { root: true }).then(() => {
+      router.push('/home/patient-detail')
+      dispatch('vitalSign/getVitalSignValueByHRId', null, { root: true })
     })
   },
-  getPatientHealth ({ commit }) {
-    const patientHealth = patientRepository.getPatientHealth()
-    commit('getPatientHealth', patientHealth)
-  },
-  // Đi tới trang patient-detail
-  goToPatientDetail ({ commit }, patientUsing) {
-    router.push({ path: '/patient-detail-page' })
-    commit('setHealthRecordUsing', patientUsing.healthRecordId)
-    patientRepository.getHealingConditions(patientUsing.healthRecordId, patientUsing.contractId).then(response => {
+  // Lấy trạng thái vital sign của bệnh nhân
+  async getOverviews ({ commit, rootState }) {
+    await patientRepository.getOverviewPatient(rootState.medicalInstruction.patientSelected.healthRecordId).then(response => {
       if (response.status === 200) {
-        commit('setHealingCondition', response.data)
+        rootState.medicalInstruction.patientSelected.accountPatientId = response.data.accountPatientId
+        commit('setOverviews', response.data)
       }
     })
-    commit('setPatientUsing', patientUsing)
+  },
+  // Lấy danh sách bệnh nhân đang được theo dõi
+  async getPatientApproved ({ commit, rootState, rootGetters }) {
+    var doctorId = rootState.users.user.userId
+    await patientRepository.getPatientApproved(doctorId).then(response => {
+      var data = response.data
+      commit('setPatientApproved', { data, rootGetters })
+    }).catch((err) => {
+      if (err.message) {
+        commit('setPatientApprovedFailure', [])
+      }
+    })
+  },
+  // Đi tới trang patient-detail
+  async goToPatientDetail ({ dispatch, rootState }) {
+    rootState.tabs.tabStatus = {
+      overview: true,
+      timeline: false,
+      vitalSign: false,
+      healthRecord: false,
+      activity: false
+    }
+    dispatch('getOverviews')
+    router.push({ path: '/patient-detail-page' })
+  },
+  goToFinishPatientDetail ({ state, dispatch }, finishPatient) {
+    const patient = {
+      patientId: finishPatient.patientId,
+      contractId: finishPatient.contractId,
+      healthRecordId: -1,
+      accountPatientId: -1,
+      from: 'FINISHED'
+    }
+    patientRepository.getHealthRecordByPatientId(patient.patientId).then(response => {
+      const healthRecords = response.data
+      healthRecords.forEach(healthRecord => {
+        if (patient.contractId === healthRecord.contractId) {
+          patient.healthRecordId = healthRecord.healthRecordId
+          dispatch('medicalInstruction/selectPatient', patient, { root: true }).then(() => {
+            dispatch('goToPatientDetail')
+            patientRepository.getHealthRecordDetailById(patient.healthRecordId).then(response => {
+              state.contractStatus = null
+              state.contractStatus = response.data.contractStatus
+            }).catch(err => {
+              console.error(err)
+            })
+          }).catch(err => {
+            console.error(err)
+          })
+        }
+      })
+    })
   },
   // Lấy thông tin tổng quan của bệnh nhân từ database
   getOverviewPatient ({ commit, state }) {
@@ -77,36 +104,168 @@ const actions = {
         commit('setOverviewPatient', response.data)
       }
     })
+  },
+  sendRequestMedicalInstruction ({ rootState, dispatch }, medicalInstructionTypeId) {
+    const params = {
+      doctorAccountId: rootState.users.user.accountId,
+      patientAccountId: rootState.medicalInstruction.patientSelected.accountPatientId,
+      medicalInstructionTypeId: medicalInstructionTypeId
+    }
+    console.log('param action', params)
+    medicalInstructionRepository.requestMedicalInstruction(params).then(response => {
+      Notification.success({ title: 'Thông báo', message: 'Gửi yêu cầu cung cấp y lệnh thành công!', duration: 7000 })
+      dispatch('modals/closeRequestMedicalInstruction', null, { root: true })
+    }).catch(err => {
+      console.log(err)
+      Notification.error({ title: 'Thông báo', message: 'Gửi yêu cầu cung cấp y lệnh thất baij!', duration: 7000 })
+    })
+  },
+  getRequestMedicalInstructions ({ commit, rootState }) {
+    console.log('rootState.medicalInstruction.patientSelected.healthRecordId', rootState.medicalInstruction.patientSelected.healthRecordId)
+    medicalInstructionRepository.getMedicalInstructionsByHRId(rootState.medicalInstruction.patientSelected.healthRecordId).then(response => {
+      commit('setRequestMedicalInstructions', response.data)
+    }).catch((err) => {
+      console.log(err)
+    })
+  },
+  getMedicalInstructionsByType ({ commit, rootState }) {
+    medicalInstructionRepository.getMedicalInstructionsByHRId(rootState.medicalInstruction.patientSelected.healthRecordId).then(response => {
+      commit('setMedicalInstructionsByType', response.data)
+    }).catch((err) => {
+      console.log(err)
+    })
+  },
+  // Lấy medical instruction theo healthRecordId
+  getMedicalInstructionsByHRId ({ commit, rootState }) {
+    medicalInstructionRepository.getMedicalInstructionsByHRId(rootState.medicalInstruction.patientSelected.healthRecordId).then(response => {
+      if (response.status === 200) {
+        commit('setMedicalInstructionsByHRId', response.data)
+      }
+    }).catch((error) => {
+      console.log(error)
+      Message.error({ showClose: true, message: 'Vui lòng kiểm tra kết nối mạng.', duration: 4000 })
+    })
+  },
+  sendNoteWhenDanger ({ dispatch, rootState }, note) {
+    patientRepository.sendNoteWhenDanger({ doctorAccountId: rootState.users.user.accountId, patientAccountId: rootState.medicalInstruction.patientSelected.accountPatientId, bodyCustom: note }).then(response => {
+      Notification.success({ title: 'Thông báo', message: 'Gửi nhắc nhở thành công', duration: 7000 })
+      dispatch('modals/closeSelectMedicalInstructionModalSub', null, { root: true })
+    }).catch(err => {
+      console.log(err)
+      Notification.error({ title: 'Thông báo', message: 'Gửi nhắc nhở thành công', duration: 7000 })
+    })
+  },
+  clearState ({ commit }) {
+    commit('clearState')
   }
 }
 const mutations = {
-  setPatientApprovedFailure (state) {
-    state.approvedPatients = []
+  setOverviews (state, data) {
+    try {
+      const medicalInstructions = data.medicalInstructions === null ? null : data.medicalInstructions.map(mi => {
+        return {
+          diagnose: mi.diagnose,
+          images: mi.images === null ? null : mi.images.map(i => {
+            return {
+              isChoose: false,
+              url: `http://45.76.186.233:8000/api/v1/Images?pathImage=${i}`
+            }
+          }),
+          medicalInstructionId: mi.medicalInstructionId,
+          medicalInstructionType: mi.medicalInstructionType,
+          prescriptionId: mi.prescriptionId,
+          vitalSignScheduleId: mi.vitalSignScheduleId
+        }
+      })
+      state.patientOverview = {
+        address: data.addressPatient,
+        appointmentNext: data.appointmentNext === null ? null : {
+          appointmentId: data.appointmentNext.appointmentId,
+          dateExamination: data.appointmentNext.dateExamination,
+          description: data.appointmentNext.description,
+          medicalInstructionId: data.appointmentNext.medicalInstructionId,
+          note: data.appointmentNext.note,
+          status: data.appointmentNext.status
+        },
+        career: data.career,
+        contractDetail: {
+          contractId: data.contractDetail.contractId,
+          dateFinished: data.contractDetail.dateFinished,
+          dateStarted: data.contractDetail.dateStarted
+        },
+        diseases: data.diseases.map(disease => {
+          return {
+            diseaseId: disease.diseaseId,
+            diseaseName: disease.diseaseName
+          }
+        }),
+        dateOfBirth: data.dobPatient,
+        familyMedicalHistory: data.familyMedicalHistory,
+        fullName: data.fullNamePatient,
+        gender: data.gender === 'Male' ? 'Nam' : '' || data.gender === 'Female' ? 'Nữ' : '',
+        height: data.height,
+        medicalInstructions: medicalInstructions === null ? null : groupBy(medicalInstructions, 'medicalInstructionType', 'medicalInstructionTypeName', 'medicalInstructions'),
+        personalMedicalHistory: data.personalMedicalHistory,
+        phoneNumber: data.phoneNumberPatient,
+        smartWatchConnected: data.smartWatchConnected,
+        weight: data.weight
+      }
+    } catch (error) {
+      console.log('error at patients - mutations - setOverview', error)
+      state.patientOverview = null
+    }
+    console.log('patientOverview>>>', state.patientOverview)
+  },
+  setPatientApprovedFailure (state, empty) {
+    state.approvedPatients = empty
   },
   setPatientApproved (state, { data, rootGetters }) {
     // var patientVitalSign = {}
-    state.approvedPatients = data.map(patient => {
-      // patientVitalSign = rootGetters['vitalSign/findStatusOfPatient'](patient.patientId)
-      return {
-        accountPatientId: patient.accountPatientId,
-        contractId: patient.contractId,
-        diseaseContract: patient.diseaseContract,
-        healthRecordId: patient.healthRecordId,
-        patientId: patient.patientId,
-        patientName: patient.patientName,
-        isSchedulePrescription: patient.prescriptionFirst,
-        isScheduleAppointment: patient.appointmentFirst,
-        dateAppointment: patient.appointmentLast === null ? null : patient.appointmentLast.split('T')[0].split('-').reverse().join('/'),
-        hourAppointment: patient.appointmentLast === null ? null : patient.appointmentLast.split('T')[1].split(':')[0],
-        minuteAppointment: patient.appointmentLast === null ? null : patient.appointmentLast.split('T')[1].split(':')[1],
-        // status: patientVitalSign.status,
-        status: patient.personalStatus === 'NORMAL' ? 'Bình thường' : 'Nguy hiểm'
-      }
-    }).sort((a, b) => state.patientStatus[a.status] - state.patientStatus[b.status])
-    console.log('patients - state - approvedPatients:::', state.approvedPatients)
-  },
-  getPatientHealth (state, patientHealth) {
-    state.patientHealth = patientHealth
+    try {
+      state.approvedPatients = data.map(patient => {
+        console.log('patient:', patient)
+        // patientVitalSign = rootGetters['vitalSign/findStatusOfPatient'](patient.patientId)
+        const status = patient.personalStatus
+        var patientStatus = 'Chưa xác định'
+        switch (status) {
+          case 'NORMAL':
+            patientStatus = 'Bình thường'
+            break
+          case 'DANGER':
+            patientStatus = 'Nguy hiểm'
+            break
+          case null:
+            patientStatus = 'Chưa xác định'
+            break
+          default:
+            patientStatus = 'Chưa xác định'
+            break
+        }
+        return {
+          accountPatientId: patient.accountPatientId,
+          contractId: patient.contractId,
+          diseaseContract: patient.diseaseContract,
+          healthRecordId: patient.healthRecordId,
+          patientId: patient.patientId,
+          patientName: patient.patientName,
+          contractStatus: patient.contractStatus,
+          isScheduleVitalSign: patient.contractStatus,
+          isSchedulePrescription: patient.prescriptionFirst,
+          isScheduleAppointment: patient.appointmentFirst,
+          appointmentLast: patient.appointmentLast,
+          dateAppointment: patient.appointmentLast === null ? null : patient.appointmentLast.split('T')[0].split('-').reverse().join('/'),
+          hourAppointment: patient.appointmentLast === null ? null : patient.appointmentLast.split('T')[1].split(':')[0],
+          minuteAppointment: patient.appointmentLast === null ? null : patient.appointmentLast.split('T')[1].split(':')[1],
+          // status: patientVitalSign.status,
+          status: patientStatus,
+          dateUpdateStatus: patient.dateUpdateStatus === null ? null : patient.dateUpdateStatus.split('T')[0],
+          isDeviceConnected: true
+        }
+      }).sort((a, b) => state.patientStatus[a.status] - state.patientStatus[b.status])
+      console.log('patients - state - approvedPatients:::', state.approvedPatients)
+    } catch (error) {
+      console.error(error)
+    }
   },
   setPatientUsing (state, patientUsing) {
     state.patientDetailUsing.patientId = patientUsing.patientId
@@ -116,32 +275,127 @@ const mutations = {
   setHealthRecordUsing (state, healthRecordId) {
     state.healthRecordUsing.healthRecordId = healthRecordId
   },
-  setOverviewPatient (state, patientOverview) {
-    state.healthRecordOverview.fullName = patientOverview.fullNamePatient
-    state.healthRecordOverview.phoneNumber = patientOverview.phoneNumberPatient
-    state.healthRecordOverview.address = patientOverview.addressPatient
-    state.healthRecordOverview.career = patientOverview.career
-    state.healthRecordOverview.dateOfBirth = patientOverview.dobPatient
-    state.healthRecordOverview.gender = patientOverview.gender
-    state.healthRecordOverview.height = patientOverview.height
-    state.healthRecordOverview.weight = patientOverview.weight
-    state.healthRecordOverview.personalMedicalHistory = patientOverview.personalMedicalHistory
-    state.healthRecordOverview.familyMedicalHistory = patientOverview.familyMedicalHistory
-  },
-  setHealingCondition (state, condition) {
-    state.patientDetailUsing.conditionHealing.isConnectedBand = condition.smartWatchConnected
-    state.patientDetailUsing.conditionHealing.medicalInstructionTypes = condition.medicalInstructionTypes.map(mit => {
-      return {
-        medicalInstructionTypeName: mit.miType,
-        medicalInstructions: mit.medicalInstructions.map(mi => {
-          return {
-            medicalInstructionId: mi.medicalInstructionId,
-            image: `http://45.76.186.233:8000/api/v1/Images?pathImage=${mi.image}`
-          }
-        })
+  setMedicalInstructionsByHRId (state, medicalInstructions) {
+    state.medicalInstructionsOfHR = {
+      share: [],
+      healthRecord: []
+    }
+    medicalInstructions.forEach(element => {
+      if (element.status === 'PATIENT' || element.status === 'CONTRACT') {
+        state.medicalInstructionsOfHR.share.push(element)
+      } else {
+        state.medicalInstructionsOfHR.healthRecord.push(element)
       }
     })
-    console.log('patientDetailUsing:::', state.patientDetailUsing)
+    state.medicalInstructionsOfHR.share = state.medicalInstructionsOfHR.share.reduce((medicalInstructionsOfHR, currentMedicalInstruction) => {
+      // rest param
+      var fieldMedicalInstructionTypeName = currentMedicalInstruction.medicalInstructionTypeName
+      medicalInstructionsOfHR[fieldMedicalInstructionTypeName] = [...medicalInstructionsOfHR[fieldMedicalInstructionTypeName] || [], currentMedicalInstruction]
+      return medicalInstructionsOfHR
+    }, {})
+    state.medicalInstructionsOfHR.healthRecord = state.medicalInstructionsOfHR.healthRecord.reduce((medicalInstructionsOfHR, currentMedicalInstruction) => {
+      // rest param
+      var fieldMedicalInstructionTypeName = currentMedicalInstruction.medicalInstructionTypeName
+      medicalInstructionsOfHR[fieldMedicalInstructionTypeName] = [...medicalInstructionsOfHR[fieldMedicalInstructionTypeName] || [], currentMedicalInstruction]
+      return medicalInstructionsOfHR
+    }, {})
+    console.log('medicalInstructions', state.medicalInstructionsOfHR)
+    var shareKeys = Object.keys(state.medicalInstructionsOfHR.share)
+    var healthRecordKeys = Object.keys(state.medicalInstructionsOfHR.healthRecord)
+
+    var shareValues = Object.values(state.medicalInstructionsOfHR.share)
+    var healthRecordValues = Object.values(state.medicalInstructionsOfHR.healthRecord)
+
+    var tmpShare = []
+    var tpmHealthRecord = []
+
+    for (let index = 0; index < shareKeys.length; index++) {
+      var tmpShareObj = {
+        medicalInstructionTypeName: shareKeys[index],
+        medicalInstructions: shareValues[index]
+      }
+      tmpShare.push(tmpShareObj)
+    }
+
+    for (let index = 0; index < healthRecordKeys.length; index++) {
+      var tmpHealthRecordObj = {
+        medicalInstructionTypeName: healthRecordKeys[index],
+        medicalInstructions: healthRecordValues[index]
+      }
+      tpmHealthRecord.push(tmpHealthRecordObj)
+    }
+
+    state.medicalInstructionsOfHR.share = tmpShare
+    state.medicalInstructionsOfHR.healthRecord = tpmHealthRecord
+
+    state.medicalInstructionsOfHR = {
+      share: state.medicalInstructionsOfHR.share.map(medicalInstruction => {
+        return {
+          medicalInstructionTypeName: medicalInstruction.medicalInstructionTypeName,
+          medicalInstructions: medicalInstruction.medicalInstructions.map(m => {
+            return {
+              dateCreated: m.dateCreate,
+              description: m.description,
+              diagnose: m.diagnose,
+              image: m.images === null ? null : `http://45.76.186.233:8000/api/v1/Images?pathImage=${m.images}`,
+              medicalInstructionId: m.medicalInstructionId,
+              patientFullName: m.patientFullName,
+              placeHealthRecord: m.placeHealthRecord,
+              prescriptionRespone: m.prescriptionRespone,
+              status: m.status
+            }
+          })
+        }
+      }),
+      healthRecord: state.medicalInstructionsOfHR.healthRecord.map(medicalInstruction => {
+        return {
+          medicalInstructionTypeName: medicalInstruction.medicalInstructionTypeName,
+          medicalInstructions: medicalInstruction.medicalInstructions.map(m => {
+            return {
+              dateCreated: m.dateCreate,
+              description: m.description,
+              diagnose: m.diagnose,
+              image: m.images === null ? null : `http://45.76.186.233:8000/api/v1/Images?pathImage=${m.images}`,
+              medicalInstructionId: m.medicalInstructionId,
+              patientFullName: m.patientFullName,
+              placeHealthRecord: m.placeHealthRecord,
+              prescriptionRespone: m.prescriptionRespone,
+              status: m.status
+            }
+          })
+        }
+      })
+    }
+
+    console.log('medicalInstructionsOfHR final>>>', state.medicalInstructionsOfHR)
+  },
+  setMedicalInstructionsByType (state, medicalInstructions) {
+    medicalInstructions = medicalInstructions.filter(mi => {
+      return mi.status !== 'PENDING'
+    })
+    try {
+      state.medicalInstructionsByType = groupBy(medicalInstructions, 'medicalInstructionTypeName', 'medicalInstructionTypeName', 'medicalInstructions')
+    } catch (error) {
+      console.log('setMedicalInstructionsByType', error)
+    }
+  },
+  setRequestMedicalInstructions (state, medicalInstructions) {
+    state.requestMedicalInstructions = []
+    console.log('setRequestMedicalInstructions', medicalInstructions)
+    medicalInstructions.forEach(mi => {
+      if (mi.status === 'PENDING') {
+        state.requestMedicalInstructions.push(mi)
+        if (mi.images !== null) {
+          mi.images = mi.images.map(i => {
+            return `http://45.76.186.233:8000/api/v1/Images?pathImage=${i}`
+          })
+        }
+      }
+    })
+    console.log('state.requestMedicalInstructions', state.requestMedicalInstructions)
+  },
+  clearState (state) {
+    state = () => ({})
   }
 }
 

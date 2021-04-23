@@ -11,6 +11,9 @@ import appointments from './modules/appointments'
 import vitalSign from './modules/vitalSign'
 import systemHandler from './modules/systemHandler'
 import historyActivities from './modules/historyActivities'
+import tabs from './modules/tabs'
+import patientDetail from './modules/patientDetail'
+import time from './modules/time'
 // eslint-disable-next-line quotes
 import createPersistedState from 'vuex-persistedstate'
 import notifications from './modules/notifications'
@@ -29,7 +32,10 @@ export default new Vuex.Store({
     appointments,
     vitalSign,
     systemHandler,
-    historyActivities
+    historyActivities,
+    tabs,
+    patientDetail,
+    time
   },
   plugins: [createPersistedState()]
 })

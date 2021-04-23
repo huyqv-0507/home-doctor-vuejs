@@ -1,7 +1,8 @@
 <template>
   <div class="mainContent">
     <el-breadcrumb separator="/" class="breadcrumb">
-      <el-breadcrumb-item :to="{ path: '/' }">Trang chủ</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/' }" v-if="routeFrom === 'HOME'">Trang chủ</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/' }" v-if="routeFrom === 'PATIENT-DETAIL'">Bệnh nhân</el-breadcrumb-item>
       <el-breadcrumb-item>Y lệnh</el-breadcrumb-item>
       <el-breadcrumb-item>Lịch uống thuốc</el-breadcrumb-item>
       <el-breadcrumb-item>Đơn thuốc mới</el-breadcrumb-item>
@@ -66,6 +67,7 @@
           format="yyyy-MM-dd"
           value-format="yyyy-MM-dd"
           size="mini"
+          :picker-options="datePickerOptions"
           @change="handleChangeDateStarted"
         ></el-date-picker>
       </el-col>
@@ -94,6 +96,7 @@
           value-format="yyyy-MM-dd"
           size="mini"
           @change="handleChangeDateFinished"
+          :picker-options="datePickerOptions"
         ></el-date-picker>
       </el-col>
       <el-col :span="10" class="font-size14">
@@ -117,7 +120,7 @@
       </el-col>
       <el-col :span="10"></el-col>
     </el-row>
-    <el-button type="primary" @click="openAddMedicine()">Thêm thuốc</el-button>
+    <el-button type="primary" @click="openAddMedicine()" size="mini">Thêm thuốc</el-button>
     <el-table class="medical-treatment__medical-list text" :data="prescriptionDetails">
       <el-table-column class="text" label="STT" width="50" type="index"></el-table-column>
       <el-table-column class="text" label="Tên thuốc" prop="medicineName"></el-table-column>
@@ -156,7 +159,10 @@ export default {
       isValid: false,
       diagnoses: [],
       descriptionNewPrescription: '',
-      isErrorDateStarted: false
+      isErrorDateStarted: false,
+      datePickerOptions: {
+        disabledDate: this.handleDisabledDate
+      }
     }
   },
   computed: {
@@ -167,9 +173,12 @@ export default {
       'prescriptionExistedStatus',
       'maxDatePrescription'
     ]),
-    ...mapState('suggestions', ['visibleDiagnose', 'diagnoseSuggestion'])
+    ...mapState('suggestions', ['visibleDiagnose', 'diagnoseSuggestion']),
+    ...mapState('systemHandler', ['routeFrom']),
+    ...mapState('time', ['timeNow'])
   },
   mounted () {
+    this.getTimeSystem()
     this.getDiagnoses()
     this.diagnoses = this.$store.state.suggestions.diagnoses.map(diagnose => {
       return {
@@ -181,6 +190,10 @@ export default {
     this.isValid = false
   },
   methods: {
+    handleDisabledDate (time) {
+      return time < new Date(this.timeNow)
+    },
+    ...mapActions('time', ['getTimeSystem']),
     ...mapActions('medicalInstruction', [
       'changeRadio',
       'savePrescription',
@@ -215,11 +228,12 @@ export default {
     handleEdit (index, row) {
       console.log('row edit', row)
       this.$store.dispatch(
-        'medicalInstruction/editMedicine',
+        'medicalInstruction/setEditMedicine',
         { index: index, medicineEdit: row },
         { root: true }
-      )
-      this.$store.dispatch('modals/openEditMedicine', null, { root: true })
+      ).then(() => {
+        this.$store.dispatch('modals/openEditMedicine', null, { root: true })
+      })
     },
     // Xoá thuốc khỏi danh sách đơn thuốc
     handleDelete (index, row) {

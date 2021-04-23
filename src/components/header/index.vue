@@ -34,19 +34,45 @@
             </el-badge>
             <div v-show="isShowNotify" class="heading__nav-bar_badge">
               <h1>Thông báo</h1>
-              <el-row
-                style="margin: 1em 0;"
-                v-for="(notification, dateIndex) in notifications"
-                :key="`notifications-${dateIndex}`"
-              >
-                <h3>{{notification.dateCreated}}</h3>
-                <div
-                  v-for="(noti, index) in notification.notifications"
-                  :key="`noti-${index}`"
-                  style=" cursor: pointer;"
+              <div v-if="notifications !== null">
+                <el-row
+                  style="margin: 1em 0;"
+                  v-for="(notification, dateIndex) in notifications"
+                  :key="`notifications-${dateIndex}`"
                 >
-                  <div v-if="noti.status">
-                    <el-row class="heading__nav-bar_badge-wrapper margin-03">
+                  <h3>{{notification.dateCreated}}</h3>
+                  <div
+                    v-for="(noti, index) in notification.notifications"
+                    :key="`noti-${index}`"
+                    style=" cursor: pointer;"
+                  >
+                    <div v-if="noti.status">
+                      <el-row class="heading__nav-bar_badge-wrapper margin-03">
+                        <el-col :span="4">
+                          <img src="../../assets/icons/ic-noti-selected.png" style="margin: 0" />
+                        </el-col>
+                        <el-col :span="20">
+                          <div
+                            v-on:click="handleNotificationLink({
+                              dateIndex: dateIndex,
+                              notification: noti })"
+                          >
+                            <div slot="header">
+                              <h4>{{noti.title}}</h4>
+                            </div>
+                            <!-- card body -->
+                            <p style="color: grey;">{{noti.description}}</p>
+                            <p style="color: grey; font-size: 9px; margin: .3em 0;">
+                              <i>{{noti.timeAgo}}</i>
+                            </p>
+                          </div>
+                        </el-col>
+                      </el-row>
+                    </div>
+                    <el-row
+                      v-else
+                      class="heading__nav-bar_badge-wrapper unseen-notification margin-03"
+                    >
                       <el-col :span="4">
                         <img src="../../assets/icons/ic-noti-selected.png" style="margin: 0" />
                       </el-col>
@@ -68,29 +94,11 @@
                       </el-col>
                     </el-row>
                   </div>
-                  <el-row v-else class="heading__nav-bar_badge-wrapper unseen-notification margin-03">
-                    <el-col :span="4">
-                      <img src="../../assets/icons/ic-noti-selected.png" style="margin: 0" />
-                    </el-col>
-                    <el-col :span="20">
-                      <div
-                        v-on:click="handleNotificationLink({
-                              dateIndex: dateIndex,
-                              notification: noti })"
-                      >
-                        <div slot="header">
-                          <h4>{{noti.title}}</h4>
-                        </div>
-                        <!-- card body -->
-                        <p style="color: grey;">{{noti.description}}</p>
-                        <p style="color: grey; font-size: 9px; margin: .3em 0;">
-                          <i>{{noti.timeAgo}}</i>
-                        </p>
-                      </div>
-                    </el-col>
-                  </el-row>
-                </div>
-              </el-row>
+                </el-row>
+              </div>
+              <h4 v-else style="color: gray;">
+                <i>Bác sĩ chưa có thông báo nào</i>
+              </h4>
             </div>
           </el-col>
           <el-col>
@@ -108,7 +116,7 @@
                 style="border-radius: 30px;"
                 class="icon-heading pointer"
               />
-              <router-link to="/account-manage">
+              <router-link to="/home/account-manage">
                 <el-button>Cài đặt</el-button>
               </router-link>
               <el-button v-on:click="handleLogout()">Đăng xuất</el-button>

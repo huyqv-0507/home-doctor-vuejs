@@ -111,7 +111,7 @@
       </el-col>
       <el-col :span="10"></el-col>
     </el-row>
-    <el-button type="primary" @click="openAddMedicine()">Thêm thuốc</el-button>
+    <el-button type="primary" @click="openAddMedicine()" size="mini">Thêm thuốc</el-button>
     <el-table class="medical-treatment__medical-list text" :data="prescriptionDetails">
       <el-table-column class="text" label="STT" width="50" type="index"></el-table-column>
       <el-table-column class="text" label="Tên thuốc" prop="medicineName"></el-table-column>
@@ -126,7 +126,7 @@
         </template>
       </el-table-column><template slot="empty">...</template>
     </el-table>
-    <el-button @click="backToMedicalSchedule()">Trở về</el-button>
+    <el-button @click="backToMedicalSchedule()" size="mini">Trở về</el-button>
     <el-button
       v-if="isValid === false"
       type="primary" disabled
@@ -208,7 +208,6 @@ export default {
       this.diagnoseNewPrescription = diagnose.description
     },
     handleEdit (index, row) {
-      console.log('row edit', row)
       this.$store.dispatch(
         'medicalInstruction/editMedicine',
         { index: index, medicineEdit: row },
@@ -218,8 +217,6 @@ export default {
     },
     // Xoá thuốc khỏi danh sách đơn thuốc
     handleDelete (index, row) {
-      console.log('Delete index:', index)
-      console.log('Delete index:', row)
       this.$store.state.medicalInstruction.prescriptionDetails.splice(index, 1)
     },
     handleChangeDateStarted (date) {

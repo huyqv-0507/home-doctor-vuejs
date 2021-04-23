@@ -8,7 +8,7 @@
       <div
         class="wrapper__items_item pointer"
         v-bind:class="{active: tabStatus.overview}"
-        v-on:click="handleOverview"
+        v-on:click="setTabActive({ name: 'overview'})"
       >
         <div class="wrapper__items_item-title">Tổng quan</div>
         <div class="wrapper__items_item-square" v-bind:class="{activeSquare: tabStatus.overview}"></div>
@@ -16,7 +16,7 @@
       <div
         class="wrapper__items_item pointer"
         v-bind:class="{active: tabStatus.timeline}"
-        v-on:click="handleTimeline"
+        v-on:click="setTabActive({ name: 'timeline'})"
       >
         <div class="wrapper__items_item-title">Timeline</div>
         <div class="wrapper__items_item-square" v-bind:class="{activeSquare: tabStatus.timeline}"></div>
@@ -24,7 +24,7 @@
       <div
         class="wrapper__items_item pointer"
         v-bind:class="{active: tabStatus.vitalSign}"
-        v-on:click="handleVitalSign"
+        v-on:click="setTabActive({ name: 'vital-sign'})"
       >
         <div class="wrapper__items_item-title">Sinh hiệu</div>
         <div class="wrapper__items_item-square" v-bind:class="{activeSquare: tabStatus.vitalSign}"></div>
@@ -32,7 +32,7 @@
       <div
         class="wrapper__items_item pointer"
         v-bind:class="{active: tabStatus.healthRecord}"
-        v-on:click="handleHealthRecord"
+        v-on:click="setTabActive({ name: 'health-record'})"
       >
         <div class="wrapper__items_item-title">Hồ sơ bệnh án</div>
         <div
@@ -43,9 +43,8 @@
       <div
         class="wrapper__items_item pointer"
         v-bind:class="{active: tabStatus.activity}"
-        v-on:click="handleActivity"
+        v-on:click="setTabActive({ name: 'activity'})"
       >
-        <div class="wrapper__items_item-title">Hoạt động</div>
         <div class="wrapper__items_item-square" v-bind:class="{activeSquare: tabStatus.activity}"></div>
       </div>
     </div>
@@ -53,12 +52,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import router from '../../router'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'LeftContent',
   computed: {
-    ...mapState('patients', ['patientDetail'])
+    ...mapState('patients', ['patientDetail']),
+    ...mapState('tabs', ['tabStatus'])
   },
   data () {
     const now = new Date()
@@ -87,57 +86,14 @@ export default {
     return {
       weekDay,
       date,
-      isShow: false,
-      tabStatus: {
-        overview: true,
-        timeline: false,
-        vitalSign: false,
-        healthRecord: false,
-        activity: false
-      }
+      isShow: false
     }
   },
+  mounted () {
+    this.setDefaultTab()
+  },
   methods: {
-    handleOverview () {
-      this.tabStatus.overview = true
-      this.tabStatus.timeline = false
-      this.tabStatus.vitalSign = false
-      this.tabStatus.healthRecord = false
-      this.tabStatus.activity = false
-      router.push('/patient-detail-page/overview')
-    },
-    handleTimeline () {
-      this.tabStatus.overview = false
-      this.tabStatus.timeline = true
-      this.tabStatus.vitalSign = false
-      this.tabStatus.healthRecord = false
-      this.tabStatus.activity = false
-      router.push('/patient-detail-page/timeline')
-    },
-    handleVitalSign () {
-      this.tabStatus.overview = false
-      this.tabStatus.timeline = false
-      this.tabStatus.vitalSign = true
-      this.tabStatus.healthRecord = false
-      this.tabStatus.activity = false
-      router.push('/patient-detail-page/vital-sign')
-    },
-    handleHealthRecord () {
-      this.tabStatus.overview = false
-      this.tabStatus.timeline = false
-      this.tabStatus.vitalSign = false
-      this.tabStatus.healthRecord = true
-      this.tabStatus.activity = false
-      router.push('/patient-detail-page/health-record')
-    },
-    handleActivity () {
-      this.tabStatus.overview = false
-      this.tabStatus.timeline = false
-      this.tabStatus.vitalSign = false
-      this.tabStatus.healthRecord = false
-      this.tabStatus.activity = true
-      router.push('/patient-detail-page/activity')
-    }
+    ...mapActions('tabs', ['setDefaultTab', 'setTabActive'])
   }
 }
 </script>

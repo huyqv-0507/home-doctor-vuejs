@@ -134,3 +134,21 @@ export function formatDateToInsertDb (date) {
   var dateInsert = new Date(date)
   return `${dateInsert.getFullYear()}-${dateInsert.getMonth() + 1 < 10 ? '0' + (dateInsert.getMonth() + 1) : (dateInsert.getMonth() + 1)}-${dateInsert.getDate() < 10 ? '0' + dateInsert.getDate() : dateInsert.getDate()}`
 }
+export function groupBy (array, key, keyName, keyCollection) {
+  const tmpArr = array.reduce((objectsByKeyValue, obj) => {
+    const value = obj[key]
+    objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj)
+    return objectsByKeyValue
+  }, {})
+  const keys = Object.keys(tmpArr)
+  const values = Object.values(tmpArr)
+  var groupByArr = []
+  for (let index = 0; index < keys.length; index++) {
+    const element = {
+      [keyName]: keys[index],
+      [keyCollection]: values[index]
+    }
+    groupByArr.push(element)
+  }
+  return groupByArr
+} // Convert array to groupBy array other {key, collections}

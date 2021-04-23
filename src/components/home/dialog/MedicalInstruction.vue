@@ -9,12 +9,13 @@
       <span slot="title" class="verticalCenter">
         <i>
           <img src="../../../assets/icons/ic-medical-instruction.png" class="iconDialog" />
-        </i><h3>Y lệnh</h3>
+        </i>
+        <h3>Y lệnh</h3>
       </span>
       <span v-show="medicalInstructionStatus === false" class="wrapper_shortcut-items">
         <h4>Danh sách bệnh nhân</h4>
         <div
-          v-on:click="selectPatient(patient)"
+          v-on:click="handleSelectPatient(patient)"
           v-for="patient in approvedPatients"
           :key="`approved-patient-${patient.patientId}`"
           class="patient-card pointer"
@@ -31,7 +32,11 @@
                 <span class="patient-disease">
                   <strong>Bệnh lý:</strong>
                   <span v-if="patient.diseaseContract.length === 0">Chưa cập nhật</span>
-                  <span v-else v-for="(disease, index) in patient.diseaseContract" :key="`disease-${index}`">
+                  <span
+                    v-else
+                    v-for="(disease, index) in patient.diseaseContract"
+                    :key="`disease-${index}`"
+                  >
                     <p>- ({{disease.diseaseId}}) {{disease.diseaseName}}</p>
                   </span>
                 </span>
@@ -42,51 +47,47 @@
       </span>
       <span v-show="medicalInstructionStatus === true" class="wrapper_shortcut-items">
         <h4>Danh sách y lệnh</h4>
-        <div v-on:click="setMedicalSchedule()">
-          <router-link to="/home/medical-schedule" class="router-items">
-            <el-row
-              :gutter="20"
-              class="wrapper_shortcut-items_item"
-              style="margin-left: 0; margin-right: 0;"
-            >
-              <el-col :span="4">
-                <img src="../../../assets/icons/ic-medicine.png" class="imgbtn" />
-              </el-col>
-              <el-col :span="20">
-                <el-row class="title">
-                  <span class="wrapper_shortcut-items_item-title">Lịch uống thuốc</span>
-                </el-row>
-                <el-row>
-                  <span
-                    class="wrapper_shortcut-items_item-description"
-                  >Bác sĩ ra y lệnh sử dụng thuốc cho bệnh nhân</span>
-                </el-row>
-              </el-col>
-            </el-row>
-          </router-link>
+        <div v-on:click="setMedicalSchedule('HOME')" class="pointer">
+          <el-row
+            :gutter="20"
+            class="wrapper_shortcut-items_item"
+            style="margin-left: 0; margin-right: 0;"
+          >
+            <el-col :span="4">
+              <img src="../../../assets/icons/ic-medicine.png" class="imgbtn" />
+            </el-col>
+            <el-col :span="20">
+              <el-row class="title">
+                <span class="wrapper_shortcut-items_item-title">Lịch uống thuốc</span>
+              </el-row>
+              <el-row>
+                <span
+                  class="wrapper_shortcut-items_item-description"
+                >Bác sĩ ra y lệnh sử dụng thuốc cho bệnh nhân</span>
+              </el-row>
+            </el-col>
+          </el-row>
         </div>
-        <div v-on:click="setVitalSign()">
-          <router-link to="/home/vital-sign" class="router-items">
-            <el-row
-              :gutter="20"
-              class="wrapper_shortcut-items_item"
-              style="margin-left: 0; margin-right: 0;"
-            >
-              <el-col :span="4">
-                <img src="../../../assets/icons/ic-blood-pressure.png" class="imgbtn" />
-              </el-col>
-              <el-col :span="20">
-                <el-row class="title">
-                  <span class="wrapper_shortcut-items_item-title">Lịch đo sinh hiệu</span>
-                </el-row>
-                <el-row>
-                  <span
-                    class="wrapper_shortcut-items_item-description"
-                  >Bác sĩ ra y lệnh đo sinh hiệu cho bệnh nhân</span>
-                </el-row>
-              </el-col>
-            </el-row>
-          </router-link>
+        <div v-on:click="setVitalSign('HOME')" class="pointer">
+          <el-row
+            :gutter="20"
+            class="wrapper_shortcut-items_item"
+            style="margin-left: 0; margin-right: 0;"
+          >
+            <el-col :span="4">
+              <img src="../../../assets/icons/ic-blood-pressure.png" class="imgbtn" />
+            </el-col>
+            <el-col :span="20">
+              <el-row class="title">
+                <span class="wrapper_shortcut-items_item-title">Lịch đo sinh hiệu</span>
+              </el-row>
+              <el-row>
+                <span
+                  class="wrapper_shortcut-items_item-description"
+                >Bác sĩ ra y lệnh đo sinh hiệu cho bệnh nhân</span>
+              </el-row>
+            </el-col>
+          </el-row>
         </div>
         <div class="pagination">
           <el-button type="info" style="margin-top: 2em;" @click="backToSelectPatient()">Trở lại</el-button>
@@ -99,7 +100,6 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 export default {
-
   computed: {
     ...mapState('modals', [
       'visibleMedicalInstruction' // Quản lý trạng thái hiển thị hoặc đóng của modal Y lệnh])
@@ -116,11 +116,25 @@ export default {
       'backToSelectPatient', // Trở lại modal chọn bệnh nhân
       'selectPatient', // Chọn bệnh nhân
       'setMedicalSchedule', // Sang trang tạo lịch uống thuốc cho bệnh nhân
-      'setVitalSign' // Sang trang tạo lịch đo sinh hiệu cho bệnh nhân
+      'setVitalSign', // Sang trang tạo lịch đo sinh hiệu cho bệnh nhân
+      'setAppointment'
     ]),
     ...mapActions('modals', [
       'closeMedicalInstruction' // Đóng modal Y lệnh
-    ])
+    ]),
+    handleSelectPatient (patient) {
+      if (patient.contractStatus !== 'ACTIVE') {
+        this.$alert(
+          'Hợp đồng giữa bác và bệnh nhân đã bị khoá vì bác sĩ đã không ra y lệnh cho bệnh nhân sau 4 ngày hợp đồng có hiệu lực',
+          'Cảnh báo',
+          {
+            confirmButtonText: 'Đồng ý'
+          }
+        )
+      } else {
+        this.selectPatient(patient)
+      }
+    }
   }
 }
 </script>

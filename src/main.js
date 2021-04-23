@@ -8,6 +8,37 @@ import './style/element-variables.scss'
 import locale from 'element-ui/lib/locale/lang/vi'
 import { register } from 'register-service-worker'
 import { setTokenFirebase } from './utils/cookie'
+import Echarts from 'vue-echarts'
+import { use } from 'echarts/core'
+// import ECharts modules manually to reduce bundle size
+import {
+  CanvasRenderer
+} from 'echarts/renderers'
+import {
+  LineChart
+} from 'echarts/charts'
+import {
+  TitleComponent,
+  GridComponent,
+  TooltipComponent,
+  MarkPointComponent,
+  MarkLineComponent,
+  VisualMapComponent
+} from 'echarts/components'
+
+use([
+  CanvasRenderer,
+  LineChart,
+  GridComponent,
+  TooltipComponent,
+  TitleComponent,
+  MarkPointComponent,
+  VisualMapComponent,
+  MarkLineComponent
+])
+
+// register globally (or you can do it locally)
+Vue.component('v-chart', Echarts)
 
 var firebaseConfig = {
   apiKey: 'AIzaSyDKX_bJtNR_wxwlo05_Kw-u5J02WbXt46c',
@@ -45,7 +76,7 @@ messaging.requestPermission().then(function () {
 messaging.onMessage(payload => {
   console.log('Message from firebase:::', payload)
   store.dispatch('notifications/newMessage', payload, { root: true })
-  ElementUI.Message.info({ dangerouslyUseHTMLString: true, message: `<h4 style="color: black;">${payload.notification.title}</h4><div style="width: 100%; height: 1px; background-color: grey;"></div><p style="margin-top: .5em; color: black;">${payload.notification.body}</p>`, duration: 0, showClose: true })
+  ElementUI.Message.info({ dangerouslyUseHTMLString: true, message: `<h4 style="color: black;">${payload.notification.title}</h4><div style="width: 100%; height: 1px; background-color: grey;"></div><p style="margin-top: .5em; color: black;">${payload.notification.body}</p>`, duration: 15000, showClose: true })
 })
 
 Vue.config.productionTip = false

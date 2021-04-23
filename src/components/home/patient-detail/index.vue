@@ -1,30 +1,56 @@
 <template>
   <div class="mainContent">
-    <h1>Hồ sơ bệnh nhân {{patientHealth.patientName}}</h1>
+    <h1>Hồ sơ bệnh nhân {{patientSelected.patientName}}</h1>
     <h3>Sinh hiệu</h3>
-    <p v-for="(item, index) in patientHealth.vitalSigns" :key="index">{{item.type}}: {{item.value}}</p>
     <h3>Biểu đồ sinh hiệu</h3>
-    <line-chart />
+      <div>Chọn biểu đồ theo ngày</div>
+      <el-select v-model="value" @change="changeDate($event)" placeholder="Chọn" size="mini">
+        <el-option
+          v-for="(value) in heartRateValues"
+          :key="value.dateCreated"
+          :value="value.dateCreated.split('T')[0].split('-').reverse().join('/')"
+        ></el-option>
+      </el-select>
+      <v-chart
+        v-if="patientOptions !== null"
+        class="chart"
+        :option="patientOptions.option"
+        :init-options="patientOptions.initOptions"
+      />
+    <el-button type="primary" size="mini" @click="openSelectMedicalInstructionModalSub()">Thêm y lệnh</el-button>
   </div>
 </template>
 
 <script>
-import LineChart from '../chart/LineChart.js'
 import { mapActions, mapState } from 'vuex'
+
 export default {
-  computed: {
-    ...mapState('patients', ['patientHealth'])
+  data () {
+    return {
+      value: {}
+    }
   },
-  components: [LineChart],
+  computed: {
+    ...mapState('patients', ['patientHealth']),
+    ...mapState('vitalSign', ['heartRateValues', 'patientOptions']),
+    ...mapState('medicalInstruction', ['patientSelected'])
+  },
   mounted () {
-    this.getPatientHealth()
+    this.getVitalSignHealthPatient()
   },
   methods: {
-    ...mapActions('patients', ['getPatientHealth'])
+    ...mapActions('vitalSign', ['getVitalSignHealthPatient']),
+    ...mapActions('modals', ['openSelectMedicalInstructionModalSub']),
+    changeDate (event) {
+      this.$store.dispatch('vitalSign/setHeartRateChart', event.split('/').reverse().join('-'), { root: true })
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "../../../style/index.scss";
+.chart {
+  height: 600px;
+}
 </style>

@@ -4,7 +4,7 @@
     @close="closeAppointmentPatientsModal()"
     width="30%"
   >
-    <template slot="title">Danh sách bệnh nhân</template>
+    <template slot="title"><strong>Lịch hẹn</strong></template>
     <div v-if="!isSelectPatient">
       <el-row
         align="middle"
@@ -12,7 +12,7 @@
         v-for="(patient, index) in approvedPatients"
         :key="index"
         v-on:click.native="selectPatientAppointment({
-              contractId: patient.contractId,
+              healthRecordId: patient.healthRecordId,
               accountPatientId: patient.accountPatientId
             })"
       >

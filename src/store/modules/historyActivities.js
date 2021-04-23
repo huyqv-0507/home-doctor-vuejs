@@ -1,6 +1,7 @@
 const state = () => ({})
 const getters = {}
 const actions = {
+  // Di chuyển route trong Nhật ký hoạt động
   handleRouteHistory ({ commit, dispatch }, history) {
     var historyTypeId = history.historyType
     switch (historyTypeId) {
@@ -8,7 +9,7 @@ const actions = {
         console.log('BÁC SĨ ĐÃ CHẤP THUẬN HỢP ĐỒNG YÊU CẦU', history)
         dispatch(
           'contracts/getContractDetail',
-          history.contractId,
+          { contractId: history.contractId, where: 'HISTORY' },
           { root: true }
         )
         break
@@ -30,9 +31,16 @@ const actions = {
       default:
         break
     }
-  } // Quản lí route của Nhật ký hoạt động
+  }, // Quản lí route của Nhật ký hoạt động
+  clearState ({ commit }) {
+    commit('clearState')
+  }
 }
-const mutations = {}
+const mutations = {
+  clearState (state) {
+    state = () => ({})
+  }
+}
 
 export default {
   namespaced: true,

@@ -1,31 +1,28 @@
 <template>
   <el-dialog :visible="isVisibleSelectMedicalInstruction" width="25%" title="Y lệnh" @close="closeSelectMedicalInstructionModal()" class="wrapper_shortcut-items">
-        <h4>Danh sách y lệnh</h4>
-        <div v-on:click="setMedicalSchedule()">
-          <router-link to="/home/medical-schedule" class="router-items">
+        <h4>Y lệnh đầu tiên</h4>
+        <div v-on:click="setAppointment()" class="pointer">
             <el-row
               :gutter="20"
               class="wrapper_shortcut-items_item"
               style="margin-left: 0; margin-right: 0;"
             >
               <el-col :span="4">
-                <img src="../../../assets/icons/ic-medicine.png" class="imgbtn" />
+                <img src="../../../assets/icons/ic-calendar.png" class="imgbtn" />
               </el-col>
               <el-col :span="20">
                 <el-row class="title">
-                  <span class="wrapper_shortcut-items_item-title">Lịch uống thuốc</span>
+                  <span class="wrapper_shortcut-items_item-title">Lịch hẹn <span style="color: red;">(Bắt buộc*)</span></span>
                 </el-row>
                 <el-row>
                   <span
                     class="wrapper_shortcut-items_item-description"
-                  >Bác sĩ ra y lệnh sử dụng thuốc cho bệnh nhân</span>
+                  >Bác sĩ tạo ngày hẹn cho bệnh nhân</span>
                 </el-row>
               </el-col>
             </el-row>
-          </router-link>
         </div>
-        <div v-on:click="setVitalSign()">
-          <router-link to="/home/vital-sign" class="router-items">
+        <div v-on:click="setVitalSign('HOME')" class="pointer">
             <el-row
               :gutter="20"
               class="wrapper_shortcut-items_item"
@@ -45,7 +42,6 @@
                 </el-row>
               </el-col>
             </el-row>
-          </router-link>
         </div>
   </el-dialog>
 </template>
@@ -58,7 +54,7 @@ export default {
   },
   methods: {
     ...mapActions('modals', ['closeSelectMedicalInstructionModal']),
-    ...mapActions('medicalInstruction', ['setMedicalSchedule', 'setVitalSign'])
+    ...mapActions('medicalInstruction', ['setVitalSign', 'setAppointment'])
   }
 
 }

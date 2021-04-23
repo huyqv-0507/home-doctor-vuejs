@@ -2,7 +2,7 @@
 import { RepositoryFactory } from '../../repositories/RepositoryFactory'
 import router from '../../router/index.js'
 import { Notification } from 'element-ui'
-import { formatPrice } from '../../utils/common'
+import { formatPrice, groupBy } from '../../utils/common'
 const contractRepository = RepositoryFactory.get('contractRepository')
 const userRepository = RepositoryFactory.get('userRepository')
 
@@ -32,7 +32,9 @@ const state = () => ({
     diseases: [], // Bệnh lý của bệnh nhân
     doctorId: '', // Id của bác sĩ
     patientId: '', // Id của bệnh nhân
-    medicalInstructionTypes: []
+    medicalInstructionTypes: [],
+    medicalInstructionsDoctorChoosed: [],
+    medicalInstructionOthers: []
   },
   rejectDialogVisible: false,
   contractCode: '',
@@ -57,6 +59,7 @@ const state = () => ({
   rejectContracts: [],
   pendingContracts: [],
   approveContracts: [],
+  signContracts: [],
   contractSample: {
     baseLaw: [],
     dateContractFinished: {
@@ -201,7 +204,15 @@ const state = () => ({
     statusContract: '',
     patientId: ''
   }, // Kiểm tra status của contract để chuyển trang
-  contractsWithStatus: []
+  contractsWithStatus: [],
+  contractCondition: {
+    distanceDate: 0,
+    minimumDate: 0
+  },
+  defaultCheckImgs: [],
+  contractIdUpdate: 0,
+  isNextContract: false,
+  imgSelected: []
 })
 const getters = {
   getContractStatusById: state => (contractId) => {
@@ -209,6 +220,10 @@ const getters = {
   }
 }
 const actions = {
+  getContractCondition ({ commit }) {
+    const contractCondition = contractRepository.getContractCondition()
+    commit('setContractCondition', contractCondition)
+  },
   setDateStartedContract ({ commit }, dateStarted) {
     commit('setDateStartedContract', dateStarted)
   },
@@ -224,13 +239,13 @@ const actions = {
       console.log('error at contracts - CheckStatusContract', error)
     })
   },
-  getContractsWithStatus ({ commit, rootState }) {
-    contractRepository.getContracts(rootState.users.user.userId).then(response => {
+  async getContractsWithStatus ({ commit, rootState, state }) {
+    await contractRepository.getContracts(rootState.users.user.userId).then(response => {
       if (response.status === 200) {
         commit('setContractsWithStatus', response.data)
       }
-    }).catch((error) => {
-      console.log(error)
+    }).catch(() => {
+      state.contractsWithStatus = []
     })
   },
   // Lấy hơp đồng mẫu
@@ -244,9 +259,9 @@ const actions = {
     })
   },
   // Get all contract requests
-  getContractRequestPending ({ commit }, payloadUser) {
+  async getContractRequestPending ({ commit }, payloadUser) {
     console.log('Action - getContractRequestPending() - payloadUser:', payloadUser)
-    contractRepository.getPendingContracts(payloadUser[0]).then(response => {
+    await contractRepository.getPendingContracts(payloadUser[0]).then(response => {
       console.log(response.data)
       if (response.status === 200) {
         commit('success', response.data)
@@ -261,27 +276,33 @@ const actions = {
 
   // Get request detail by patientId when doctor click [0] is patientId, [1] is contractCode
   getRequestDetail ({ commit, dispatch, rootState, state }, payloadContractId) {
-    console.log(`Action - getRequestDetail() - payloadContractId: ${payloadContractId}`)
+    rootState.medicalInstruction.medicalInstructionOfNewHealthRecord = []
+    rootState.appointments.appointmentsToday = null
+    state.requestDetail = {}
+    state.defaultCheckImgs = []
+    state.imgSelected = []
     rootState.contracts.contract.contractId = payloadContractId
     // Gọi repository để lấy thông tin yêu cầu
     contractRepository.getRequestDetail(payloadContractId).then(response => {
       console.log('Action - getRequestDetail() - Request detail:', response.data)
-      if (response.status === 200) {
-        commit('getRequestDetailSuccess', response.data)
-        dispatch('getPatientDetail', response.data)
-        return response.data
-      } else {
-        commit('failure')
-      }
+      commit('getRequestDetailSuccess', response.data)
+      dispatch('getPatientDetail', response.data)
+      rootState.medicalInstruction.medicalInstructionOfNewHealthRecord = null
+      rootState.medicalInstruction.medicalInstructionOfNewHealthRecordShow = null
+      router.push({
+        name: 'request-detail',
+        params: { contractId: payloadContractId }
+      }).catch(err => {
+        console.log(err.name)
+      })
+    }).catch(error => {
+      console.error(error)
     })
   },
   // Get patient information
   getPatientDetail ({ commit }, payloadRequestDetail) {
-    console.log('payloadRequestDetail')
-    console.log(payloadRequestDetail)
     userRepository.getPatientProfileByPatientId(payloadRequestDetail.patientId).then(response => {
       if (response.status === 200) {
-        console.log('Module: contracts, Action: getPatientDetail', response.data)
         commit('setPatientInfo', response.data)
       }
     })
@@ -293,32 +314,45 @@ const actions = {
   continueAssignContract ({ commit }) {
     commit('continueAssignContract')
   },
-  confirmRejectContract ({ commit, state, rootState }, contractId) {
+  confirmRejectContract ({ commit, state, rootState, dispatch }, contractId) {
     // set state pending to rejected (database)
     var contract = {
-      contractId: contractId,
-      patientId: state.patientDetail.patientId,
-      doctorId: rootState.users.user.userId
+      contractId: parseInt(contractId),
+      patientId: parseInt(state.patientDetail.patientId),
+      doctorId: parseInt(rootState.users.user.userId)
     }
+    console.log('contract cancel>>>', contract)
     contractRepository.cancelContract(contract).then(response => {
       if (response.status === 204) {
+        dispatch('getRejectContracts')
         Notification.success({ title: 'Thông báo', message: 'Từ chối hợp đồng thành công!', duration: 7000 })
       }
     }).catch(error => {
-      console.log(error)
-      Notification.error({ title: 'Thông báo', message: 'Huỷ hợp đồng thất bại!', duration: 7000 })
+      if (error.message.includes('404')) {
+        Notification.error({ title: 'Thông báo', message: 'Huỷ hợp đồng thất bại!', duration: 7000 })
+      }
+      console.error('err at confirm reject contract', error)
     })
     commit('confirmRejectContract')
   },
 
   // Next to create Contract
-  nextCreateContract ({ commit, state, rootState }, payload) {
-    console.log('nextCreateContract', payload)
+  nextCreateContract ({ commit, state, rootState, dispatch }, payload) {
+    // if (rootState.medicalInstruction.medicalInstructionOfNewHealthRecord === null) {
+    //  MessageBox.alert('Bác sĩ vui lòng kiểm tra những y lệnh bệnh nhân cung cấp và tiếp tục.', 'Cảnh báo', { confirmButtonText: 'Đồng ý' })
+    // } else {
+    // }
+    state.isNextContract = true
+    rootState.medicalInstruction.medicalInstructionOfNewHealthRecord = payload.checkImgs.map(img => {
+      return img.medicalInstructionId
+    })
+    console.log('rootState.medicalInstruction.medicalInstructionOfNewHealthRecord', rootState.medicalInstruction.medicalInstructionOfNewHealthRecord)
     state.contract.doctorId = parseInt(rootState.users.user.userId)
     contractRepository.getPriceOfContract(payload.daysOfTracking).then(response => {
       if (response.status === 200) {
         commit('setPriceOfContract', response.data)
-        commit('nextCreateContract', payload)
+        commit('nextCreateContract', { dateStarted: payload.dateStarted, daysOfTracking: payload.daysOfTracking, patientId: state.requestDetail.patientId })
+        dispatch('getContractSample')
       }
     })
     router.push({ name: 'confirm-contract' })
@@ -328,15 +362,16 @@ const actions = {
     router.go(-1) // Trở về trang trưóc
   },
   // Confirm contract and insert db [0] is contract, [1] is value of disease type, [2] is value of note
-  confirmContract ({ commit, dispatch, rootState }, payload) {
+  confirmContract ({ commit, state, rootState }, contract) {
+    state.isNextContract = false
     contractRepository.createContract({
-      contract: payload[0],
+      contract: contract,
       medicalInstructionOfNewHealthRecord: rootState.medicalInstruction.medicalInstructionOfNewHealthRecord
     }).then(response => {
-      console.log('status code:', response.status)
       if (response.status === 204) {
         Notification.success({ title: 'Thông báo', message: 'Tạo hợp đồng thành công. Vui lòng chờ bệnh nhân xác nhận lại hợp đồng!', duration: 7000 })
-        dispatch('contracts/getActiveContracts', null, { root: true })
+        state.requestDetail = {}
+        state.defaultCheckImgs = []
         router.push('/home')
       } else if (response.status === 405) {
         Notification.error({ title: 'Thông báo', message: 'Xin lỗi, hiện tại bạn đã đủ 5 hợp đồng!', duration: 7000 })
@@ -350,19 +385,23 @@ const actions = {
   getActiveContracts ({ commit, rootState }) {
     contractRepository.getActiveContracts(rootState.users.user.userId).then(response => {
       if (response.status === 200) {
-        console.log('acc::::', response.data)
         commit('getActiveContracts', response.data)
       }
     }).catch((error) => {
-      console.log(error)
-      commit('setActiveContractsFailure')
+      if (error.message.includes('404')) {
+        commit('setEmptyContracts')
+      }
     })
   },
   // Lấy tất cả các hợp đồng đã hết hạn
-  getFinishContracts ({ commit, rootState }) {
-    contractRepository.getFinishContracts(rootState.users.user.userId).then(response => {
+  async getFinishContracts ({ commit, rootState }) {
+    await contractRepository.getFinishContracts(rootState.users.user.userId).then(response => {
       if (response.status === 200) {
         commit('getFinishContracts', response.data)
+      }
+    }).catch((error) => {
+      if (error.message.includes('404')) {
+        commit('setEmptyContracts')
       }
     })
   },
@@ -372,6 +411,10 @@ const actions = {
       if (response.status === 200) {
         commit('getRejectContracts', response.data)
       }
+    }).catch((error) => {
+      if (error.message.includes('404')) {
+        commit('setEmptyContracts')
+      }
     })
   },
   // Lấy tất cả các hợp đồng đang chờ xét duyệt
@@ -380,37 +423,96 @@ const actions = {
       if (response.status === 200) {
         commit('getPendingContracts', response.data)
       }
+    }).catch((error) => {
+      if (error.message.includes('404')) {
+        commit('setEmptyContracts')
+      }
     })
   },
   // Lấy tất cả các hợp đồng đang chờ xét duyệt
   getApproveContracts ({ commit, rootState }) {
     contractRepository.getApproveContracts(rootState.users.user.userId).then(response => {
       if (response.status === 200) {
-        commit('getPendingContracts', response.data)
+        commit('setApproveContracts', response.data)
+      }
+    }).catch((error) => {
+      if (error.message.includes('404')) {
+        commit('setEmptyContracts')
       }
     })
   },
-  getContractDetail ({ commit, state }, contractId) {
-    contractRepository.getRequestDetail(contractId).then(response => {
+  // Lấy tất cả các hợp đồng đang chờ hệ thống kích hoạt
+  getSignContracts ({ commit, rootState }) {
+    contractRepository.getSignContracts(rootState.users.user.userId).then(response => {
       if (response.status === 200) {
-        commit('setContractDetail', { contractId: contractId, contract: response.data })
+        commit('setSignContracts', response.data)
+      }
+    }).catch((error) => {
+      if (error.message.includes('404')) {
+        commit('setEmptyContracts')
+      }
+    })
+  },
+  getContractDetail ({ commit, state }, payloadContract) {
+    contractRepository.getRequestDetail(payloadContract.contractId).then(response => {
+      if (response.status === 200) {
+        commit('setContractDetail', { contractId: payloadContract.contractId, contract: response.data })
+        var contract = contractRepository.getContractSample()
+        commit('setContractDetailHistory', {
+          contractDetailInfo: state.contractDetail,
+          contractSample: contract
+        })
+        if (payloadContract.where === 'HISTORY') {
+          router.push('/history/contract-history').catch(error => {
+            if (error.name !== 'NavigationDuplicated') {
+              throw error
+            }
+          })
+        } else if (payloadContract.where === 'DETAIL') {
+          router.push('/home/contract-history').catch(error => {
+            if (error.name !== 'NavigationDuplicated') {
+              throw error
+            }
+          })
+        } else if (payloadContract.where === 'PATIENT-DETAIL') {
+          router.push('/patient-detail-page/contract-history').catch(error => {
+            if (error.name !== 'NavigationDuplicated') {
+              throw error
+            }
+          })
+        }
       }
     }).catch(error => {
       console.log('error getContractDetail:::', error)
     })
-    var contract = contractRepository.getContractSample()
-    commit('setContractDetailHistory', {
-      contractDetailInfo: state.contractDetail,
-      contractSample: contract
+  },
+  setContractIdUpdate ({ commit }, contractId) {
+    commit('setContractIdUpdate', contractId)
+  },
+  async updateMedicalInstructionToContract ({ rootState, state, dispatch }, payload) {
+    console.log('updateMedicalInstructionToContract', payload)
+    rootState.medicalInstruction.medicalInstructionOfNewHealthRecord = payload.checkImgs.map(img => {
+      return img.medicalInstructionId
     })
-    router.push('/history/contract-history').catch(error => {
-      if (error.name !== 'NavigationDuplicated') {
-        throw error
-      }
+    await contractRepository.updateMedicalInstructionToContract({ contractId: state.contractIdUpdate, medicalInstructions: rootState.medicalInstruction.medicalInstructionOfNewHealthRecord }).then(response => {
+      dispatch('contracts/getRequestDetail', payload.contractId, { root: true })
+      Notification.success({ title: 'Thông báo', message: 'Cập nhật y lệnh thành công!', duration: 7000 })
+    }).catch(() => {
+      Notification.error({ title: 'Thông báo', message: 'Cập nhật y lệnh thất bại!', duration: 7000 })
     })
+  },
+  clearState ({ commit }) {
+    commit('clearState')
   }
 }
 const mutations = {
+  setContractCondition (state, contractCondition) {
+    state.contractCondition = {
+      distanceDate: contractCondition.distanceDate,
+      minimumDate: contractCondition.minimumDate
+    }
+    console.log('contractCondition', state.contractCondition)
+  },
   setDateStartedContract (state, dateStarted) {
     var date = new Date(dateStarted)
     state.contract.dateStarted = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
@@ -439,7 +541,7 @@ const mutations = {
     state.license.days = parseInt(license.days)
     state.license.price = parseInt(license.price)
     state.license.description = license.description
-    console.log('license:::', state.requestDetail.license)
+    console.log('license:::', state.license)
   },
   // Cập nhật hợp đồng
   setContractSample (state, contractObject) {
@@ -481,7 +583,7 @@ const mutations = {
     state.contractSample.partyB.fullName = contractObject.contractRequestInfo.fullNameDoctor
     state.contractSample.partyB.address = contractObject.contractRequestInfo.addressDoctor
     state.contractSample.partyB.phoneNumber = contractObject.contractRequestInfo.phoneNumberDoctor
-    state.contractSample.partyB.dateOfBirth = contractObject.contractRequestInfo.dobDoctor
+    state.contractSample.partyB.dateOfBirth = contractObject.contractRequestInfo.dobDoctor.split('-').reverse().join('/')
     state.contractSample.partyB.workLocation = contractObject.contractRequestInfo.workLocationDoctor
     state.contractSample.partyB.specialization = contractObject.contractRequestInfo.specialization
     state.contractSample.timeAndMission.title = contractObject.contractSample.timeAndMission.title
@@ -565,7 +667,8 @@ const mutations = {
         note: contract.note,
         phoneNumberDoctor: contract.phoneNumberDoctor,
         phoneNumberPatient: contract.phoneNumberPatient,
-        priceLicense: contract.priceLicense
+        priceLicense: contract.priceLicense,
+        patientId: contract.patientId
       }
     })
     console.log('finishContracts:::', state.finishContracts)
@@ -604,7 +707,7 @@ const mutations = {
         dateCreated: contract.dateCreated.split('T')[0],
         dateFinished: contract.dateFinished.split('T')[0],
         dateStarted: contract.dateStarted.split('T')[0],
-        daysOfTracking: contract.dateOfTracking,
+        daysOfTracking: contract.daysOfTracking,
         diseases: contract.diseases.map(disease => {
           return {
             diseaseId: disease.diseaseId,
@@ -622,11 +725,65 @@ const mutations = {
     })
     console.log('rejectContracts:::', state.rejectContracts)
   },
+  setApproveContracts (state, contractResponse) {
+    state.approveContracts = contractResponse.map(contract => {
+      return {
+        contractCode: contract.contractCode,
+        contractId: contract.contractId,
+        dateCreated: contract.dateCreated.split('T')[0],
+        dateFinished: contract.dateFinished.split('T')[0],
+        dateStarted: contract.dateStarted.split('T')[0],
+        daysOfTracking: contract.daysOfTracking,
+        diseases: contract.diseases.map(disease => {
+          return {
+            diseaseId: disease.diseaseId,
+            diseaseName: disease.name
+          }
+        }),
+        fullNameDoctor: contract.fullNameDoctor,
+        fullNamePatient: contract.fullNamePatient,
+        nameLicense: contract.nameLicense,
+        note: contract.note,
+        phoneNumberDoctor: contract.phoneNumberDoctor,
+        phoneNumberPatient: contract.phoneNumberPatient,
+        priceLicense: contract.priceLicense
+      }
+    })
+    console.log('approveContracts:::', state.approveContracts)
+  },
+  setSignContracts (state, contractResponse) {
+    state.signContracts = contractResponse.map(contract => {
+      return {
+        contractCode: contract.contractCode,
+        contractId: contract.contractId,
+        dateCreated: contract.dateCreated.split('T')[0],
+        dateFinished: contract.dateFinished.split('T')[0],
+        dateStarted: contract.dateStarted.split('T')[0],
+        daysOfTracking: contract.daysOfTracking,
+        diseases: contract.diseases.map(disease => {
+          return {
+            diseaseId: disease.diseaseId,
+            diseaseName: disease.name
+          }
+        }),
+        fullNameDoctor: contract.fullNameDoctor,
+        fullNamePatient: contract.fullNamePatient,
+        nameLicense: contract.nameLicense,
+        note: contract.note,
+        phoneNumberDoctor: contract.phoneNumberDoctor,
+        phoneNumberPatient: contract.phoneNumberPatient,
+        priceLicense: contract.priceLicense
+      }
+    })
+    console.log('signContracts:::', state.signContracts)
+  },
   // Lấy hợp đồng mà bệnh nhân đã request
   getRequestDetailSuccess (state, payloadRequestDetail) {
     state.requestDetail = {}
+    state.defaultCheckImgs = []
     // state.requestDetail.contactId = payloadRequestDetail.contractId
     state.requestDetail.fullNameDoctor = payloadRequestDetail.fullNameDoctor
+    state.requestDetail.contractId = payloadRequestDetail.contractId
     state.requestDetail.phoneNumberDoctor = payloadRequestDetail.phoneNumberDoctor
     state.requestDetail.workLocationDoctor = payloadRequestDetail.workLocationDoctor
     state.requestDetail.addressDoctor = payloadRequestDetail.addressDoctor
@@ -634,40 +791,118 @@ const mutations = {
     state.requestDetail.fullNamePatient = payloadRequestDetail.fullNamePatient
     state.requestDetail.phoneNumberPatient = payloadRequestDetail.phoneNumberPatient
     state.requestDetail.addressPatient = payloadRequestDetail.addressPatient
-    state.requestDetail.dobPatient = payloadRequestDetail.dobPatient.split('T')[0].split('-').reverse().join('/')
+    state.requestDetail.dobPatient = payloadRequestDetail.dobPatient.split('T')[0]
     state.requestDetail.contractCode = payloadRequestDetail.contractCode
     state.requestDetail.note = payloadRequestDetail.note
     state.requestDetail.status = payloadRequestDetail.status
-    state.requestDetail.dateCreated = payloadRequestDetail.dateCreated
-    state.requestDetail.dateStarted = payloadRequestDetail.dateStarted.split('T')[0].split('-').reverse().join('/')
+    state.requestDetail.dateCreated = new Date(payloadRequestDetail.dateCreated.split('T')[0])
+    state.requestDetail.dateStarted = new Date(payloadRequestDetail.dateStarted.split('T')[0])
+    state.requestDetail.dateFinished = new Date(payloadRequestDetail.dateFinished.split('T')[0])
     state.requestDetail.nameLicense = payloadRequestDetail.nameLicense
-    state.requestDetail.daysOfTracking = 30
+    state.requestDetail.daysOfTracking = payloadRequestDetail.daysOfTracking
     state.requestDetail.priceLicense = payloadRequestDetail.priceLicense
     state.requestDetail.licenseId = payloadRequestDetail.licenseId
     state.requestDetail.doctorId = payloadRequestDetail.doctorId
     state.requestDetail.patientId = payloadRequestDetail.patientId
-    state.requestDetail.diseases = payloadRequestDetail.diseases.map(disease => {
+    state.requestDetail.diseases = payloadRequestDetail.diseaseContracts.map(disease => {
       return {
-        diseaseId: disease.diseaseId,
-        nameDisease: disease.nameDisease
+        diseaseId: disease.split(':')[0],
+        diseaseName: disease.split(':')[1]
       }
     })
-    state.requestDetail.medicalInstructionTypes = payloadRequestDetail.medicalInstructionTypes.map(mit => {
+    state.requestDetail.medicalInstructionDiseases = payloadRequestDetail.medicalInstructionDiseases.map(mid => {
       return {
-        medicalInstructionTypeName: mit.medicalInstructionTypeName,
-        medicalInstructions: mit.medicalInstructions.map(mi => {
+        diseaseId: mid.diseaseId,
+        diseaseName: mid.nameDisease,
+        medicalInstructions: mid.medicalInstructions.map(mi => {
           return {
-            isChoose: false,
-            isSelected: false,
             medicalInstructionId: mi.medicalInstructionId,
-            image: `http://45.76.186.233:8000/api/v1/Images?pathImage=${mi.image}`,
-            description: mi.description,
-            diagnose: mi.diagnose
+            medicalInstructionTypeName: mi.medicalInstructionTypeName,
+            miShareFromId: mi.miShareFromId === null ? null : mi.miShareFromId,
+            images: mi.images === null ? null : mi.images.map(i => {
+              return {
+                isChoose: false,
+                url: `http://45.76.186.233:8000/api/v1/Images?pathImage=${i}`
+              }
+            }),
+            disease: mi.disease === null ? null : mi.disease,
+            diagnose: mi.diagnose === null ? null : mi.description
           }
         })
       }
     })
+    if (payloadRequestDetail.medicalInstructionOthers !== null) {
+      state.requestDetail.medicalInstructionOthers = payloadRequestDetail.medicalInstructionOthers.map(mio => {
+        return {
+          medicalInstructionId: mio.medicalInstructionId,
+          miShareFromId: mio.miShareFromId === null ? null : mio.miShareFromId,
+          medicalInstructionTypeName: mio.medicalInstructionTypeName,
+          images: mio.images === null ? null : mio.images.map(i => {
+            return {
+              isChoose: false,
+              url: `http://45.76.186.233:8000/api/v1/Images?pathImage=${i}`
+            }
+          }),
+          diagnose: mio.diagnose,
+          description: mio.description,
+          diseases: mio.diseases
+        }
+      })
+      state.requestDetail.medicalInstructionOthers = groupBy(state.requestDetail.medicalInstructionOthers, 'medicalInstructionTypeName', 'medicalInstructionTypeName', 'medicalInstructions')
+    } else {
+      state.requestDetail.medicalInstructionOthers = null
+    }
+    if (payloadRequestDetail.medicalInstructionChoosed !== null) {
+      state.requestDetail.medicalInstructionChoosed = payloadRequestDetail.medicalInstructionChoosed.map(mio => {
+        return {
+          medicalInstructionId: mio.medicalInstructionId,
+          miShareFromId: mio.miShareFromId === null ? null : mio.miShareFromId,
+          medicalInstructionTypeName: mio.medicalInstructionTypeName,
+          images: mio.images === null ? null : mio.images.map(i => {
+            return {
+              isChoose: false,
+              url: `http://45.76.186.233:8000/api/v1/Images?pathImage=${i}`
+            }
+          }),
+          diagnose: mio.diagnose,
+          description: mio.description,
+          diseases: mio.diseases
+        }
+      })
+      state.requestDetail.medicalInstructionChoosed = groupBy(state.requestDetail.medicalInstructionChoosed, 'medicalInstructionTypeName', 'medicalInstructionTypeName', 'medicalInstructions')
+      payloadRequestDetail.medicalInstructionChoosed.forEach(choose => {
+        payloadRequestDetail.medicalInstructionDiseases.forEach(mid => {
+          mid.medicalInstructions.forEach(mi => {
+            if (mi.medicalInstructionId === choose.miShareFromId) {
+              state.defaultCheckImgs.push({
+                medicalInstructionId: mi.medicalInstructionId,
+                medicalInstructionTypeName: mi.medicalInstructionTypeName
+              })
+            }
+          })
+        })
+      })
+      if (payloadRequestDetail.medicalInstructionOthers !== null) {
+        payloadRequestDetail.medicalInstructionChoosed.forEach(choose => {
+          payloadRequestDetail.medicalInstructionOthers.forEach(mi => {
+            console.log('mi', mi)
+            if (mi.medicalInstructionId === choose.miShareFromId) {
+              state.defaultCheckImgs.push({
+                medicalInstructionId: mi.medicalInstructionId,
+                medicalInstructionTypeName: mi.medicalInstructionTypeName
+              })
+            }
+          })
+        })
+      }
+    } else {
+      state.requestDetail.medicalInstructionChoosed = null
+    }
+    console.log('default check img: ', state.defaultCheckImgs)
     console.log('Thông tin hợp đồng của người đã yêu cầu (requestDetail)', state.requestDetail)
+  },
+  setContractIdUpdate (state, contractId) {
+    state.contractIdUpdate = contractId
   },
   // Manage rejectContract
   rejectContract (state) {
@@ -682,27 +917,29 @@ const mutations = {
   },
   // Transfer data of request detail from request-detail to confirm-contract
   nextCreateContract (state, payload) {
+    state.requestDetail.dateStarted = payload.dateStarted
+    state.requestDetail.daysOfTracking = payload.daysOfTracking
     // state.contract.contractId = payload.contractId
     state.contract.status = 'active'
     state.contract.patientId = payload.patientId
+    state.contract.dateStarted = payload.dateStarted
     state.contract.daysOfTracking = payload.daysOfTracking
-    state.contract.dateStarted = payload.dateStarted.includes('/') ? payload.dateStarted.split('/').reverse().join('-') : payload.dateStarted
-    console.log('date started:::', state.contract.dateStarted)
-    var dateFinished = new Date(state.contract.dateStarted)
+    // state.contract.dateStarted = payload.dateStarted.includes('/') ? payload.dateStarted.split('/').reverse().join('-') : payload.dateStarted
+    var dateFinished = new Date(state.requestDetail.dateStarted)
     dateFinished = dateFinished.setDate(dateFinished.getDate() + state.contract.daysOfTracking)
     state.contractSample.dateContractFinished = {
-      day: new Date(dateFinished).getDate(),
-      month: new Date(dateFinished).getMonth() + 1,
+      day: (new Date(dateFinished).getDate()) < 10 ? '0' + (new Date(dateFinished).getDate()) : (new Date(dateFinished).getDate()),
+      month: (new Date(dateFinished).getMonth() + 1) < 10 ? '0' + (new Date(dateFinished).getMonth() + 1) : (new Date(dateFinished).getMonth() + 1),
       year: new Date(dateFinished).getFullYear()
     } // Cập nhật ngày kết thúc của hợp đồng
     var price = parseInt(state.contract.daysOfTracking) * state.license.price
     state.contractSample.price = formatPrice(`${price}`, '.') // format giá tiền để hiển thị trong hợp đồng
-    console.log('contract:::: ', state.contract)
+    console.log('nextCreateContract - contract:::: ', state.contract)
   },
   // set thông tin bệnh nhân để show trong hợp đồng khi ký
   setPatientInfo (state, payloadPatientInfo) {
     state.patientDetail.patientId = payloadPatientInfo.patientId
-    state.patientDetail.gender = payloadPatientInfo.gender
+    state.patientDetail.gender = payloadPatientInfo.gender === 'Male' ? 'Nam' : 'Nữ'
     state.patientDetail.email = payloadPatientInfo.email
     state.patientDetail.career = payloadPatientInfo.career
     state.patientDetail.relatives = payloadPatientInfo.relatives
@@ -723,7 +960,7 @@ const mutations = {
     state.contractDetail.phoneNumberPatient = payloadContractDetail.contract.phoneNumberPatient
     state.contractDetail.addressPatient = payloadContractDetail.contract.addressPatient
     state.contractDetail.dobPatient = payloadContractDetail.contract.dobPatient.split('T')[0].split('-').reverse().join('/')
-    state.contractDetail.genderPatient = payloadContractDetail.contract.genderPatient
+    state.contractDetail.genderPatient = payloadContractDetail.contract.genderPatient === 'Male' ? 'Nam' : 'Nữ'
     state.contractDetail.contractCode = payloadContractDetail.contract.contractCode
     state.contractDetail.note = payloadContractDetail.contract.note
     state.contractDetail.status = payloadContractDetail.contract.status
@@ -735,24 +972,87 @@ const mutations = {
     state.contractDetail.licenseId = payloadContractDetail.contract.licenseId
     state.contractDetail.doctorId = payloadContractDetail.contract.doctorId
     state.contractDetail.patientId = payloadContractDetail.contract.patientId
-    state.contractDetail.diseases = payloadContractDetail.contract.diseases.map(disease => {
+    state.contractDetail.diseases = payloadContractDetail.contract.diseaseContracts.map(disease => {
       return {
-        diseaseId: disease.diseaseId,
-        nameDisease: disease.nameDisease
+        diseaseId: disease.split(':')[0],
+        nameDisease: disease.split(':')[1]
       }
     })
-    state.contractDetail.medicalInstructionTypes = payloadContractDetail.contract.medicalInstructionTypes.map(medicalInstructionType => {
+    state.contractDetail.medicalInstructionDiseases = payloadContractDetail.contract.medicalInstructionDiseases.map(mid => {
       return {
-        medicalInstructionTypeName: medicalInstructionType.medicalInstructionTypeName,
-        medicalInstructions: medicalInstructionType.medicalInstructions.map(mi => {
+        diseaseId: mid.diseaseId,
+        diseaseName: mid.nameDisease,
+        medicalInstructions: mid.medicalInstructions.map(mi => {
           return {
-            image: `http://45.76.186.233:8000/api/v1/Images?pathImage=${mi.image}`,
-            description: mi.description,
-            diagnose: mi.diagnose
+            medicalInstructionId: mi.medicalInstructionId,
+            medicalInstructionTypeName: mi.medicalInstructionTypeName,
+            miShareFromId: mi.miShareFromId === null ? null : mi.miShareFromId,
+            images: mi.images === null ? null : mi.images.map(i => {
+              return {
+                isChoose: false,
+                url: `http://45.76.186.233:8000/api/v1/Images?pathImage=${i}`
+              }
+            }),
+            disease: mi.disease === null ? null : mi.disease,
+            diagnose: mi.diagnose === null ? null : mi.description
           }
         })
       }
     })
+    if (payloadContractDetail.medicalInstructionOthers !== null) {
+      state.contractDetail.medicalInstructionOthers = payloadContractDetail.contract.medicalInstructionOthers.map(mio => {
+        return {
+          medicalInstructionId: mio.medicalInstructionId,
+          miShareFromId: mio.miShareFromId === null ? null : mio.miShareFromId,
+          medicalInstructionTypeName: mio.medicalInstructionTypeName,
+          images: mio.images === null ? null : mio.images.map(i => {
+            return {
+              isChoose: false,
+              url: `http://45.76.186.233:8000/api/v1/Images?pathImage=${i}`
+            }
+          }),
+          diagnose: mio.diagnose,
+          description: mio.description,
+          diseases: mio.diseases
+        }
+      })
+      state.contractDetail.medicalInstructionOthers = groupBy(state.contractDetail.medicalInstructionOthers, 'medicalInstructionTypeName', 'medicalInstructionTypeName', 'medicalInstructions')
+    } else {
+      state.contractDetail.medicalInstructionOthers = null
+    }
+    if (payloadContractDetail.contract.medicalInstructionChoosed !== null) {
+      state.contractDetail.medicalInstructionChoosed = payloadContractDetail.contract.medicalInstructionChoosed.map(mio => {
+        return {
+          medicalInstructionId: mio.medicalInstructionId,
+          miShareFromId: mio.miShareFromId === null ? null : mio.miShareFromId,
+          medicalInstructionTypeName: mio.medicalInstructionTypeName,
+          images: mio.images === null ? null : mio.images.map(i => {
+            return {
+              isChoose: false,
+              url: `http://45.76.186.233:8000/api/v1/Images?pathImage=${i}`
+            }
+          }),
+          diagnose: mio.diagnose,
+          description: mio.description,
+          diseases: mio.diseases
+        }
+      })
+      state.contractDetail.medicalInstructionChoosed = groupBy(state.contractDetail.medicalInstructionChoosed, 'medicalInstructionTypeName', 'medicalInstructionTypeName', 'medicalInstructions')
+      payloadContractDetail.contract.medicalInstructionChoosed.forEach(choose => {
+        payloadContractDetail.contract.medicalInstructionDiseases.forEach(mid => {
+          mid.medicalInstructions.forEach(mi => {
+            if (mi.medicalInstructionId === choose.miShareFromId) {
+              state.defaultCheckImgs.push({
+                medicalInstructionId: mi.medicalInstructionId,
+                medicalInstructionTypeName: mi.medicalInstructionTypeName
+              })
+            }
+          })
+        })
+      })
+    } else {
+      state.contractDetail.medicalInstructionChoosed = null
+    }
     console.log('Thông tin hợp đồng của người đã yêu cầu (contractDetail)', state.contractDetail)
   },
   // Cập nhật hợp đồng khi xem trong nhật ký hoạt động
@@ -796,6 +1096,23 @@ const mutations = {
     state.contractDetailHistory.collectiveCommitment.description = contractObject.contractSample.collectiveCommitment.description
 
     console.log('Thông tin hợp đồng (contractDetailHistory):::', state.contractDetailHistory)
+  },
+  setEmptyContracts (state) {
+    state.activeContracts = []
+    state.rejectContract = []
+    state.approveContracts = []
+    state.cancelContract = []
+    state.pendingContracts = []
+    state.finishContracts = []
+    state.signContracts = []
+  },
+  changeDateStarted (state, value) {
+    console.log('changeDateStarted', value)
+    state.requestDetail.dateStarted = new Date(value)
+    console.log('state.requestDetail.dateStarted', state.requestDetail.dateStarted)
+  },
+  clearState (state) {
+    state = () => ({})
   }
 }
 export default {

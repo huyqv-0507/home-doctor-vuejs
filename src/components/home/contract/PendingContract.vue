@@ -1,35 +1,29 @@
 <template>
   <div>
-    <el-table :data="pendingContracts"
-              :default-sort = "{prop: 'dateCreated', order: 'descending'}"
-              @row-click="goToRequestDetail">
+    <el-table :data="pendingContracts" :default-sort="{prop: 'dateCreated', order: 'descending'}">
+      <template slot="empty">Không có dữ liệu</template>
+      <el-table-column prop="contractCode" label="Mã hợp đồng" width="130"></el-table-column>
+      <el-table-column prop="fullNamePatient" label="Họ tên" width="200"></el-table-column>
+      <el-table-column prop="phoneNumberPatient" label="Số điện thoại" width="150"></el-table-column>
       <el-table-column
-          prop="contractCode"
-          label="Mã hợp đồng"
-          width="120">
+        prop="dateCreated"
+        label="Ngày tạo"
+        sortable
+        width="125"
+        :formatter="formatDate"
+      ></el-table-column>
+      <el-table-column label="Chức năng">
+        <template slot-scope="scope">
+          <el-button size="mini" @click="handleView(scope.$index, scope.row)">Xem</el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleReject(scope.$index, scope.row)"
+          >Từ chối</el-button>
+        </template>
       </el-table-column>
-      <el-table-column
-          prop="fullNamePatient"
-          label="Họ tên"
-          width="200">
-      </el-table-column>
-      <el-table-column
-          prop="note"
-          label="Mô tả"
-          width="200">
-      </el-table-column>
-      <el-table-column
-          prop="daysOfTracking"
-          label="Ngày theo dõi"
-          width="125">
-      </el-table-column>
-      <el-table-column
-          prop="dateCreated"
-          label="Ngày tạo"
-          sortable
-          width="125" :formatter="formatDate">
-      </el-table-column>
-    </el-table></div>
+    </el-table>
+  </div>
 </template>
 
 <script>
@@ -42,19 +36,26 @@ export default {
     this.getPendingContracts()
   },
   methods: {
-    ...mapActions('contracts', ['getPendingContracts']),
+    ...mapActions('contracts', [
+      'getPendingContracts',
+      'confirmRejectContract'
+    ]),
     // Đi đến trang chi tiết yêu cầu của bệnh nhân mà bác sĩ đã chọn
-    goToRequestDetail (row, column, event) {
-      this.$store.state.contracts.requestDetail.diseases = row.diseases
-      this.$router.push({ name: 'request-detail', params: { contractId: row.contractId } })
+    handleView (index, row) {
+      this.$store.dispatch('contracts/getRequestDetail', row.contractId, { root: true })
+    },
+    handleReject (index, row) {
+      this.confirmRejectContract(row.contractId)
     },
     formatDate (row, column) {
-      return row.dateCreated.split('-').reverse().join('/')
+      return row.dateCreated
+        .split('-')
+        .reverse()
+        .join('/')
     }
   }
 }
 </script>
 
 <style>
-
 </style>

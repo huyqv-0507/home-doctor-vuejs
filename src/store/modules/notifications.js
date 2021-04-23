@@ -1,7 +1,7 @@
 import { RepositoryFactory } from '../../repositories/RepositoryFactory'
-import { Message } from 'element-ui'
 import { toDateTitle, toTimeAgo } from '../../utils/common'
 import router from '../../router'
+import { MessageBox } from 'element-ui'
 const notificationRepository = RepositoryFactory.get('notificationRepository')
 /*
   notificationTypeId:
@@ -32,6 +32,7 @@ const actions = {
     var notificationTypeId = parseInt(notificationData.data.notiTypeId)
     switch (notificationTypeId) {
       case 1:
+        dispatch('contracts/getContractsWithStatus', null, { root: true })
         commit('newMessageNotification')
         dispatch('notifications/getNotifications', null, { root: true }) // Cập nhật danh sách bệnh nhân đang theo dõi
         break
@@ -83,9 +84,10 @@ const actions = {
         dispatch('systemHandler/newMessageSystemNotification', notificationData, { root: true })
         break
       case 16:
-
+        dispatch('systemHandler/newMessageSystemNotification', notificationData, { root: true })
         break
       case 17:
+        dispatch('systemHandler/newMessageSystemNotification', notificationData, { root: true })
         break
       default:
         break
@@ -97,6 +99,11 @@ const actions = {
       if (response.status === 200) {
         commit('setNotifications', response.data)
       }
+    }).catch((error) => {
+      if (error.message.includes('404')) {
+        commit('setNotificationsEmpty')
+      }
+      throw error
     })
   },
   showNotify ({ commit, state, dispatch }) {
@@ -129,7 +136,7 @@ const actions = {
       info.senderAccountId,
       info.recipientAccountId).then(response => {
       if (response.status === 200) {
-        Message.success({ message: 'Bạn đã đề nghị bệnh nhân kích hoạt thiết bị. Vui lòng chờ.', showClose: true })
+        MessageBox.alert('Bạn đã đề nghị bệnh nhân kết nối thiết bị. Vui lòng chờ.', 'Thông báo', { confirmButtonText: 'Đồng ý' })
       }
     }).catch((error) => { console.log(error) })
   },
@@ -139,30 +146,29 @@ const actions = {
     console.log('handleNotificationLink - notificationData', notificationData)
     var notificationTypeId = notificationData.notification.notificationType
     var contract = null
+    var patient = null
     switch (notificationTypeId) {
       case 1: // Check trạng thái để chuyển trang
         contract = rootGetters['contracts/getContractStatusById'](parseInt(notificationData.notification.contractId))
-        console.log(contract)
+        console.log('handleNotificationLink - contract', contract)
         switch (contract.status) {
+          case 'FINISHED': {
+            console.log('Contract is finished')
+            break
+          }
           case 'PENDING':
-            router.push({
-              name: 'request-detail',
-              params: { contractId: notificationData.notification.contractId }
-            })
+            dispatch('contracts/getRequestDetail', notificationData.notification.contractId, { root: true })
             break
           case 'ACTIVE':
-            router.push('/home/actived-contract').catch(error => {
-              if (error.name !== 'NavigationDuplicated') {
-                throw error
-              }
-            })
+            patient = rootGetters['patients/getPatientApproveByContract'](parseInt(notificationData.notification.contractId))
+            commit('medicalInstruction/setPatientSelected', patient, { root: true })
+            dispatch('patients/goToPatientDetail', null, { root: true })
             break
           case 'APPROVED':
-            router.push('/home/approved-contract').catch(error => {
-              if (error.name !== 'NavigationDuplicated') {
-                throw error
-              }
-            })
+            MessageBox.alert('Hợp đồng đang chờ được bệnh nhân xác nhận.', 'Thông báo', { confirmButtonText: 'Đồng ý', showClose: false })
+            break
+          case 'CANCELD':
+            MessageBox.alert('Hợp đồng đã bị bác sĩ từ chối.', 'Thông báo', { confirmButtonText: 'Đồng ý', showClose: false })
             break
 
           default:
@@ -172,6 +178,12 @@ const actions = {
       case 9:
         contract = rootGetters['contracts/getContractStatusById'](parseInt(notificationData.notification.contractId))
         switch (contract.status) {
+          case 'PENDING':
+            router.push({
+              name: 'request-detail',
+              params: { contractId: notificationData.notification.contractId }
+            })
+            break
           case 'FINISHED': {
             console.log('Contract is finished')
             break
@@ -182,8 +194,19 @@ const actions = {
             dispatch('patients/goToPatientDetail', patientApproved, { root: true })
             break
           }
+          case 'APPROVED':
+            MessageBox.alert('Hợp đồng đang chờ được bệnh nhân xác nhận.', 'Thông báo', { confirmButtonText: 'Đồng ý' })
+            break
+          case 'CANCELD':
+            MessageBox.alert('Hợp đồng đã bị bác sĩ từ chối.', 'Thông báo', { confirmButtonText: 'Đồng ý' })
+            break
         }
+        break
+      case 3:
+        dispatch('patients/getRequestMedicalInstructions', null, { root: true })
+        break
     }
+    commit('showNotify')
     dispatch(
       'notifications/seeNotify',
       {
@@ -192,6 +215,9 @@ const actions = {
       },
       { root: true }
     )
+  },
+  clearState ({ commit }) {
+    commit('clearState')
   }
 }
 const mutations = {
@@ -235,9 +261,15 @@ const mutations = {
     state.numBadge = tmpBadge
     console.log('Notifications:::', state.notifications)
   },
+  setNotificationsEmpty (state) {
+    state.numBadge = 0
+    state.notifications = null
+  },
   showNotify (state) {
     state.isShowNotify = !state.isShowNotify
-    console.log('isShowNotify', state.isShowNotify)
+  },
+  clearState (state) {
+    state = () => ({})
   }
 }
 

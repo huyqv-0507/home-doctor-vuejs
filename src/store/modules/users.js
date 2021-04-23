@@ -27,8 +27,8 @@ const getters = {
 }
 const actions = {
   // Nhận thông tin account (username, password) từ màn hình để đăng nhập
-  login ({ commit }, account) {
-    userRepository.loginApp(account).then((response) => { // Truy cập repository
+  async login ({ commit }, account) {
+    await userRepository.loginApp(account).then((response) => { // Truy cập repository
       if (response.status === 200) { // Thành công
         setToken(`${response.data.token}`) // Lưu lại token để sử dụng những chức năng khác
         var tokenInfo = parseJwt(response.data.token)
@@ -52,7 +52,7 @@ const actions = {
         commit('loginFailed') // Báo cho mutation thất bại để render view
       }
     }).catch((error) => {
-      console.log(error)
+      console.log('err at user - login', error)
       commit('loginFailed')
     })
   },
@@ -64,10 +64,35 @@ const actions = {
       }
     })
   },
-  handleLogout ({ rootState }) {
+  async handleLogout ({ rootState, dispatch }) {
     rootState.notifications.notifications = []
     rootState.notifications.numBadge = 0
+    rootState.medicalInstruction.prescriptionView = null
+    rootState.medicalInstruction.vitalSignView = null
+    rootState.vitalSign.patientOptions = null
     router.push('/')
+    await userRepository.removeTokenFirebase(parseInt(rootState.users.user.accountId)).then(response => {
+      console.log('logout success', response.data)
+    }).catch((error) => {
+      console.log('logout failed', error)
+    })
+    await dispatch('appointments/clearState', null, { root: true })
+    await dispatch('contracts/clearState', null, { root: true })
+    await dispatch('historyActivities/clearState', null, { root: true })
+    await dispatch('medicalInstruction/clearState', null, { root: true })
+    await dispatch('modals/clearState', null, { root: true })
+    await dispatch('notifications/clearState', null, { root: true })
+    await dispatch('patientDetail/clearState', null, { root: true })
+    await dispatch('patients/clearState', null, { root: true })
+    await dispatch('slideshows/clearState', null, { root: true })
+    await dispatch('suggestions/clearState', null, { root: true })
+    await dispatch('systemHandler/clearState', null, { root: true })
+    await dispatch('tabs/clearState', null, { root: true })
+    await dispatch('vitalSign/clearState', null, { root: true })
+    await dispatch('users/clearState', null, { root: true })
+  },
+  clearState ({ commit }) {
+    commit('clearState')
   }
 }
 const mutations = {
@@ -76,7 +101,7 @@ const mutations = {
     state.status = 'logged'
     state.user.accountId = user.accountId
     state.user.userId = user.doctorId
-    state.user.userName = user.doctorProfile.userName
+    state.user.userName = user.doctorProfile.username
     state.user.fullName = user.doctorProfile.fullName
     state.user.workLocation = user.doctorProfile.workLocation
     state.user.phone = user.doctorProfile.phone
@@ -107,6 +132,9 @@ const mutations = {
       }
     })
     console.log('Activities history:::', state.activities)
+  },
+  clearState (state) {
+    state = () => ({})
   }
 }
 export default {

@@ -31,7 +31,7 @@ export default {
   computed: {
     ...mapState('users', ['status'])
   },
-  data: function () {
+  data () {
     return {
       // Form dùng để đăng nhập
       loginForm: {
