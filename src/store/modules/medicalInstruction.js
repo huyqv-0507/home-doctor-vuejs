@@ -2,8 +2,10 @@ import router from '../../router/index'
 import { RepositoryFactory } from '../../repositories/RepositoryFactory'
 import { Notification, MessageBox } from 'element-ui'
 import { groupBy } from '../../utils/common'
+import { getField, updateField } from 'vuex-map-fields'
 
 const medicalInstructionRepository = RepositoryFactory.get('medicalInstructionRepository')
+const appointmentRepository = RepositoryFactory.get('appointmentRepository')
 
 const state = () => ({
   medicalInstructionStatus: false, // Trạng thái của modal Y lệnh. Xác định trang được hiển thị (Chọn bệnh nhân/ Chọn chức năng cho y lệnh)
@@ -33,6 +35,40 @@ const state = () => ({
     patientName: '',
     medicationSchedules: []
   },
+  prescriptionCreated: {
+    status: null,
+    prescription: null
+  },
+  medicineCreated: {
+    status: null,
+    medicine: {
+      medicineDescription: '',
+      unitType: '',
+      content: '',
+      medicineName: '',
+      unitMorning: '', // Số thuốc sử dụng cho sáng
+      unitNoon: '', // Số thuốc sử dụng cho trưa
+      unitAfternoon: '', // Số thuốc sử dụng cho chiều
+      unitNight: '', // Số thuốc sử dụng cho tối
+      morningCheck: false,
+      noonCheck: false,
+      afternoonCheck: false,
+      nightCheck: false,
+      useTimeOpt: '', // Thời gian sử dụng thuốc vào buổi sáng
+      useTimeOptions: [
+        {
+          useTimeOpt: 'Trước bữa ăn',
+          label: 'Trước bữa ăn'
+        },
+        {
+          useTimeOpt: 'Sau bữa ăn',
+          label: 'Sau bữa ăn'
+        }
+      ],
+      noteMore: '' // Ghi chú thêm
+    },
+    index: null
+  },
   prescriptionExistedStatus: false,
   prescriptionExisted: {},
   maxDatePrescription: {
@@ -47,7 +83,12 @@ const state = () => ({
   vitalSignView: {},
   medicalInstructionTypes: []
 })
-const getters = {}
+const getters = {
+  getMedicalInstructionTypeId: state => (medicalInstructionTypeName) => {
+    return state.medicalInstructionTypes.find(mit => mit.medicalInstructionTypeName === medicalInstructionTypeName)
+  },
+  getField
+}
 const actions = {
   setPrescriptionView ({ commit }, prescription) {
     commit('setPrescriptionView', prescription)
@@ -60,50 +101,51 @@ const actions = {
   },
   // Đi đến trang xét lịch uống thuốc cho bệnh nhân
   setMedicalSchedule ({ dispatch, rootState, state }, from) {
-    if (!state.patientSelected.isScheduleAppointment) {
-      MessageBox.alert('Bác sĩ cần gặp bệnh nhân lần đầu để kiểm tra trước khi cho đơn thuốc.', 'Cảnh báo')
-    } else {
-      switch (from) {
-        case 'HOME':
-          dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
-          dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
-          dispatch('modals/closeSelectMedicalInstructionModalSub', null, { root: true }) // Gọi module 'modals' để đóng dialog
+    switch (from) {
+      case 'HOME':
+        dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
+        dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
+        dispatch('modals/closeSelectMedicalInstructionModalSub', null, { root: true }) // Gọi module 'modals' để đóng dialog
+        dispatch('appointments/setAppointmentIdToCreatePrescription', null, { root: true }).then(() => {
           router.push('/home/medical-schedule').catch(error => {
             if (error.name !== 'NavigationDuplicated') {
               throw error
             }
           })
-          dispatch('appointments/setAppointmentIdToCreatePrescription', null, { root: true })
-          break
+        })
+        break
 
-        case 'PATIENT-DETAIL':
-          dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
-          dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
+      case 'PATIENT-DETAIL':
+        dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
+        dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
+        dispatch('appointments/setAppointmentIdToCreatePrescription', null, { root: true }).then(() => {
           router.push('/patient-detail-page/medical-schedule').catch(error => {
             if (error.name !== 'NavigationDuplicated') {
               throw error
             }
           })
-          dispatch('appointments/setAppointmentIdToCreatePrescription', null, { root: true })
-          break
-        case 'APPOINTMENT':
-          dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
-          dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
-          dispatch('modals/closeFinishAppointmentShow', null, { root: true })
-          router.push('/patient-detail-page/medical-schedule').catch(error => {
-            if (error.name !== 'NavigationDuplicated') {
-              throw error
-            }
+        })
+        break
+      case 'APPOINTMENT':
+        dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
+        dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
+        dispatch('patients/getOverviews', null, { root: true }).then(() => {
+          dispatch('appointments/setAppointmentIdToCreatePrescription', rootState.patients.patientOverview.appointmentNext.appointmentId, { root: true }).then(() => {
+            dispatch('modals/closeFinishAppointmentShow', null, { root: true })
+            router.push('/patient-detail-page/medical-schedule').catch(error => {
+              if (error.name !== 'NavigationDuplicated') {
+                throw error
+              }
+            })
           })
-          dispatch('appointments/setAppointmentIdToCreatePrescription', rootState.appointments.appointmentIdToCreatePrescription, { root: true })
-          break
+        })
+        break
 
-        default:
-          break
-      }
-      rootState.systemHandler.routeFrom = from
-      dispatch('medicalInstruction/getMedicalScheduleHistory', null, { root: true })
+      default:
+        break
     }
+    rootState.systemHandler.routeFrom = from
+    dispatch('medicalInstruction/getMedicalScheduleHistory', null, { root: true })
   },
   // Đi đến trang đo sinh hiệu cho bệnh nhân
   setVitalSign ({ dispatch, rootState, state }, from) {
@@ -140,7 +182,7 @@ const actions = {
         if (isDeviceConnected) {
           dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
           dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
-          router.push('/patient-detail-page/vital-sign').catch(error => {
+          router.push('/patient-detail-page/vital-sign-patient').catch(error => {
             if (error.name !== 'NavigationDuplicated') {
               throw error
             }
@@ -166,7 +208,7 @@ const actions = {
           dispatch('modals/closeMedicalInstruction', null, { root: true }) // Gọi module 'modals' để đóng dialog
           dispatch('modals/closeSelectMedicalInstructionModal', null, { root: true }) // Gọi module 'modals' để đóng dialog
           dispatch('modals/closeFinishAppointmentShow', null, { root: true })
-          router.push('/patient-detail-page/vital-sign').catch(error => {
+          router.push('/patient-detail-page/vital-sign-patient').catch(error => {
             if (error.name !== 'NavigationDuplicated') {
               throw error
             }
@@ -184,7 +226,7 @@ const actions = {
               console.log('HUỶ')
             })
         }
-        dispatch('appointments/setAppointmentIdToCreateVitalSign', rootState.appointments.appointmentIdToCreateVitalSign, { root: true })
+        dispatch('appointments/setAppointmentIdToCreateVitalSign', rootState.patients.patientOverview.appointmentNext.appointmentId, { root: true })
         break
       default:
         break
@@ -214,24 +256,30 @@ const actions = {
   // Chọn bệnh nhân
   selectPatient ({ commit, dispatch }, payloadPatient) {
     commit('setPatientSelected', payloadPatient)
+    dispatch('businessValidator/checkFirstAppointmentFinished', null, { root: true })
+    dispatch('businessValidator/checkAppointmentActive', null, { root: true })
     dispatch('nextMedicalInstruction')
   },
   // Thêm thuốc vào đơn thuốc
-  addMedicineToPrescription ({ commit, dispatch }, prescription) {
-    console.log('Form add new prescription: ', prescription)
-    commit('addMedicineToPrescription', prescription)
-    dispatch('modals/closeAddMedicine', null, { root: true })
+  addMedicineToPrescription ({ commit }, useTimeOpt) {
+    commit('addMedicineToPrescription', useTimeOpt)
   },
   // Thêm đơn thuốc vào database
   createMedicalSchedule () {
 
+  },
+  removeMedicineInPrescription ({ state }, index) {
+    state.prescriptionDetails.splice(index, 1)
   },
   // Insert đơn thuốc xuống db
   savePrescription ({ dispatch, state, rootState, commit }, data) {
     var medicalInstructionSchedule = {
       healthRecordId: state.patientSelected.healthRecordId,
       doctorAccountId: parseInt(rootState.users.user.accountId),
-      diagnose: data.diagnose,
+      conclusion: data.conclusion,
+      diseaseIds: rootState.prescription.prescriptionDiagnoses.map(p => {
+        return p.diagnose.split(')')[0].replace('(', '')
+      }), // Danh sách bệnh kèm theo được phát hiện trong quá trình khám chữa bệnh
       dateStarted: data.dateStarted,
       dateFinished: data.dateFinished,
       description: data.description,
@@ -250,20 +298,23 @@ const actions = {
         }
       })
     }
-    console.log('medicalInstructionSchedule', medicalInstructionSchedule)
     medicalInstructionRepository.createMedicalSchedule(medicalInstructionSchedule).then(response => {
-      if (response.status === 201) {
-        Notification.success({ title: 'Thông báo', message: 'Tạo đơn thuốc thành công!', duration: 6000 })
-        commit('setPrescriptionExistedNew')
-        dispatch('medicalInstruction/getMedicalScheduleHistory', null, { root: true })
-        router.go(-1)
-        if (rootState.appointments.appointmentIdToCreatePrescription !== null) {
-          dispatch('appointments/finishAppointment', medicalInstructionSchedule.diagnose, { root: true })
-        }
+      if (rootState.appointments.appointmentIdToCreatePrescription !== null) {
+        appointmentRepository.finishAppointment({
+          appointmentId: rootState.appointments.appointmentIdToCreatePrescription,
+          diagnose: '',
+          contractId: state.patientSelected.contractId
+        }).then(response => {
+          dispatch('businessValidator/setIsFirstAppointmentFinished', true, { root: true })
+          dispatch('businessValidator/setIsAppointmentActive', false, { root: true })
+        }).catch(err => { console.log(err) })
       }
-    }).catch(error => {
-      console.log(error)
-      Notification.error({ title: 'Thông báo', message: 'Tạo đơn thuốc không thành công!', duration: 6000 })
+      Notification.success({ title: 'Thông báo', message: 'Bác sĩ đã tạo đơn thuốc thành công', duration: 7000 })
+      dispatch('getMedicalInstructionHistory')
+      router.go(-1)
+    }).catch(err => {
+      console.log(err)
+      Notification.error({ title: 'Thông báo', message: 'Bác sĩ đã tạo đơn thuốc khoong thành công', duration: 7000 })
     })
     // commit('savePrescription', medicalInstructionSchedule)
   },
@@ -285,7 +336,9 @@ const actions = {
     })
   },
   // Thêm mới thuốc
-  openAddNewMedicine ({ commit }) {
+  openAddNewMedicine ({ commit, state }) {
+    state.prescriptionCreated.status = 'NEW'
+    state.prescriptionCreated.prescription = {}
     commit('setPrescriptionExistedNew')
     router.push('new-medical-schedule')
   },
@@ -293,14 +346,49 @@ const actions = {
     router.go(-1)
   },
   // Dùng lại đơn thuốc cũ
-  reusePrescription ({ commit }, prescription) {
-    console.log('Sử dụng lại đơn thuốc:::', prescription)
+  reusePrescription ({ commit, state }, prescription) {
+    console.log('prescription', prescription)
+    state.prescriptionCreated.status = 'REUSE'
+    state.prescriptionCreated.prescription = prescription
     commit('setPrescriptionExistedReuse', prescription)
-    router.push('reuse-medical-schedule')
+    router.push('new-medical-schedule')
   },
   // Sửa medicine
-  setEditMedicine ({ commit }, medicine) {
-    commit('setEditMedicine', medicine)
+  addNewMedicine ({ dispatch, state }, data) {
+    console.log('addNewMedicine', data)
+    state.medicineCreated.status = data.status
+    state.medicineCreated.medicine = {
+      medicineDescription: data.medicine.medicineName,
+      unitType: data.medicine.unit,
+      content: data.medicine.content,
+      medicineName: data.medicine.medicineName,
+      unitMorning: parseInt(data.medicine.morning) === 0 ? '' : parseInt(data.medicine.morning), // Số thuốc sử dụng cho sáng
+      unitNoon: parseInt(data.medicine.noon) === 0 ? '' : parseInt(data.medicine.noon), // Số thuốc sử dụng cho trưa
+      unitAfternoon: parseInt(data.medicine.afternoon) === 0 ? '' : parseInt(data.medicine.afternoon), // Số thuốc sử dụng cho chiều
+      unitNight: parseInt(data.medicine.night) === 0 ? '' : parseInt(data.medicine.night), // Số thuốc sử dụng cho tối
+      morningCheck: data.medicine.morning !== 0,
+      noonCheck: data.medicine.noon !== 0,
+      afternoonCheck: data.medicine.afternoon !== 0,
+      nightCheck: data.medicine.night !== 0,
+      useTimeOpt: data.medicine.useTime !== '' ? data.medicine.useTime.split(';')[0].trim() : null, // Thời gian sử dụng thuốc vào buổi sáng
+      useTimeOptions: [
+        {
+          useTimeOpt: 'Trước bữa ăn',
+          label: 'Trước bữa ăn'
+        },
+        {
+          useTimeOpt: 'Sau bữa ăn',
+          label: 'Sau bữa ăn'
+        }
+      ],
+      noteMore: data.medicine.useTime !== '' ? data.medicine.useTime.split(';')[1].trim() : '' // Ghi chú thêm
+    }
+    state.medicineCreated.index = data.index
+    console.log('medicineCreated', state.medicineCreated)
+    dispatch('modals/openAddMedicine', null, { root: true })
+  },
+  updateMedicineToPrescription ({ commit }, useTimeOpt) {
+    commit('updateMedicineToPrescription', useTimeOpt)
   },
   // Lấy thông tin đơn thuốc được chọn
   getPrescriptionDetailHistory ({ commit }, medicalInstructionId) {
@@ -330,11 +418,6 @@ const actions = {
       }
     })
   },
-  addMedicineEditToPrescription ({ commit, dispatch }, prescription) {
-    console.log('add medicine')
-    commit('addMedicineEditToPrescription', prescription)
-    dispatch('modals/closeEditMedicine', null, { root: true })
-  },
   // Filter medicalInstructionSchedule
   setMedicalInstructionHistory ({ commit }, medicalInstructions) {
     commit('setMedicalInstructionsFilter', medicalInstructions)
@@ -345,8 +428,12 @@ const actions = {
       if (response.status === 200) {
         // console.log('payloadCancel', payloadCancel)
         // commit('setCancelPrescription', payloadCancel.medicalInstructionId)
+        Notification.success({ title: 'Thông báo', message: 'Bác sĩ đã dừng lịch uống thuốc thành công', duration: 7000 })
         dispatch('getMedicalInstructionHistory')
       }
+    }).catch(err => {
+      console.log(err)
+      Notification.error({ title: 'Thông báo', message: 'Bác sĩ không thể dừng lịch uống thuốc', duration: 7000 })
     })
   },
   // Chọn những phiếu Y lệnh cần lưu
@@ -401,6 +488,24 @@ const actions = {
       Notification.error({ title: 'Thông báo', message: 'Từ chối thêm y lệnh vào hồ sơ bệnh án không thành công', duration: 7000 })
     })
   },
+  insertMedicalInstructionImage ({ dispatch }, medicalInstruction) {
+    console.log('medicalInstruction', medicalInstruction)
+    medicalInstructionRepository.insertMedicalInstructionImage(medicalInstruction).then(response => {
+      Notification.success({ title: 'Thông báo', message: 'Bác sĩ đã thêm y lệnh thành công', duration: 7000 })
+      dispatch('modals/closeAddMedicalInstructionForm', null, { root: true })
+      dispatch('patients/getMedicalInstructionsByType', null, { root: true })
+    }).catch(err => {
+      console.log('insertMedicalInstructionImage', err)
+      Notification.error({ title: 'Lỗi', message: 'Vui lòng kiểm tra kết nối mạng', duration: 7000 })
+    })
+  },
+  insertDiseases ({ commit }, diseases) {
+    medicalInstructionRepository.insertDiseases(diseases).then(response => {
+      console.log('insertDiseases ok')
+    }).catch(err => {
+      console.log(err)
+    })
+  },
   clearState ({ commit }) {
     commit('clearState')
   }
@@ -444,8 +549,7 @@ const mutations = {
       state.patientSelected = {
         accountPatientId: payloadPatient.accountPatientId,
         contractId: payloadPatient.contractId,
-        appointmentLast: payloadPatient.appointmentLast,
-        dateAppointment: payloadPatient.dateAppointment === null ? null : payloadPatient.dateAppointment,
+        appointmentLast: payloadPatient.appointmentLast === null ? null : payloadPatient.appointmentLast,
         diseaseContract: payloadPatient.diseaseContract.map(disease => {
           return {
             diseaseId: disease.diseaseId,
@@ -474,143 +578,98 @@ const mutations = {
     console.log('patientSelected: ', state.patientSelected)
   },
   // Thêm 1 thuốc vào danh sách thuốc
-  addMedicineToPrescription (state, prescription) {
-    console.log('prescription', prescription)
-    var medicineName = prescription.medicineName
-    var content = prescription.content
-    var morning = 0
-    var noon = 0
-    var afternoon = 0
-    var night = 0
-    if (prescription.newMedicineForm.unitMorning === '') {
-      morning = 0
+  addMedicineToPrescription (state, useTimeOpt) {
+    var medicineName = state.medicineCreated.medicine.medicineName
+    var content = state.medicineCreated.medicine.content
+    var morning = state.medicineCreated.medicine.unitMorning.length === 0 ? 0 : parseInt(state.medicineCreated.medicine.unitMorning)
+    var noon = state.medicineCreated.medicine.unitNoon.length === 0 ? 0 : parseInt(state.medicineCreated.medicine.unitNoon)
+    var afternoon = state.medicineCreated.medicine.unitAfternoon.length === 0 ? 0 : parseInt(state.medicineCreated.medicine.unitAfternoon)
+    var night = state.medicineCreated.medicine.unitNight.length === 0 ? 0 : parseInt(state.medicineCreated.medicine.unitNight)
+    var useTime = state.medicineCreated.medicine.useTime
+    if (useTimeOpt === null || useTimeOpt.length === 0 || useTimeOpt === '') {
+      useTime = `Trước bữa ăn; ${state.medicineCreated.medicine.noteMore}`
     } else {
-      morning = prescription.newMedicineForm.unitMorning
+      useTime = `${state.medicineCreated.medicine.useTimeOpt}; ${state.medicineCreated.medicine.noteMore}`
     }
-    if (prescription.newMedicineForm.unitNoon === '') {
-      noon = 0
-    } else {
-      noon = prescription.newMedicineForm.unitNoon
-    }
-    if (prescription.newMedicineForm.unitAfternoon === '') {
-      afternoon = 0
-    } else {
-      afternoon = prescription.newMedicineForm.unitAfternoon
-    }
-    if (prescription.newMedicineForm.unitNight === '') {
-      night = 0
-    } else {
-      night = prescription.newMedicineForm.unitNight
-    }
-    var useTime = ''
-    if (prescription.newMedicineForm.useTimeOpt === '') {
-      useTime = `Trước bữa ăn; ${prescription.newMedicineForm.noteMore}`
-    } else {
-      useTime = `${prescription.newMedicineForm.useTimeOpt}; ${prescription.newMedicineForm.noteMore}`
-    }
-    var unit = prescription.unit
+    var unit = state.medicineCreated.medicine.unitType
     var usage = `Sử dụng: sáng ${parseInt(morning)} ${unit}, trưa ${parseInt(noon)} ${unit}, chiều ${parseInt(afternoon)} ${unit}, tối ${parseInt(night)} ${unit}; ${useTime}`
     var totalNumber = parseInt(morning) + parseInt(noon) + parseInt(afternoon) + parseInt(night)
-    var medicineUsage = { medicineName: medicineName, content: content, morning: morning, noon: noon, afternoon: afternoon, night: night, useTime: useTime, usage: usage, totalNumber: totalNumber, unit: unit }
+    var medicineUsage = {
+      medicineName: medicineName,
+      content: content,
+      morning: morning,
+      noon: noon,
+      afternoon: afternoon,
+      night: night,
+      useTime: useTime,
+      usage: usage,
+      totalNumber: totalNumber,
+      unit: unit
+    }
+    console.log('medicineUsage', medicineUsage)
     state.prescriptionDetails.push(medicineUsage)
   },
   getMedicalScheduleHistoryFailure (state) {
     state.medicalInstructionHistory = []
   },
   setMedicalScheduleHistory (state, medicalInstructionHistory) {
-    var tmpMedicalInstructionHistory = medicalInstructionHistory.map(mih => {
-      return {
-        medicalInstructionId: mih.medicalInstructionId,
-        diagnose: mih.diagnose,
-        description: mih.description,
-        dateStarted: mih.prescriptionRespone.dateStarted.split('T')[0].split('-').reverse().join('/'),
-        dateFinished: mih.prescriptionRespone.dateFinished.split('T')[0].split('-').reverse().join('/'),
-        dateCanceled: mih.prescriptionRespone.dateCanceled !== null ? mih.prescriptionRespone.dateCanceled.split('T')[0].split('-').reverse().join('/') : null, // mih.medicationsRespone.dateCanceled.split('T')[0].split('-').reverse().join('/'),
-        placeHealthRecord: mih.placeHealthRecord,
-        status: mih.prescriptionRespone.status,
-        isCanceled: mih.prescriptionRespone.status === 'CANCEL',
-        isActive: mih.prescriptionRespone.status === 'ACTIVE',
-        isFinish: mih.prescriptionRespone.status === 'FINISH',
-        reasonCancel: mih.prescriptionRespone.reasonCancel,
-        medicationSchedules: mih.prescriptionRespone.medicationSchedules.map(ms => {
-          return {
-            medicationName: ms.medicationName,
-            content: ms.content,
-            useTime: ms.useTime,
-            unit: ms.unit,
-            morning: ms.morning,
-            noon: ms.noon,
-            afternoon: ms.afterNoon,
-            night: ms.night,
-            totalNumber: parseInt(ms.morning) + parseInt(ms.noon) + parseInt(ms.afterNoon) + parseInt(ms.night)
-          }
-        })
-      }
-    })
-    state.medicalInstructionHistory = tmpMedicalInstructionHistory
-    state.medicalInstructionHistories = tmpMedicalInstructionHistory
-    console.log('medicalInstructionHistory: ', state.medicalInstructionHistory)
+    try {
+      var tmpMedicalInstructionHistory = medicalInstructionHistory.map(mih => {
+        return {
+          medicalInstructionId: mih.medicalInstructionId,
+          conclusion: mih.conclusion,
+          description: mih.description,
+          diseases: mih.diseases === null ? null : mih.diseases.map(d => {
+            return {
+              diseaseId: d.split('-')[0],
+              diseaseName: d.split('-')[1]
+            }
+          }),
+          dateStarted: mih.prescriptionRespone.dateStarted.split('T')[0].split('-').reverse().join('/'),
+          dateFinished: mih.prescriptionRespone.dateFinished.split('T')[0].split('-').reverse().join('/'),
+          dateCanceled: mih.prescriptionRespone.dateCanceled !== null ? mih.prescriptionRespone.dateCanceled.split('T')[0].split('-').reverse().join('/') : null, // mih.medicationsRespone.dateCanceled.split('T')[0].split('-').reverse().join('/'),
+          placeHealthRecord: mih.placeHealthRecord,
+          status: mih.prescriptionRespone.status,
+          isCanceled: mih.prescriptionRespone.status === 'CANCEL',
+          isActive: mih.prescriptionRespone.status === 'ACTIVE',
+          isFinish: mih.prescriptionRespone.status === 'FINISH',
+          reasonCancel: mih.prescriptionRespone.reasonCancel,
+          medicationSchedules: mih.prescriptionRespone.medicationSchedules.map(ms => {
+            let usage = ''
+            if (ms.morning !== 0 || ms.morning !== null) {
+              usage += `Sáng: ${ms.morning} ;`
+            }
+            if (ms.noon !== 0 || ms.noon !== null) {
+              usage += `Trưa: ${ms.noon} ;`
+            }
+            if (ms.afterNoon !== 0 || ms.afterNoon !== null) {
+              usage += `Chiều: ${ms.afterNoon} ;`
+            }
+            if (ms.night !== 0 || ms.night !== null) {
+              usage += `Tối: ${ms.night} ;`
+            }
+            return {
+              medicationName: ms.medicationName,
+              content: ms.content,
+              useTime: ms.useTime,
+              unit: ms.unit,
+              morning: ms.morning,
+              noon: ms.noon,
+              afternoon: ms.afterNoon,
+              night: ms.night,
+              usage: usage + ms.useTime,
+              totalNumber: parseInt(ms.morning) + parseInt(ms.noon) + parseInt(ms.afterNoon) + parseInt(ms.night)
+            }
+          })
+        }
+      })
+      state.medicalInstructionHistory = tmpMedicalInstructionHistory
+      state.medicalInstructionHistories = tmpMedicalInstructionHistory
+      console.log('medicalInstructionHistory: ', state.medicalInstructionHistory)
+    } catch (er) { console.log(er) }
   },
   setMedicalInstructionsFilter (state, medicalInstructions) {
     state.medicalInstructionHistory = medicalInstructions
-  },
-  addMedicineEditToPrescription (state, prescription) {
-    console.log(state.prescriptionDetails[state.medicineEdit.index])
-    console.log(state.prescriptionDetails)
-    var medicineName = prescription.medicineName
-    var content = prescription.content
-    var morning = 0
-    var noon = 0
-    var afternoon = 0
-    var night = 0
-    if (prescription.newMedicineForm.unitMorning === '') {
-      morning = 0
-    } else {
-      morning = prescription.newMedicineForm.unitMorning
-    }
-    if (prescription.newMedicineForm.unitNoon === '') {
-      noon = 0
-    } else {
-      noon = prescription.newMedicineForm.unitNoon
-    }
-    if (prescription.newMedicineForm.unitAfternoon === '') {
-      afternoon = 0
-    } else {
-      afternoon = prescription.newMedicineForm.unitAfternoon
-    }
-    if (prescription.newMedicineForm.unitNight === '') {
-      night = 0
-    } else {
-      night = prescription.newMedicineForm.unitNight
-    }
-    var useTime = ''
-    if (prescription.newMedicineForm.useTimeOpt === '') {
-      useTime = `Trước bữa ăn; ${prescription.newMedicineForm.noteMore}`
-    } else {
-      useTime = `${prescription.newMedicineForm.useTimeOpt}; ${prescription.newMedicineForm.noteMore}`
-    }
-    var unit = prescription.unit
-    var usage = `Sử dụng: sáng ${parseInt(morning)} ${unit}, trưa ${parseInt(noon)} ${unit}, chiều ${parseInt(afternoon)} ${unit}, tối ${parseInt(night)} ${unit}; ${useTime}`
-    var totalNumber = parseInt(morning) + parseInt(noon) + parseInt(afternoon) + parseInt(night)
-    state.prescriptionDetails[state.medicineEdit.index].medicineName = medicineName
-    state.prescriptionDetails[state.medicineEdit.index].content = content
-    state.prescriptionDetails[state.medicineEdit.index].morning = morning
-    state.prescriptionDetails[state.medicineEdit.index].noon = noon
-    state.prescriptionDetails[state.medicineEdit.index].afternoon = afternoon
-    state.prescriptionDetails[state.medicineEdit.index].night = night
-    state.prescriptionDetails[state.medicineEdit.index].useTime = useTime
-    state.prescriptionDetails[state.medicineEdit.index].usage = usage
-    state.prescriptionDetails[state.medicineEdit.index].totalNumber = totalNumber
-    state.prescriptionDetails[state.medicineEdit.index].unit = unit
-    console.log(state.prescriptionDetails)
-  },
-  setEditMedicine (state, medicine) {
-    state.medicineEdit = {}
-    state.medicineEdit = {
-      index: medicine.index,
-      medicine: medicine.medicineEdit
-    }
-    console.log('medicine edit>>>', state.medicineEdit)
   },
   // Cập nhât trạng thái đơn thuốc trong lịch sử
   setPrescriptionHistory (state, prescription) {
@@ -628,10 +687,16 @@ const mutations = {
     state.medicalInstructionDetail.dateFinished = medicalInstruction.dateFinished
   },
   setPrescriptionDetailHistory (state, prescriptionDetailHistory) {
+    console.log('prescriptionDetailHistory', prescriptionDetailHistory)
     state.prescriptionDetailHistory.medicalInstructionId = prescriptionDetailHistory.medicalInstructionId
     state.prescriptionDetailHistory.medicalInstructionType = prescriptionDetailHistory.medicalInstructionType
     state.prescriptionDetailHistory.description = prescriptionDetailHistory.description
-    state.prescriptionDetailHistory.diagnose = prescriptionDetailHistory.diagnose
+    state.prescriptionDetailHistory.diseases = prescriptionDetailHistory.diseases === null ? null : prescriptionDetailHistory.diseases.map(d => {
+      return {
+        diseaseId: d.split('-')[0],
+        diseaseName: d.split('-')[1]
+      }
+    })
     state.prescriptionDetailHistory.placeHealthRecord = prescriptionDetailHistory.placeHealthRecord
     state.prescriptionDetailHistory.dateStarted = prescriptionDetailHistory.prescriptionRespone.dateStarted
     state.prescriptionDetailHistory.dateFinished = prescriptionDetailHistory.prescriptionRespone.dateFinished
@@ -709,6 +774,13 @@ const mutations = {
         medicalInstructionId: prescription.medicalInstructionId,
         medicalInstructionTypeId: prescription.medicalInstructionTypeId,
         medicalInstructionTypeName: prescription.medicalInstructionTypeName,
+        conclusion: prescription.conclusion,
+        diseases: prescription.diseases === null ? null : prescription.diseases.map(d => {
+          return {
+            diseaseId: d.split('-')[0],
+            diseaseName: d.split('-')[1]
+          }
+        }),
         dateCreated: prescription.dateCreate,
         patientFullName: prescription.patientFullName,
         images: prescription.images === null ? null : prescription.images.map(i => {
@@ -753,6 +825,13 @@ const mutations = {
         medicalInstructionId: vitalSign.medicalInstructionId,
         medicalInstructionTypeId: vitalSign.medicalInstructionTypeId,
         medicalInstructionTypeName: vitalSign.medicalInstructionTypeName,
+        conclusion: vitalSign.conclusion,
+        diseases: vitalSign.diseases === null ? null : vitalSign.diseases.map(d => {
+          return {
+            diseaseId: d.split('-')[0],
+            diseaseName: d.split('-')[1]
+          }
+        }),
         dateCreate: vitalSign.dateCreate,
         patientFullName: vitalSign.patientFullName,
         images: vitalSign.images === null ? null : vitalSign.images.map(i => {
@@ -798,6 +877,36 @@ const mutations = {
         status: mit.status
       }
     })
+  },
+  updateField,
+  updateMedicineToPrescription (state, useTimeOpt) {
+    var medicineName = state.medicineCreated.medicine.medicineName
+    var content = state.medicineCreated.medicine.content
+    var morning = state.medicineCreated.medicine.unitMorning.length === 0 ? 0 : parseInt(state.medicineCreated.medicine.unitMorning)
+    var noon = state.medicineCreated.medicine.unitNoon.length === 0 ? 0 : parseInt(state.medicineCreated.medicine.unitNoon)
+    var afternoon = state.medicineCreated.medicine.unitAfternoon.length === 0 ? 0 : parseInt(state.medicineCreated.medicine.unitAfternoon)
+    var night = state.medicineCreated.medicine.unitNight.length === 0 ? 0 : parseInt(state.medicineCreated.medicine.unitNight)
+    var useTime = state.medicineCreated.medicine.useTime
+    if (useTimeOpt === null || useTimeOpt.length === 0 || useTimeOpt === '') {
+      useTime = `Trước bữa ăn; ${state.medicineCreated.medicine.noteMore}`
+    } else {
+      useTime = `${state.medicineCreated.medicine.useTimeOpt}; ${state.medicineCreated.medicine.noteMore}`
+    }
+    var unit = state.medicineCreated.medicine.unitType
+    var usage = `Sử dụng: sáng ${parseInt(morning)} ${unit}, trưa ${parseInt(noon)} ${unit}, chiều ${parseInt(afternoon)} ${unit}, tối ${parseInt(night)} ${unit}; ${useTime}`
+    var totalNumber = parseInt(morning) + parseInt(noon) + parseInt(afternoon) + parseInt(night)
+    state.prescriptionDetails[state.medicineCreated.index].medicineName = medicineName
+    state.prescriptionDetails[state.medicineCreated.index].content = content
+    state.prescriptionDetails[state.medicineCreated.index].morning = morning
+    state.prescriptionDetails[state.medicineCreated.index].noon = noon
+    state.prescriptionDetails[state.medicineCreated.index].afternoon = afternoon
+    state.prescriptionDetails[state.medicineCreated.index].night = night
+    state.prescriptionDetails[state.medicineCreated.index].useTime = useTime
+    state.prescriptionDetails[state.medicineCreated.index].usage = usage
+    state.prescriptionDetails[state.medicineCreated.index].totalNumber = totalNumber
+    state.prescriptionDetails[state.medicineCreated.index].unit = unit
+    console.log('state.prescriptionDetails[state.medicineCreated.index]', state.prescriptionDetails)
+    // Object.assign(state.prescriptionDetails[state.medicineCreated.index], { medicineName: medicineName, content: content, morning: morning, noon: noon, afternoon: afternoon, night: night, useTime: useTime, usage: usage, totalNumber: totalNumber, unit: unit })
   },
   clearState (state) {
     state = () => ({})

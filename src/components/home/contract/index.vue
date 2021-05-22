@@ -1,7 +1,7 @@
 <template>
   <div class="mainContent">
     <el-breadcrumb separator="/" class="breadcrumb">
-      <el-breadcrumb-item :to="{ path: '/' }">Trang chủ</el-breadcrumb-item>
+      <el-breadcrumb-item>Trang chủ</el-breadcrumb-item>
       <el-breadcrumb-item>Quản lý hợp đồng</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="bg-theme">

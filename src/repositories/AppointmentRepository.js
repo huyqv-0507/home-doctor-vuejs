@@ -79,5 +79,17 @@ export default {
       method: 'get',
       url: `/Appointments/GetAppointments?healthRecordId=${healthRecordId}`
     })
+  },
+  async checkFirstAppointment (healthRecordId) {
+    return await request({
+      method: 'get',
+      url: `/Appointments/GetAppointments?healthRecordId=${healthRecordId}&status=FINISHED`
+    })
+  },
+  async checkAppointmentActive (healthRecordId) {
+    return await request({
+      method: 'get',
+      url: `/Appointments/GetAppointments?healthRecordId=${healthRecordId}&status=ACTIVE`
+    })
   }
 }

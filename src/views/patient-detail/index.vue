@@ -5,8 +5,8 @@
     </template>
     <template v-slot:main-content>
       <router-view/>
-      <add-appointment-form-patient-detail/>
-        <image-show-request/>
+      <image-show-request/>
+      <add-medical-instruction-image-form/>
     </template>
     <template v-slot:right-content>
       <right-content />
@@ -18,8 +18,8 @@
 import BaseLayout from '../../layouts/BaseLayout.vue'
 import PatientDetailLeft from '../../components/left-content/PatientDetail.vue'
 import PatientDetailRight from '../../components/right-content/PatientDetail.vue'
-import AddAppointmentFormPatientDetail from '../../components/home/appointment/patient-select-dialog/AddAppointmentFormPatientDetail.vue'
 import ImageShowRequest from '../../components/home/components/ImageShowRequest.vue'
+import AddMedicalInstructionImageForm from '../../components/modals/addMedicalInstructionImageForm'
 import { mapActions } from 'vuex'
 export default {
   components: {
@@ -27,7 +27,7 @@ export default {
     'left-content': PatientDetailLeft,
     'right-content': PatientDetailRight,
     'image-show-request': ImageShowRequest,
-    'add-appointment-form-patient-detail': AddAppointmentFormPatientDetail
+    'add-medical-instruction-image-form': AddMedicalInstructionImageForm
   },
   methods: {
     ...mapActions('patients', ['getOverviews'])

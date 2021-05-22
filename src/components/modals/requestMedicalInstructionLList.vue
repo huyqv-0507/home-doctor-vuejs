@@ -2,7 +2,7 @@
   <el-dialog
     :visible="isRequestMedicalInstructionList"
     @close="closeRequestMedicalInstructionList"
-    center
+    center :close-on-click-modal="false"
   >
     <template slot="title">Danh sách y lệnh</template>
     <div v-if="requestMedicalInstructions.length === 0">
@@ -47,7 +47,7 @@
               <img
                 :src="image"
                 style="width: 150px;"
-                v-on:click="getMedicalInstructionImageInfo(medicalInstruction.medicalInstructionId)"
+                v-on:click="showMedicalInstructionImageDetail(medicalInstruction.medicalInstructionId)"
               />
             </div>
           </div>
@@ -70,16 +70,7 @@ export default {
   methods: {
     ...mapActions('modals', ['closeRequestMedicalInstructionList']),
     ...mapActions('patients', ['getRequestMedicalInstructions']),
-    getMedicalInstructionImageInfo (medicalInstructionId) {
-      this.$store.dispatch('slideshows/openImageRequestShow', null, {
-        root: true
-      })
-      this.$store.dispatch(
-        'slideshows/getMedicalInstructionImageInfo',
-        medicalInstructionId,
-        { root: true }
-      )
-    },
+    ...mapActions('image', ['showMedicalInstructionImageDetail']),
     handleView (mi) {
       const medicalInstruction = {
         medicalInstructionId: mi.medicalInstructionId,

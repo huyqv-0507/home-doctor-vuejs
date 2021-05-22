@@ -1,7 +1,7 @@
 <template>
   <div class="mainContent">
     <el-breadcrumb separator="/" style="font-size: 10px">
-      <el-breadcrumb-item :to="{ path: '/' }">Trang chủ</el-breadcrumb-item>
+      <el-breadcrumb-item>Trang chủ</el-breadcrumb-item>
     </el-breadcrumb>
     <br />
     <el-row class="card-wrapper bg-theme">
@@ -122,8 +122,10 @@
             v-for="(disease, indexDisease) in item.diseaseContract"
             :key="indexDisease"
           >
-            <strong>- ({{disease.diseaseId}}) {{disease.diseaseName}}</strong>
+            <strong v-if="indexDisease < 3">- ({{disease.diseaseId}}) {{disease.diseaseName}}</strong>
           </p>
+          <p
+            class="patient-health-wrapper_card_item" v-if="item.diseaseContract.length >= 3">...</p>
         </el-card>
       </el-row>
     </div>

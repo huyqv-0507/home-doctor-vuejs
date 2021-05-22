@@ -296,7 +296,9 @@ const actions = {
         console.log(err.name)
       })
     }).catch(error => {
-      console.error(error)
+      if (error.message.includes('404')) {
+        state.requestDetail = {}
+      } else { }
     })
   },
   // Get patient information
@@ -326,6 +328,7 @@ const actions = {
       if (response.status === 204) {
         dispatch('getRejectContracts')
         Notification.success({ title: 'Thông báo', message: 'Từ chối hợp đồng thành công!', duration: 7000 })
+        router.push('/home')
       }
     }).catch(error => {
       if (error.message.includes('404')) {
@@ -825,8 +828,14 @@ const mutations = {
                 url: `http://45.76.186.233:8000/api/v1/Images?pathImage=${i}`
               }
             }),
-            disease: mi.disease === null ? null : mi.disease,
-            diagnose: mi.diagnose === null ? null : mi.description
+            conclusion: mi.conclusion === null ? null : mi.conclusion,
+            description: mi.description === null ? null : mi.description,
+            diseases: mi.diseases === null ? null : mi.diseases.map(d => {
+              return {
+                diseaseId: d.split('-')[0],
+                diseaseName: d.split('-')[1]
+              }
+            })
           }
         })
       }
@@ -999,7 +1008,7 @@ const mutations = {
         })
       }
     })
-    if (payloadContractDetail.medicalInstructionOthers !== null) {
+    if (payloadContractDetail.contract.medicalInstructionOthers !== null) {
       state.contractDetail.medicalInstructionOthers = payloadContractDetail.contract.medicalInstructionOthers.map(mio => {
         return {
           medicalInstructionId: mio.medicalInstructionId,
@@ -1011,9 +1020,14 @@ const mutations = {
               url: `http://45.76.186.233:8000/api/v1/Images?pathImage=${i}`
             }
           }),
-          diagnose: mio.diagnose,
-          description: mio.description,
-          diseases: mio.diseases
+          conclusion: mio.conclusion === null ? null : mio.conclusion,
+          description: mio.description === null ? null : mio.description,
+          diseases: mio.diseases === null ? null : mio.diseases.map(d => {
+            return {
+              diseaseId: d.split(':')[0],
+              diseaseName: d.split(':')[1]
+            }
+          })
         }
       })
       state.contractDetail.medicalInstructionOthers = groupBy(state.contractDetail.medicalInstructionOthers, 'medicalInstructionTypeName', 'medicalInstructionTypeName', 'medicalInstructions')

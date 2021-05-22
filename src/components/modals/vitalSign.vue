@@ -13,23 +13,30 @@
           Bệnh nhân:
           <strong>{{vitalSignView.patientFullName}}</strong>
         </p>
-        <p>
+        <p class="margin-line">
           Chuẩn đoán:
-          <strong>{{vitalSignView.diagnose}}</strong>
+          <strong v-for="(disease, index) in vitalSignView.diseases" :key="`disease-${index}`">{{disease.diseaseId}} - {{disease.diseaseName}}; </strong>
+        </p>
+        <p class="margin-line">
+          Kết luận:
+          <strong>{{vitalSignView.conclusion}}</strong>
         </p>
         <p>
           Ngày tạo:
           <strong>{{vitalSignView.dateCreate.split('T')[0].split('-').reverse().join('/')}}</strong>
         </p>
         <p>
-          Trạng thái:
-          <strong>{{vitalSignView.status}}</strong>
-        </p>
-        <p>
           Nơi khám:
           <strong>{{vitalSignView.placeHealthRecord}}</strong>
         </p>
       </div>
+      <el-row v-show="isAddMedicalInstruction" class="margin-line">
+        <p>
+          <strong><i>Bác sĩ có muốn thêm y lệnh vào hồ sơ?</i></strong>
+        </p>
+        <el-button class="margin-line" type="primary" size="mini" @click="handleAddToHR(prescriptionView.medicalInstructionId)">Thêm</el-button>
+        <el-button class="margin-line" type="info" size="mini" @click="handleRejectAddToHR(prescriptionView.medicalInstructionId)">Bỏ qua</el-button>
+      </el-row>
       <el-table :data="vitalSignView.vitalSignScheduleRespone.vitalSigns">
         <el-table-column label="Loại sinh hiệu" prop="vitalSignType" width="200"></el-table-column>
         <el-table-column label="Mức an toàn lớn nhất" prop="numberMax" width="120"></el-table-column>
@@ -53,7 +60,8 @@ export default {
   computed: {
     ...mapState('medicalInstruction', ['vitalSignView']),
     ...mapState('modals', ['isVitalSignShow']),
-    ...mapState('contracts', ['requestDetail'])
+    ...mapState('contracts', ['requestDetail']),
+    ...mapState('image', ['isAddMedicalInstruction'])
   },
   methods: {
     formatDate (row, column, cellValue, index) {
@@ -70,6 +78,12 @@ export default {
         patientId: this.requestDetail.patientId
       })
       this.$store.dispatch('modals/openChartView', null, { root: true })
+    },
+    handleAddToHR (medicalInstructionId) {
+      this.$store.dispatch('medicalInstruction/confirmAddMIToHR', medicalInstructionId, { root: true })
+    },
+    handleRejectAddToHR (medicalInstructionId) {
+      this.$store.dispatch('medicalInstruction/rejectAddMIToHR', medicalInstructionId, { root: true })
     }
   }
 }

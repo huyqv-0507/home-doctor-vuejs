@@ -1,5 +1,5 @@
 module.exports = {
-  devServer: {
-    proxy: 'http://45.76.186.233:8000'
-  }
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/home-doctor-vuejs/' // Thay tên repository của các bạn vào đây nhé
+    : '/'
 }

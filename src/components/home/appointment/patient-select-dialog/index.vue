@@ -11,10 +11,8 @@
         class="content pointer marginbottom"
         v-for="(patient, index) in approvedPatients"
         :key="index"
-        v-on:click.native="selectPatientAppointment({
-              healthRecordId: patient.healthRecordId,
-              accountPatientId: patient.accountPatientId
-            })"
+        v-on:click.native="handleSelectPatient(patient)"
+        v-bind:class="{ locked: patient.contractStatus === 'LOCKED'}"
       >
         <el-col :span="4" :offset="0">
           <img
@@ -32,7 +30,7 @@
       </el-row>
     </div>
     <div v-else>
-      <el-link
+      <el-link v-show="isChoosePatient"
         style="margin-bottom: 1em;"
         type="primary"
         v-on:click="backToSelectPatientAppointment()"
@@ -40,9 +38,14 @@
         <i class="el-icon-back"></i> Trở về
       </el-link>
       <el-row class="verticalCenter" style="margin-bottom: .5em;">
+        <el-form>
+          <el-form-item label="Ngày"></el-form-item>
+          <el-form-item label="Giờ"></el-form-item>
+          <el-form-item label="Ghi chú"></el-form-item>
+        </el-form>
         <el-col :span="6">Ngày hẹn*:</el-col>
         <el-col :span="18">
-          <el-date-picker type="datetime" v-model="dateExamination" size="mini"></el-date-picker>
+          <el-date-picker type="datetime" v-model="dateExamination" size="mini" :default-time="['06:00:00', '08:00:00']"></el-date-picker>
         </el-col>
       </el-row>
       <el-row class="verticalCenter">
@@ -70,7 +73,7 @@ export default {
   computed: {
     ...mapState('modals', ['isVisibleAppointmentPatients']),
     ...mapState('patients', ['approvedPatients']),
-    ...mapState('appointments', ['isSelectPatient'])
+    ...mapState('appointments', ['isSelectPatient', 'isChoosePatient'])
   },
   mounted () {
     this.getPatientApproved()
@@ -79,9 +82,25 @@ export default {
     ...mapActions('modals', ['closeAppointmentPatientsModal']),
     ...mapActions('patients', ['getPatientApproved']),
     ...mapActions('appointments', [
-      'selectPatientAppointment',
       'backToSelectPatientAppointment'
     ]),
+    handleSelectPatient (patient) {
+      if (patient.contractStatus !== 'ACTIVE') {
+        this.$alert(
+          'Hợp đồng giữa bác sĩ và bệnh nhân đã bị khoá vì bác sĩ đã không ra y lệnh cho bệnh nhân sau 4 ngày hợp đồng có hiệu lực',
+          'Cảnh báo',
+          {
+            confirmButtonText: 'Đồng ý'
+          }
+        )
+      } else {
+        this.$store.commit('appointments/setChoosePatient', true, { root: true })
+        this.$store.dispatch('appointments/selectPatientAppointment', {
+          healthRecordId: patient.healthRecordId,
+          accountPatientId: patient.accountPatientId
+        }, { root: true })
+      }
+    },
     confirmAppointment () {
       this.$confirm(
         'Bác sĩ sẽ đồng ý lịch hẹn tái khám cho bệnh nhân. Xác nhận?',

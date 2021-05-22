@@ -1,0 +1,206 @@
+VM14818:1 A00-A09: Bệnh nhiễm trùng đường ruột
+VM14818:1 A15-A19: Bệnh lao
+VM14818:1 A20-A28: Bệnh nhiễm khuẩn do động vật truyền sang người
+VM14818:1 A30-A49: Bệnh nhiễm khuẩn khác
+VM14818:1 A50-A64: Bệnh nhiễm trùng lây truyền chủ yếu qua đường tình dục
+VM14818:1 A65-A69: Bệnh do xoắn trùng khác
+VM14818:1 A70-A74: Các bệnh khác do Chlamydia
+VM14818:1 A75-A79: Bệnh do Rickettsia
+VM14818:1 A80-A89: Nhiễm virus ở hệ thần kinh trung ương
+VM14818:1 A90-A99: Sốt virus và sốt xuất huyết virus do tiết túc truyền
+VM14818:1 B00-B09: Nhiễm virus có đặc điểm tổn thương tại da và niêm mạc
+VM14818:1 B15-B19: Viêm gan virus
+VM14818:1 B20-B24: Bệnh do nhiễm virus suy giảm miễn dịch ở người [HIV]
+VM14818:1 B25-B34: Các bệnh nhiễm virus khác
+VM14818:1 B35-B49: Bệnh nhiễm nấm
+VM14818:1 B50-B64: Bệnh do ký sinh trùng đơn bào
+VM14818:1 B65-B83: Bệnh giun sán
+VM14818:1 B85-B89: Bệnh chấy rận, bệnh ghẻ và nhiễm ký sinh trùng khác
+VM14818:1 B90-B94: Di chứng của bệnh nhiễm trùng và ký sinh trùng
+VM14818:1 B95-B98: Vi khuẩn, virus và các tác nhân gây nhiễm trùng khác
+VM14818:1 B99-B99: Bệnh nhiễm trùng khác
+VM14818:1 C00-C97: U ác tính
+VM14818:1 D00-D09: U tân sinh tại chỗ
+VM14818:1 D10-D36: U lành tính
+VM14818:1 D37-D48: U tân sinh không chắc chắn hoặc không biết tính chất
+VM14818:1 D50-D53: Bệnh thiếu máu dinh dưỡng
+VM14818:1 D55-D59: Thiếu máu tan máu
+VM14818:1 D60-D64: Suy tuỷ xương và các bệnh thiếu máu khác
+VM14818:1 D65-D69: Các rối loạn đông máu, ban xuất huyết và tình trạng xuất huyết khác
+VM14818:1 D70-D77: Các bệnh khác của máu và cơ quan tạo máu
+VM14818:1 D80-D89: Các rối loạn liên quan đến cơ chế miễn dịch
+VM14818:1 E00-E07: Bệnh tuyến giáp
+VM14818:1 E10-E14: Đái tháo đường
+VM14818:1 E15-E16: Các rối loạn khác về sự điều hoà glucose và bài tiết của tuỵ nội tiết
+VM14818:1 E20-E35: Rối loạn các tuyến nội tiết khác
+VM14818:1 E40-E46: Suy dinh dưỡng
+VM14818:1 E50-E64: Những bệnh thiếu dinh dưỡng khác
+VM14818:1 E65-E68: Béo phì và tình trạng thừa dinh dưỡng khác
+VM14818:1 E70-E90: Rối loạn chuyển hoá
+VM14818:1 F00-F09: Rối loạn tâm thần thực tổn bao gồm rối loạn tâm thần triệu chứng
+VM14818:1 F10-F19: Rối loạn tâm thần và hành vi do sử dụng chất tác động tâm thần
+VM14818:1 F20-F29: Tâm thần phân liệt, rối loạn loại phân liệt và các rối loạn hoang tưởng
+VM14818:1 F30-F39: Rối loạn khí sắc [cảm xúc]
+VM14818:1 F40-F48: Các rối loạn bệnh tâm căn có liên quan đến stress và rối loạn dạng cơ thể
+VM14818:1 F50-F59: Hội chứng hành vi kết hợp với rối loạn sinh lý và nhân tố cơ thể
+VM14818:1 F60-F69: Rối loạn nhân cách và hành vi ở người trưởng thành
+VM14818:1 F70-F79: Chậm phát triển tâm thần
+VM14818:1 F80-F89: Các rối loạn về phát triển tâm lý
+VM14818:1 F90-F98: Các rối loạn hành vi và cảm xúc thường khởi phát ở tuổi trẻ em và thanh thiếu niên
+VM14818:1 F99-F99: Rối loạn tâm thần không biệt định
+VM14818:1 G00-G09: Bệnh viêm hệ thần kinh trung ương
+VM14818:1 G10-G13: Bệnh teo hệ thống ảnh hưởng chủ yếu tới hệ thần kinh trung ương
+VM14818:1 G10-G14: Bệnh teo hệ thống ảnh hưởng chủ yếu tới hệ thần kinh trung ương
+VM14818:1 G20-G26: Hội chứng ngoại tháp và rối loạn vận động
+VM14818:1 G30-G32: Bệnh thoái hoá khác của hệ thần kinh
+VM14818:1 G35-G37: Bệnh Thoái hoá myelin của hệ thần kinh trung ương
+VM14818:1 G40-G47: Bệnh chu kỳ và kịch phát
+VM14818:1 G50-G59: Bệnh dây, rễ và đám rối thần kinh
+VM14818:1 G60-G64: Viêm nhiều dây thần kinh và bệnh hệ thần kinh ngoại biên khác
+VM14818:1 G70-G73: Bệnh của khớp thần kinh - cơ và cơ
+VM14818:1 G80-G83: Bại não và những hội chứng liệt khác
+VM14818:1 G90-G99: Các bệnh khác của hệ thần kinh
+VM14818:1 H00-H06: Bệnh của mí mắt, lệ bộ và hốc mắt
+VM14818:1 H10-H13: Bệnh của kết mạc
+VM14818:1 H15-H22: Bệnh củng mạc, giác mạc, mống mắt và thể mi
+VM14818:1 H25-H28: Bệnh thuỷ tinh thể
+VM14818:1 H30-H36: Bệnh hắc mạc và võng mạc
+VM14818:1 H40-H42: Bệnh glocom
+VM14818:1 H43-H45: Bệnh dịch kính và nhãn cầu
+VM14818:1 H46-H48: Bệnh thần kinh thị và đường dẫn thị giác
+VM14818:1 H49-H52: Bệnh cơ vận nhãn, vận nhãn hai mắt điều tiết và khúc xạ
+VM14818:1 H53-H54: Rối loạn thị giác và mù lòa
+VM14818:1 H55-H59: Bệnh mắt và phần phụ
+VM14818:1 H60-H62: Bệnh của tai ngoài
+VM14818:1 H65-H75: Bệnh của tai giữa và xương chũm
+VM14818:1 H80-H83: Bệnh của tai trong
+VM14818:1 H90-H95: Bệnh khác của tai
+VM14818:1 I00-I02: Thấp khớp cấp
+VM14818:1 I05-I09: Bệnh tim mạn tính do thấp
+VM14818:1 I10-I15: Bệnh lý tăng huyết áp
+VM14818:1 I20-I25: Bệnh tim thiếu máu cục bộ
+VM14818:1 I26-I28: Bệnh tim do phổi và bệnh tuần hoàn phổi
+VM14818:1 I30-I52: Thể bệnh tim khác
+VM14818:1 I60-I69: Bệnh mạch máu não
+VM14818:1 I70-I79: Bệnh động mạch, tiểu động mạch và mao mạch
+VM14818:1 I80-I89: Bệnh tĩnh mạch, mạch bạch huyết và hạch bạch huyết không phân loại nơi khác
+VM14818:1 I95-I99: Rối loạn khác và không xác định của hệ tuần hoàn
+VM14818:1 J00-J06: Nhiễm trùng hô hấp trên cấp
+VM14818:1 J09-J18: Cúm và viêm phổi
+VM14818:1 J20-J22: Nhiễm trùng đường hô hấp dưới cấp khác
+VM14818:1 J30-J39: Các bệnh khác của đường hô hấp trên
+VM14818:1 J40-J47: Các bệnh hô hấp dưới mạn tính
+VM14818:1 J60-J70: Các bệnh phổi do tác nhân bên ngoài
+VM14818:1 J80-J84: Các bệnh hô hấp khác ảnh hưởng chủ yếu đến mô kẽ
+VM14818:1 J85-J86: Tình trạng nung mủ và hoại tử của đường hô hấp dưới
+VM14818:1 J90-J94: Bệnh khác của màng phổi
+VM14818:1 J95-J99: Các bệnh lý khác của hệ hô hấp
+VM14818:1 K00-K14: Bệnh của khoang miệng, tuyến nước bọt và xương hàm
+VM14818:1 K20-K31: Bệnh của thực quản, dạ dày và tá tràng
+VM14818:1 K35-K38: Bệnh ruột thừa
+VM14818:1 K40-K46: Thoát vị
+VM14818:1 K50-K52: Viêm ruột non và đại tràng không do nhiễm trùng
+VM14818:1 K55-K64: Bệnh đường ruột khác
+VM14818:1 K65-K67: Bệnh của phúc mạc
+VM14818:1 K70-K77: Bệnh của gan
+VM14818:1 K80-K87: Bệnh túi mật, ống mật và tuỵ
+VM14818:1 K90-K93: Bệnh khác của hệ tiêu hoá
+VM14818:1 L00-L08: Nhiễm trùng da và mô dưới da
+VM14818:1 L10-L14: Bệnh da bọng nước
+VM14818:1 L20-L30: Viêm da và chàm
+VM14818:1 L40-L45: Bệnh sẩn có vảy
+VM14818:1 L50-L54: Mày đay và hồng ban
+VM14818:1 L55-L59: Các bệnh da và tổ chức dưới da liên quan đến bức xạ
+VM14818:1 L60-L75: Các bệnh phần phụ của da
+VM14818:1 L80-L99: Các bệnh khác của da và tổ chức dưới da
+VM14818:1 N00-N08: Bệnh cầu thận
+VM14818:1 N10-N16: Bệnh kẽ ống thận
+VM14818:1 N17-N19: Suy thận
+VM14818:1 N20-N23: Sỏi tiết niệu
+VM14818:1 N25-N29: Các rối loạn khác của thận và niệu quản
+VM14818:1 N30-N39: Các bệnh khác của hệ tiết niệu
+VM14818:1 N40-N51: Bệnh cơ quan sinh dục nam
+VM14818:1 N60-N64: Các biến đổi của vú
+VM14818:1 N70-N77: Viêm cơ quan sinh dục vùng chậu nữ
+VM14818:1 N80-N98: Biến đổi không do viêm của đường sinh dục nữ
+VM14818:1 N99-N99: Các rối loạn khác của hệ sinh dục tiết niệu
+VM14818:1 O00-O08: thai kỳ và sảy thai
+VM14818:1 O10-O16: Phù, protein niệu và tăng huyết áp trong khi có thai, khi đẻ và sau đẻ
+VM14818:1 O20-O29: Các bệnh lý khác của bà mẹ chủ yếu liên quan đến thai kỳ
+VM14818:1 O30-O48: Chăm sóc bà mẹ liên quan đến thai, buồng ối và các vấn đề có thể gặp khi đẻ
+VM14818:1 O60-O75: Biến chứng của chuyển dạ và đẻ
+VM14818:1 O80-O84: Cuộc đẻ
+VM14818:1 O85-O92: Biến chứng thường gặp liên quan đến sau đẻ
+VM14818:1 O94-O99: Các tình trạng sản khoa khác, không phân loại nơi khác
+VM14818:1 P00-P04: Thai nhi và trẻ sơ sinh bị ảnh hưởng do các yếu tố về phía mẹ và bởi các biến chứng của thời kỳ thai kỳ, chuyển dạ và cuộc đẻ
+VM14818:1 P05-P08: Các rối loạn liên quan đến tuổi thai và sự phát triển của thai
+VM14818:1 P10-P15: Chấn thương khi sinh
+VM14818:1 P20-P29: Rối loạn hô hấp và tim mạch đặc hiệu cho giai đoạn chu sinh
+VM14818:1 P35-P39: Nhiễm trùng đặc hiệu trong thời kỳ chu sinh
+VM14818:1 P50-P61: Rối loạn chảy máu và huyết học của thai và trẻ sơ sinh
+VM14818:1 P70-P74: Các rối loạn nội tiết, chuyển hoá tạm thời đặc hiệu cho thai và trẻ sơ sinh
+VM14818:1 P75-P78: Các rối loạn của hệ thống tiêu hoá ở thai và trẻ sơ sinh
+VM14818:1 P80-P83: Các bệnh lý của da và điều hòa thân nhiệt của thai và trẻ sơ sinh
+VM14818:1 P90-P96: Các bệnh lý khác xuất phát từ giai đoạn chu sinh
+VM14818:1 Q00-Q07: Dị tật bẩm sinh hệ thần kinh trung ương
+VM14818:1 Q10-Q18: Các dị tật bẩm sinh ở mắt, tai, mặt và cổ
+VM14818:1 Q20-Q28: Các dị tật bẩm sinh của hệ thống tuần hoàn
+VM14818:1 Q30-Q34: Các bất thường bẩm sinh của bộ máy hô hấp
+VM14818:1 Q35-Q37: Khe hở môi và khe hở vòm miệng
+VM14818:1 Q38-Q45: Các dị tật bẩm sinh khác của hệ tiêu hoá
+VM14818:1 Q50-Q56: Dị tật bẩm sinh của cơ quan sinh dục
+VM14818:1 Q60-Q64: Các dị tật bẩm sinh của hệ tiết niệu
+VM14818:1 Q65-Q79: Dị tật và biến dạng bẩm sinh của hệ cơ xương
+VM14818:1 Q80-Q89: Các dị tật bẩm sinh khác
+VM14818:1 Q90-Q99: Các bất thường nhiễm sắc thể, chưa được phân loại
+VM14818:1 R00-R09: Triệu chứng và dấu hiệu liên quan tới hệ tuần hoàn và hô hấp
+VM14818:1 R10-R19: Triệu chứng và dấu hiệu liên quan tới hệ tiêu hoá và bụng
+VM14818:1 R20-R23: Triệu chứng và dấu hiệu liên quan tới da và tổ chức dưới da
+VM14818:1 R25-R29: Triệu chứng và dấu hiệu liên quan tới hệ thần kinh và hệ cơ xương
+VM14818:1 R30-R39: Triệu chứng và dấu hiệu liên quan tới hệ tiết niệu
+VM14818:1 R40-R46: Triệu chứng và dấu hiệu liên quan tới nhận thức, tri giác và trạng thái cảm
+VM14818:1 R47-R49: Triệu chứng và dấu hiệu liên quan tới ngôn ngữ và giọng nói
+VM14818:1 R50-R69: Triệu chứng và dấu hiệu tổng quát
+VM14818:1 R70-R79: Phát hiện bất thường về xét nghiệm máu, không có chẩn đoán
+VM14818:1 R80-R82: Các phát hiện bất thường về xét nghiệm nước tiểu, không có chẩn đoán
+VM14818:1 R83-R89: Các phát hiện bất thường về xét nghiệm các dịch cơ thể các chất và mô, không có chẩn đoán
+VM14818:1 R90-R94: Các phát hiện bất thường về chẩn đoán hình ảnh và thăm dò chức năng, không có chẩn đoán
+VM14818:1 R95-R99: Nguyên nhân tử vong không xác định
+VM14818:1 S00-S09: Tổn thương ở đầu
+VM14818:1 S10-S19: Tổn thương ở cổ
+VM14818:1 S20-S29: Tổn thương lồng ngực
+VM14818:1 S30-S39: Tổn thương bụng, lưng dưới, cột sống thắt lưng và chậu hông
+VM14818:1 S40-S49: Vết thương vai và cánh tay
+VM14818:1 S50-S59: Tổn thương tại khuỷu tay và cẳng tay
+VM14818:1 S60-S69: Tổn thương ở cổ tay và bàn tay
+VM14818:1 S70-S79: Tổn thương tại háng và đùi
+VM14818:1 S80-S89: Tổn thương tại đầu gối và cẳng chân
+VM14818:1 S90-S99: Tổn thương tại cổ chân và bàn chân
+VM14818:1 T00-T07: Tổn thương tác động nhiều vùng cơ thể
+VM14818:1 T08-T14: Tổn thương phần không xác định của thân, các chi hoặc vùng cơ thể
+VM14818:1 T15-T19: Tác động của dị vật vào qua lỗ tự nhiên
+VM14818:1 T20-T32: Bỏng và ăn mòn
+VM14818:1 T33-T35: Tổn thương do cóng lạnh
+VM14818:1 T36-T50: Ngộ độc do thuốc, dược phẩm và chất sinh học
+VM14818:1 T51-T65: Nhiễm độc tố chủ yếu không có nguồn gốc y học
+VM14818:1 T66-T78: Tác dụng khác và không xác định của các nguyên nhân từ bên ngoài
+VM14818:1 T79-T79: Một số biến chứng sớm của chấn thương
+VM14818:1 T80-T88: Biến chứng điều trị nội khoa, ngoại khoa, không phân loại nơi khác
+VM14818:1 T90-T98: Di chứng của tổn thương, của nhiễm độc và của hậu quả khác của các nguyên nhân từ bên ngoài
+VM14818:1 V01-X59: Tai nạn
+VM14818:1 X60-X84: Cố tình tự hại
+VM14818:1 X85-Y09: Tấn công
+VM14818:1 Y10-Y34: Biến cố do ý đồ không xác định được.
+VM14818:1 Y35-Y36: Can thiệp pháp lý và hoạt động chiến tranh
+VM14818:1 Y40-Y84: Biến chứng do chăm sóc nội khoa và ngoại khoa
+VM14818:1 Y85-Y89: Di chứng của các nguyên nhân bên ngoài gây biến chứng và tử vong
+VM14818:1 Y90-Y98: Các yếu tố bổ sung liên quan đến nguyên nhân gây ra bệnh tật và tử vong đã phân loại nơi khác
+VM14818:1 Z00-Z13: Những người đến cơ sở y tế để khám và kiểm tra sức khỏe
+VM14818:1 Z20-Z29: Những người có nguy cơ tiềm tàng về sức khỏe liên quan đến các bệnh lây truyền
+VM14818:1 Z30-Z39: Những người đến cơ quan y tế về các vấn đề liên quan đến sinh sản
+VM14818:1 Z40-Z54: Những người đến cơ sở y tế để được chăm sóc y tế và tiến hành các phẫu thuật, thủ thuật chuyên khoa
+VM14818:1 Z55-Z65: Những người có nguy cơ sức khỏe tiềm tàng liên quan đến những hoàn cảnh kinh tế xã hội và tâm lý xã hội
+VM14818:1 Z70-Z76: Người bệnh đến cơ sở y tế trong các hoàn cảnh khác
+VM14818:1 Z80-Z99: Những người có nguy cơ sức khỏe tiềm ẩn liên quan đến tiền sử gia đình và cá nhân và một số tình trạng ảnh hưởng đến sức khỏe
+VM14818:1 U00-U49: Mã tạm thời cho một số bệnh mới hoặc chưa rõ bệnh nguyên hoặc sử dụng trong cấp cứu
+VM14818:1 U82-U85: Kháng các thuốc kháng sinh và chống ung thư

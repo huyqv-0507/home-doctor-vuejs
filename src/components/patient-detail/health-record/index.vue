@@ -2,7 +2,7 @@
   <div class="mainContent">
     <div>
       <el-breadcrumb separator="/" class="breadcrumb">
-        <el-breadcrumb-item :to="{ path: '/' }">Bệnh nhân</el-breadcrumb-item>
+        <el-breadcrumb-item>Bệnh nhân</el-breadcrumb-item>
         <el-breadcrumb-item>Hồ sơ bệnh án</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="bg-theme">
@@ -45,9 +45,9 @@
               />
               {{mibt.medicalInstructionTypeName}}
             </span>
-            <el-table :data="mibt.medicalInstructions">
+            <el-table :data="mibt.medicalInstructions" max-height="500px" size="mini">
               <el-table-column label="STT" type="index" width="50"></el-table-column>
-              <el-table-column label="Chuẩn đoán" prop="diagnose" width="350"></el-table-column>
+              <el-table-column label="Chuẩn đoán" prop="diseases" width="350" :formatter="formatDiseases"></el-table-column>
               <el-table-column
                 label="Ngày tạo"
                 prop="dateCreate"
@@ -85,6 +85,9 @@ export default {
     this.getMedicalInstructionsByType()
   },
   methods: {
+    formatDiseases (row, column, cellValue, index) {
+      return cellValue.join('; ')
+    },
     ...mapActions('patients', [
       'getRequestMedicalInstructions',
       'getMedicalInstructionsByType'
@@ -98,18 +101,18 @@ export default {
         .join('/')
     },
     handleView (index, row) {
+      const medicalInstruction = {
+        medicalInstructionId: row.medicalInstructionId,
+        medicalInstructionTypeName: row.medicalInstructionTypeName
+      }
       if (row.images === null) {
-        const medicalInstruction = {
-          medicalInstructionId: row.medicalInstructionId,
-          medicalInstructionTypeName: row.medicalInstructionTypeName
-        }
         this.$store.dispatch(
           'appointments/viewMedicalInstruction',
           medicalInstruction,
           { root: true }
         )
       } else {
-        console.log('xem hình')
+        this.$store.dispatch('image/showMedicalInstructionImageDetail', medicalInstruction.medicalInstructionId)
       }
     }
   }

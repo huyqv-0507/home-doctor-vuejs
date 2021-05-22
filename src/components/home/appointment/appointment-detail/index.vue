@@ -1,7 +1,7 @@
 <template>
   <div class="mainContent">
     <el-breadcrumb separator="/" class="breadcrumb">
-      <el-breadcrumb-item :to="{ path: '/' }">Trang chủ</el-breadcrumb-item>
+      <el-breadcrumb-item>Trang chủ</el-breadcrumb-item>
       <el-breadcrumb-item>Lịch hẹn</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="bg-theme">
@@ -56,7 +56,6 @@ export default {
       this.$store.dispatch('appointments/getAppointmentById', appointmentId, {
         root: true
       })
-      this.$router.push('/home/detail')
     }
   }
 }

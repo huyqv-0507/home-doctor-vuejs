@@ -17,6 +17,9 @@ import time from './modules/time'
 // eslint-disable-next-line quotes
 import createPersistedState from 'vuex-persistedstate'
 import notifications from './modules/notifications'
+import image from './modules/image'
+import prescription from './modules/prescription'
+import businessValidator from './modules/businessValidator'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -35,7 +38,10 @@ export default new Vuex.Store({
     historyActivities,
     tabs,
     patientDetail,
-    time
+    time,
+    image,
+    prescription,
+    businessValidator
   },
   plugins: [createPersistedState()]
 })

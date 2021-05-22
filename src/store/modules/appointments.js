@@ -5,7 +5,8 @@ import router from '../../router'
 const appointmentRepository = RepositoryFactory.get('appointmentRepository')
 const medicalInstructionRepository = RepositoryFactory.get('medicalInstructionRepository')
 const state = () => ({
-  isSelectPatient: false, // Trạng thái chọn bệnh nhân khi tạo cuộc hẹn
+  isSelectPatient: false, // Trạng thái chọn bệnh nhân khi tạo cuộc hẹn,
+  isChoosePatient: false,
   patientInfoForAppointment: {
     contractId: 0,
     accountPatientId: 0,
@@ -24,8 +25,8 @@ const state = () => ({
   appointmentDetail: {},
   appointmentIdToCreatePrescription: null,
   appointmentIdToCreateVitalSign: null,
-  isMeetFirst: false,
-  appointmentsOfPatient: []
+  appointmentsOfPatient: [],
+  isMeetFirst: false
 })
 const getters = {
 }
@@ -60,16 +61,14 @@ const actions = {
         break
     }
   },
-  async viewMedicalInstructionImage ({ commit }, medicalInstructionId) {
-
-  },
-  getAppointmentById ({ commit, state }, appointmentId) {
-    console.log('appointmentId', appointmentId)
-    appointmentRepository.getAppointmentById(appointmentId).then(response => {
+  async getAppointmentById ({ commit, state }, appointmentId) {
+    console.log('getAppointmentById - appointmentId', appointmentId)
+    await appointmentRepository.getAppointmentById(appointmentId).then(response => {
       state.appointmentIdToCreatePrescription = appointmentId
       state.appointmentIdToCreateVitalSign = appointmentId
       console.log('appointmentIdToCreateVitalSign', state.appointmentIdToCreateVitalSign)
       commit('setAppointmentDetail', response.data)
+      router.push('/home/detail')
     }).catch(err => { console.log(err) })
   },
   appointmentDateChoose ({ commit }, appointmentDateChoose) {
@@ -105,11 +104,10 @@ const actions = {
         dispatch('appointments/getPatientAppointments', null, { root: true })
         dispatch('appointments/getAppointmentsByCurrentDate', null, { root: true })
         dispatch('patients/getOverviews', null, { root: true })
-        dispatch('modals/closeAddAppointmentFormPatientDetail', null, { root: true })
       }
     }).catch((error) => {
-      Notification.error({ title: 'Thông báo', message: 'Bạn đã yêu cầu lịch tái khám thất bại. Vui lòng liên hệ Duy Phú.', duration: 6000 })
-      console.log(error)
+      Notification.error({ title: 'Thông báo', message: `Bạn đã có cuộc hẹn vào ngày ${error.response.data}. Vui lòng hoàn thành cuộc hẹn trước khi tạo cuộc hẹn mới`, duration: 6000 })
+      console.log(error.response.data)
     })
     commit('confirmAppointment')
   },
@@ -122,7 +120,6 @@ const actions = {
           commit('setAppointmentsCurrentDate', { appointments: response.data, now: now })
         }
       }).catch((error) => {
-        console.log(error)
         if (error.message.includes('404')) {
           commit('setAppointmentsCurrentDateEmpty')
         }
@@ -166,10 +163,6 @@ const actions = {
   },
   addAppointment ({ commit, dispatch }, patient) {
     dispatch('modals/openAddAppointmentForm', null, { root: true })
-    commit('selectPatientAppointment', patient)
-  }, // Thêm cuộc hẹn từ màn home khi bệnh nhân chưa có ngày tái khám
-  addAppointmentPatientDetail ({ commit, dispatch }, patient) {
-    dispatch('modals/openAddAppointmentFormPatientDetail', null, { root: true })
     commit('selectPatientAppointment', patient)
   }, // Thêm cuộc hẹn từ màn home khi bệnh nhân chưa có ngày tái khám
   getPatientAppointments ({ commit, getters, rootState, state }) {
@@ -257,6 +250,9 @@ const actions = {
   }
 }
 const mutations = {
+  setIsMeetFirst (state, isMeetFirst) {
+    state.isMeetFirst = isMeetFirst
+  },
   setAppointmentDetail (state, appointmentDetail) {
     state.appointmentDetail = {
       patientId: appointmentDetail.patientId,
@@ -275,11 +271,15 @@ const mutations = {
     console.log('appointmentDateChoose', apt)
     state.appointmentDateChoose = apt
   },
+  setSelectPatient (state, isSelected) {
+    state.isSelectPatient = isSelected
+  },
+  setChoosePatient (state, isChoose) {
+    state.isChoosePatient = isChoose
+  },
   selectPatientAppointment (state, patient) {
-    state.isSelectPatient = true
     state.patientInfoForAppointment.healthRecordId = patient.healthRecordId
     state.patientInfoForAppointment.accountPatientId = patient.accountPatientId
-    console.log('selectPatient for create appointment>>>', state.patientInfoForAppointment)
   }, // qua modal tạo cuộc hẹn
   backToSelectPatientAppointment (state) {
     state.isSelectPatient = false
@@ -373,11 +373,7 @@ const mutations = {
     state.appointmentIdToCreateVitalSign = appointmentId
   },
   setAppointmentOfPatient (state, appointments) {
-    state.isMeetFirst = false
     state.appointmentsOfPatient = appointments.map(apt => {
-      if (apt.status === 'FINISHED') {
-        state.isMeetFirst = true
-      }
       return {
         patientId: apt.patientId,
         fullNamePatient: apt.fullNamePatient,

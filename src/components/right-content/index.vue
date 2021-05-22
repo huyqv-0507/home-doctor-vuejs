@@ -15,24 +15,29 @@
         class="wrapper_shortcut-items_item pointer"
         style="margin-left: -15px; margin-right: 5px; margin-top: .7em;"
         v-on:click.native="handleSelectPatient(approvedPatient)"
+        v-bind:class="{ locked: approvedPatient.contractStatus === 'LOCKED'}"
       >
-        <div>
-          <el-col :span="4">
-            <img style="border-radius: 30px;" src="../../assets/icons/avatar-default.jpg" />
-          </el-col>
-          <el-col :span="20">
-            <el-row>
-              <span class="wrapper_shortcut-items_item-title">{{approvedPatient.patientName}}</span>
-            </el-row>
-            <el-row>
+        <el-col :span="4">
+          <img style="border-radius: 30px;" src="../../assets/icons/avatar-default.jpg" />
+        </el-col>
+        <el-col :span="20">
+          <el-row>
+            <span class="wrapper_shortcut-items_item-title">
+              <strong>{{approvedPatient.patientName}}</strong>
+            </span>
+          </el-row>
+          <el-row>
               <p
                 v-for="(item, index) in approvedPatient.diseaseContract"
                 :key="index"
                 class="wrapper_shortcut-items_item-description"
-              >({{item.diseaseId}}) {{item.diseaseName}}</p>
-            </el-row>
-          </el-col>
-        </div>
+              >
+                <span v-if="index < 3">({{item.diseaseId}}) {{item.diseaseName}}</span>
+              </p>
+              <p
+                class="wrapper_shortcut-items_item-description" v-if="approvedPatient.diseaseContract.length >=3">...</p>
+          </el-row>
+        </el-col>
       </el-row>
     </div>
   </div>
@@ -50,10 +55,10 @@ export default {
     handleSelectPatient (patient) {
       if (patient.contractStatus !== 'ACTIVE') {
         this.$alert(
-          'Hợp đồng giữa bác và bệnh nhân đã bị khoá vì bác sĩ đã không ra y lệnh cho bệnh nhân sau 4 ngày hợp đồng có hiệu lực',
+          'Hợp đồng giữa bác sĩ và bệnh nhân đã bị khoá vì bác sĩ đã không ra y lệnh cho bệnh nhân sau 4 ngày hợp đồng có hiệu lực',
           'Cảnh báo',
           {
-            confirmButtonText: 'Đồng ý'
+            confirmButtonText: 'Đã hiểu'
           }
         )
       } else {
@@ -75,6 +80,8 @@ export default {
     height: 80px;
     padding: 0.5em;
     margin-right: 0;
+    display: flex;
+    align-items: center;
     @include center() img {
       width: 2em;
     }
@@ -83,7 +90,6 @@ export default {
     }
     .wrapper_shortcut-items_item-description {
       font-size: 0.4em;
-      color: $color-button-sub-bg;
     }
   }
 }

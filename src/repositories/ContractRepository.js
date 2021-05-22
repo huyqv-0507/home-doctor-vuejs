@@ -105,7 +105,6 @@ export default {
     return contractCondition
   },
   async updateMedicalInstructionToContract (data) {
-    console.log('updatemic>', data)
     return await request({
       method: 'post',
       url: `/MedicalInstructions/AddMedicalInstructionFromContract?contractId=${data.contractId}`,

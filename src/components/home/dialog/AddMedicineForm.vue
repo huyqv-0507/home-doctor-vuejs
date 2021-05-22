@@ -6,7 +6,7 @@
     center
     @close="closeAddMedicine()"
   >
-    <el-form ref="newMedicineForm" :model="newMedicineForm" size="mini" class="form">
+    <el-form size="mini" class="form">
       <el-form-item class="form__item">
         <el-row>
           <el-col :span="6">
@@ -18,11 +18,12 @@
           <el-col :span="18" class="form__item_suggestion">
             <el-autocomplete
               style="width: 100%;"
-              v-model="medicineDescription"
+              v-model="medicineName"
               :fetch-suggestions="searchMedicine"
               placeholder="Nhập tên thuốc..."
               @select="handleSelectMedicine"
-              :trigger-on-focus="false" @change="handleCheckEmpty($event)"
+              :trigger-on-focus="false"
+              @change="handleCheckEmpty($event)"
             >
               <template slot-scope="{ item }">
                 <div>{{ item.description }}</div>
@@ -61,12 +62,12 @@
         <el-row>
           <el-row class="margin-bottom">
             <el-col :span="6">
-              <el-checkbox v-model="newMedicineForm.morningCheck">Sáng</el-checkbox>
+              <el-checkbox v-model="morningCheck">Sáng</el-checkbox>
             </el-col>
             <el-col :span="18">
-              <el-row :gutter="20" v-show="newMedicineForm.morningCheck">
+              <el-row :gutter="20" v-show="morningCheck">
                 <el-col :span="7">
-                  <el-input v-model="newMedicineForm.unitMorning"></el-input>
+                  <el-input v-model="unitMorning"></el-input>
                 </el-col>
                 <el-col :span="17">
                   <span>{{unitType}}.</span>
@@ -76,12 +77,12 @@
           </el-row>
           <el-row class="margin-bottom">
             <el-col :span="6">
-              <el-checkbox v-model="newMedicineForm.noonCheck">Trưa</el-checkbox>
+              <el-checkbox v-model="noonCheck">Trưa</el-checkbox>
             </el-col>
             <el-col :span="18">
-              <el-row :gutter="20" v-show="newMedicineForm.noonCheck">
+              <el-row :gutter="20" v-show="noonCheck">
                 <el-col :span="7">
-                  <el-input v-model="newMedicineForm.unitNoon"></el-input>
+                  <el-input v-model="unitNoon"></el-input>
                 </el-col>
                 <el-col :span="17">
                   <span>{{unitType}}.</span>
@@ -91,12 +92,12 @@
           </el-row>
           <el-row class="margin-bottom">
             <el-col :span="6">
-              <el-checkbox v-model="newMedicineForm.afternoonCheck">Chiều</el-checkbox>
+              <el-checkbox v-model="afternoonCheck">Chiều</el-checkbox>
             </el-col>
             <el-col :span="18">
-              <el-row :gutter="20" v-show="newMedicineForm.afternoonCheck">
+              <el-row :gutter="20" v-show="afternoonCheck">
                 <el-col :span="7">
-                  <el-input v-model="newMedicineForm.unitAfternoon"></el-input>
+                  <el-input v-model="unitAfternoon"></el-input>
                 </el-col>
                 <el-col :span="17">
                   <span>{{unitType}}.</span>
@@ -106,12 +107,12 @@
           </el-row>
           <el-row class="margin-bottom">
             <el-col :span="6">
-              <el-checkbox v-model="newMedicineForm.nightCheck">Tối</el-checkbox>
+              <el-checkbox v-model="nightCheck">Tối</el-checkbox>
             </el-col>
             <el-col :span="18">
-              <el-row :gutter="20" v-show="newMedicineForm.nightCheck">
+              <el-row :gutter="20" v-show="nightCheck">
                 <el-col :span="7">
-                  <el-input v-model="newMedicineForm.unitNight"></el-input>
+                  <el-input v-model="unitNight"></el-input>
                 </el-col>
                 <el-col :span="17">
                   <span>{{unitType}}.</span>
@@ -131,29 +132,29 @@
           </el-col>
           <el-col :span="18">
             <el-select
-              v-model="newMedicineForm.useTimeOpt"
+              v-model="useTimeOpt"
               placeholder="Trước bữa ăn"
               class="form__item_use-time margin-bottom"
             >
               <el-option
-                v-for="item in newMedicineForm.useTimeOptions"
+                v-for="item in useTimeOptions"
                 :key="item.useTimeOpt"
                 :label="item.label"
                 :value="item.useTimeOpt"
               ></el-option>
             </el-select>
-            <el-input v-model="newMedicineForm.noteMore" class="margin-bottom"></el-input>
+            <el-input v-model="noteMore" class="margin-bottom"></el-input>
           </el-col>
         </el-row>
       </el-form-item>
     </el-form>
 
     <span slot="footer">
-      <el-row v-if="isValid">
+      <el-row v-if="medicineCreated.status === 'NEW-MEDICINE'">
         <el-button type="primary" @click="addMedicineToPrescription()">Xác nhận</el-button>
       </el-row>
       <el-row v-else>
-        <el-button type="primary" disabled>Xác nhận</el-button>
+        <el-button type="primary" @click="handleUpdateMedicineToPrescription()">Xác nhận</el-button>
       </el-row>
     </span>
   </el-dialog>
@@ -161,42 +162,34 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import { mapFields } from 'vuex-map-fields'
 export default {
   data () {
     return {
       isValid: false,
-      medicines: [],
-      medicineDescription: '',
-      unitType: '',
-      content: '',
-      newMedicineForm: {
-        medicineName: '',
-        unitMorning: '', // Số thuốc sử dụng cho sáng
-        unitNoon: '', // Số thuốc sử dụng cho trưa
-        unitAfternoon: '', // Số thuốc sử dụng cho chiều
-        unitNight: '', // Số thuốc sử dụng cho tối
-        morningCheck: false,
-        noonCheck: false,
-        afternoonCheck: false,
-        nightCheck: false,
-        useTimeOpt: '', // Thời gian sử dụng thuốc vào buổi sáng
-        useTimeOptions: [
-          {
-            useTimeOpt: 'Trước bữa ăn',
-            label: 'Trước bữa ăn'
-          },
-          {
-            useTimeOpt: 'Sau bữa ăn',
-            label: 'Sau bữa ăn'
-          }
-        ],
-        noteMore: '' // Ghi chú thêm
-      }
+      medicines: []
     }
   },
   computed: {
+    ...mapFields('medicalInstruction', [
+      'medicineCreated.medicine.unitType',
+      'medicineCreated.medicine.content',
+      'medicineCreated.medicine.medicineName',
+      'medicineCreated.medicine.unitMorning',
+      'medicineCreated.medicine.unitNoon',
+      'medicineCreated.medicine.unitAfternoon',
+      'medicineCreated.medicine.unitNight',
+      'medicineCreated.medicine.morningCheck',
+      'medicineCreated.medicine.noonCheck',
+      'medicineCreated.medicine.afternoonCheck',
+      'medicineCreated.medicine.nightCheck',
+      'medicineCreated.medicine.useTimeOpt',
+      'medicineCreated.medicine.useTimeOptions',
+      'medicineCreated.medicine.noteMore'
+    ]),
     ...mapState('suggestions', ['visibleTypeCreatePrescription']),
-    ...mapState('modals', ['visibleAddMedicineForm'])
+    ...mapState('modals', ['visibleAddMedicineForm']),
+    ...mapState('medicalInstruction', ['medicineCreated'])
   },
   mounted () {
     this.medicines = this.$store.state.suggestions.medicines.map(medicine => {
@@ -211,50 +204,37 @@ export default {
   methods: {
     ...mapActions('modals', ['closeAddMedicine']),
     handleSelectMedicine (medicine) {
-      this.medicineDescription = medicine.description
-      this.newMedicineForm.medicineName = medicine.medicineName
+      this.medicineName = medicine.medicineName
       this.unitType = medicine.unitType
       this.content = medicine.content
+      this.morningCheck = false
+      this.noonCheck = false
+      this.nightCheck = false
+      this.afternoonCheck = false
+      this.unitMorning = ''
+      this.unitNoon = ''
+      this.unitAfternoon = ''
+      this.unitMorning = ''
+      this.noteMore = ''
     },
     ...mapActions('suggestions', ['getMedicines']),
-    ...mapActions('medicalInstruction'),
+    handleUpdateMedicineToPrescription () {
+      this.$store
+        .dispatch(
+          'medicalInstruction/updateMedicineToPrescription',
+          this.useTimeOpt,
+          { root: true }
+        )
+        .then(() => {
+          this.$store.dispatch('modals/closeAddMedicine', null, { root: true })
+        })
+    },
     addMedicineToPrescription () {
-      this.$store.dispatch(
-        'medicalInstruction/addMedicineToPrescription',
-        {
-          newMedicineForm: this.newMedicineForm,
-          unit: this.unitType,
-          content: this.content,
-          medicineName: this.newMedicineForm.medicineName
-        },
-        { root: true })
-      // làm mới lại form
-      this.newMedicineForm = {
-        medicineName: '',
-        unitMorning: '', // Số thuốc sử dụng cho sáng
-        unitNoon: '', // Số thuốc sử dụng cho trưa
-        unitAfternoon: '', // Số thuốc sử dụng cho chiều
-        unitNight: '', // Số thuốc sử dụng cho tối
-        morningCheck: false,
-        noonCheck: false,
-        afternoonCheck: false,
-        nightCheck: false,
-        useTimeOpt: '', // Thời gian sử dụng thuốc vào buổi sáng
-        useTimeOptions: [
-          {
-            useTimeOpt: 'Trước bữa ăn',
-            label: 'Trước bữa ăn'
-          },
-          {
-            useTimeOpt: 'Sau bữa ăn',
-            label: 'Sau bữa ăn'
-          }
-        ],
-        noteMore: '' // Ghi chú thêm
-      }
-      this.medicineDescription = ''
-      this.unitType = ''
-      this.content = ''
+      this.$store.dispatch('medicalInstruction/addMedicineToPrescription', this.useTimeOpt, {
+        root: true
+      }).then(() => {
+        this.$store.dispatch('modals/closeAddMedicine', null, { root: true })
+      })
     },
     searchMedicine (queryString, cb) {
       var medicines = this.medicines

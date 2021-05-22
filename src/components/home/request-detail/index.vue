@@ -1,7 +1,7 @@
 <template>
   <div class="mainContent">
     <el-breadcrumb separator="/" class="breadcrumb">
-      <el-breadcrumb-item :to="{ path: '/' }">Trang chủ</el-breadcrumb-item>
+      <el-breadcrumb-item>Trang chủ</el-breadcrumb-item>
       <el-breadcrumb-item>Danh sách yêu cầu</el-breadcrumb-item>
       <el-breadcrumb-item>Thông tin bệnh nhân</el-breadcrumb-item>
     </el-breadcrumb>
@@ -85,7 +85,7 @@
                     v-model="checkImgs"
                   />
                   <el-image
-                    v-on:click="openImageShow()"
+                    v-on:click="showMedicalInstructionImageDetail(medicalInstruction.medicalInstructionId)"
                     :src="im.url"
                     v-for="(im, index) in medicalInstruction.images"
                     :key="`i${index}`"
@@ -124,7 +124,7 @@
                     />
                     <div v-if="mi.images !== null">
                       <el-image
-                        v-on:click="openImageShow()"
+                        v-on:click="showMedicalInstructionImageDetail(mi.medicalInstructionId)"
                         :src="im.url"
                         v-for="(im, index) in medicalInstruction.images"
                         :key="`i${index}`"
@@ -167,7 +167,7 @@
                     />
                     <div v-if="mi.images !== null">
                       <el-image
-                        v-on:click="openImageShow()"
+                        v-on:click="showMedicalInstructionImageDetail(mi.medicalInstructionId)"
                         :src="im.url"
                         v-for="(im, index) in medicalInstruction.images"
                         :key="`i${index}`"
@@ -206,7 +206,7 @@
                     />
                     <div v-if="mi.images !== null">
                       <el-image
-                        v-on:click="openImageShow()"
+                        v-on:click="showMedicalInstructionImageDetail(mi.medicalInstructionId)"
                         :src="im.url"
                         v-for="(im, index) in mi.images"
                         :key="`i${index}`"
@@ -427,6 +427,7 @@ export default {
     this.getContractCondition()
   },
   methods: {
+    ...mapActions('image', ['showMedicalInstructionImageDetail']),
     handleNextCreateContract () {
       this.$store.dispatch('contracts/nextCreateContract', { dateStarted: this.dateStarted, daysOfTracking: this.daysOfTracking, checkImgs: this.checkImgs }, { root: true })
     },

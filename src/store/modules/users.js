@@ -90,6 +90,7 @@ const actions = {
     await dispatch('tabs/clearState', null, { root: true })
     await dispatch('vitalSign/clearState', null, { root: true })
     await dispatch('users/clearState', null, { root: true })
+    await dispatch('image/clearState', null, { root: true })
   },
   clearState ({ commit }) {
     commit('clearState')

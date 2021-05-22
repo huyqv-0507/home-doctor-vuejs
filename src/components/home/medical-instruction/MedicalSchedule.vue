@@ -1,8 +1,8 @@
 <template>
   <div class="mainContent">
     <el-breadcrumb separator="/" class="breadcrumb">
-      <el-breadcrumb-item :to="{ path: '/' }" v-if="routeFrom === 'HOME'">Trang chủ</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/' }" v-if="routeFrom === 'PATIENT-DETAIL'">Bệnh nhân</el-breadcrumb-item>
+      <el-breadcrumb-item v-if="routeFrom === 'HOME'">Trang chủ</el-breadcrumb-item>
+      <el-breadcrumb-item v-if="routeFrom === 'PATIENT-DETAIL'">Bệnh nhân</el-breadcrumb-item>
       <el-breadcrumb-item>Y lệnh</el-breadcrumb-item>
       <el-breadcrumb-item>Lịch uống thuốc</el-breadcrumb-item>
     </el-breadcrumb>
@@ -29,7 +29,7 @@
         <div class="medical-treatment__duration-date_content"></div>
       </div>
       <div>
-        <el-button size="mini" type="primary" @click="openAddNewMedicine()">Tạo mới</el-button>
+        <el-button size="mini" type="primary" @click="openAddNewMedicine()">Tạo mới {{appointmentIdToCreatePrescription}}</el-button>
       </div>
     </div>
     <h1 class="margin-default">Đơn thuốc đã sử dụng</h1>
@@ -54,7 +54,7 @@
         <el-card shadow="never" v-bind:class="{ bgCancel: prescription.isCanceled }">
           <p class="margin-vertical1em">
             Chuẩn đoán:
-            <strong>{{prescription.diagnose}}</strong>
+            <strong v-for="(disease, index) in prescription.diseases" :key="`${index}`">{{disease.diseaseId}} - {{disease.diseaseName}}; </strong>
           </p>
           <p class="margin-vertical1em">
             Trạng thái:
@@ -84,7 +84,7 @@
             <el-table-column class="text" label="STT" width="50" type="index"></el-table-column>
             <el-table-column class="text" label="Tên thuốc" prop="medicationName" width="150"></el-table-column>
             <el-table-column class="text" label="Hàm lượng" prop="content" width="110"></el-table-column>
-            <el-table-column class="text" label="Cách dùng" prop="useTime" width="250"></el-table-column>
+            <el-table-column class="text" label="Cách dùng" prop="usage" width="250"></el-table-column>
             <el-table-column class="text" label="Đơn vị" prop="unit" width="70"></el-table-column>
             <el-table-column class="text" label="Số lượng" prop="totalNumber" width="90"></el-table-column>
           </el-table>
@@ -121,7 +121,11 @@ export default {
       'medicalInstructionHistory',
       'medicalInstructionHistories'
     ]),
+    ...mapState('appointments', ['appointmentIdToCreatePrescription']),
     ...mapState('systemHandler', ['routeFrom'])
+  },
+  mounted () {
+    this.getMedicalScheduleHistory()
   },
   data () {
     return {
@@ -153,7 +157,7 @@ export default {
       'usePrescription',
       'openAddNewMedicine',
       'reusePrescription',
-      'setMedicalInstructionHistory', 'cancelPrescription'
+      'setMedicalInstructionHistory', 'cancelPrescription', 'getMedicalScheduleHistory'
     ]),
     handleTest () {
       console.log('abc')

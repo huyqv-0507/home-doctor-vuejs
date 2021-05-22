@@ -19,7 +19,7 @@
             <i class="el-icon-edit-outline el-icon--right"></i>
           </el-link>
           <el-link
-            v-if="isAppointmentCurrent && patientOverview.appointmentNext.status !== 'FINISHED'"
+            v-else-if="isAppointmentCurrent"
             style="margin-top: 1em; font-size: 10px;"
             type="primary"
             v-on:click="openFinishAppointmentShow()"
@@ -36,7 +36,7 @@
             <i>Bác sĩ chưa có lịch hẹn nào với bệnh nhân</i>
           </p>
           <el-link
-            v-on:click.native="addAppointmentPatientDetail(patientSelected)"
+            v-on:click.native="handleAddAppointment(patientSelected)"
             style="font-size: 10px;"
             type="primary"
           >
@@ -65,9 +65,9 @@
     </el-card>
     <el-divider></el-divider>
     <el-row
-      v-if="isMeetFirst"
+      v-if="isFirstAppointmentFinished"
       class="func pointer"
-      v-on:click.native="setMedicalSchedule('PATIENT-DETAIL')"
+      v-on:click.native="goToMedicationSchedule()"
     >
       <el-col :span="4" class="func__item">
         <img src="../../assets/icons/ic-medicine.png" />
@@ -78,20 +78,7 @@
         </div>
       </el-col>
     </el-row>
-    <el-row v-else class="func pointer" v-on:click.native="openNotification()">
-      <el-col :span="4" class="func__item">
-        <img src="../../assets/icons/ic-medicine.png" />
-      </el-col>
-      <el-col :span="20">
-        <div class="func__item">
-          <span>Thêm đơn thuốc</span>
-        </div>
-      </el-col>
-    </el-row>
-    <el-row
-      class="func pointer"
-      v-on:click.native="setVitalSign('PATIENT-DETAIL')"
-    >
+    <el-row class="func pointer" v-on:click.native="setVitalSign('PATIENT-DETAIL')">
       <el-col :span="4" class="func__item">
         <img src="../../assets/icons/ic-heart-rate.png" />
       </el-col>
@@ -101,15 +88,11 @@
         </div>
       </el-col>
     </el-row>
-    <el-row class="func pointer" v-on:click.native="addAppointmentPatientDetail(patientSelected)">
-      <el-col :span="4" class="func__item">
-        <img src="../../assets/icons/ic-calendar.png" />
-      </el-col>
-      <el-col :span="20" class="func__item">
-        <span>Thêm lịch hẹn</span>
-      </el-col>
-    </el-row><!--
-    <el-row class="func pointer">
+    <el-row
+      v-if="isFirstAppointmentFinished"
+      class="func pointer"
+      v-on:click.native="openAddMedicalInstructionForm()"
+    >
       <el-col :span="4" class="func__item">
         <img src="../../assets/icons/ic-medical-instruction.png" />
       </el-col>
@@ -119,7 +102,6 @@
         </div>
       </el-col>
     </el-row>
-    -->
     <el-row class="func pointer" v-on:click.native="openRequestMedicalInstruction()">
       <el-col :span="4" class="func__item">
         <img src="../../assets/icons/ic-request.png" />
@@ -137,7 +119,7 @@
           <i>Bệnh nhân chưa ghép nối thiết bị.</i>
         </p>
         <div>
-          <el-link style="font-size: 10px;" type="primary">
+          <el-link style="font-size: 10px;" type="primary" @click="sendRequireBand()">
             Yêu cầu
             <i class="el-icon-s-promotion el-icon--right"></i>
           </el-link>
@@ -179,20 +161,22 @@ export default {
     return {
       isAppointmentCurrent:
         this.$store.state.patients.patientOverview.appointmentNext === null
-          ? false
+          ? null
           : new Date(
-            this.$store.state.patients.patientOverview.appointmentNext.dateExamination
-          ) >= new Date(this.$store.state.time.timeNow)
+            this.$store.state.patients.patientOverview.appointmentNext.dateExamination.split(
+              'T'
+            )[0]
+          ) <= new Date(this.$store.state.time.timeNow.split('T')[0])
     }
   },
   computed: {
     ...mapState('patients', ['patientOverview']),
     ...mapState('medicalInstruction', ['patientSelected']),
-    ...mapState('appointments', ['isMeetFirst'])
+    ...mapState('appointments', ['isMeetFirst']),
+    ...mapState('businessValidator', ['isFirstAppointmentFinished'])
   },
   mounted () {
     this.getTimeSystem()
-    this.getAppointmentsByHRId()
   },
   methods: {
     ...mapActions('notifications', ['sendRequireBand']),
@@ -204,7 +188,11 @@ export default {
     ]),
     ...mapActions('contracts', ['getContractDetail']),
     ...mapActions('time', ['getTimeSystem']),
-    ...mapActions('appointments', ['getAppointmentsByHRId']),
+    openAddMedicalInstructionForm () {
+      this.$store.dispatch('modals/openAddMedicalInstructionForm', null, {
+        root: true
+      })
+    },
     openNotification () {
       this.$alert(
         'Bác sĩ cần có một lịch hẹn để kiểm tra tình trạng cho bệnh nhân trước khi đưa ra những y lệnh khác',
@@ -214,33 +202,27 @@ export default {
         }
       )
     },
-    addAppointmentPatientDetail (patientSelected) {
-      if (
-        this.isAppointmentCurrent &&
-        this.patientOverview.appointmentNext.status !== 'FINISHED'
-      ) {
-        this.$confirm(
-          'Bác sĩ cần hoàn tất cuộc hẹn trước khi tạo cuộc hẹn mới. Tiếp tục?',
-          'Thông báo',
-          {
-            confirmButtonText: 'Tiếp tục',
-            cancelButtonText: 'Huỷ',
-            type: 'warning'
-          }
-        )
-          .then(() => {
-            this.$store.dispatch('modals/openFinishAppointmentShow', null, {
-              root: true
-            })
-          })
-          .catch(() => {})
-      } else {
-        this.$store.dispatch(
-          'appointments/addAppointmentPatientDetail',
-          patientSelected,
-          { root: true }
-        )
-      }
+    handleAddAppointment (patientSelected) {
+      this.$store.commit('appointments/setChoosePatient', false, {
+        root: true
+      })
+      this.$store.commit('appointments/setSelectPatient', true, {
+        root: true
+      })
+      this.$store.dispatch(
+        'appointments/selectPatientAppointment',
+        {
+          healthRecordId: patientSelected.healthRecordId,
+          accountPatientId: patientSelected.accountPatientId
+        },
+        { root: true }
+      )
+      this.$store.dispatch('modals/openAppointmentPatientsModal', null, {
+        root: true
+      })
+    },
+    goToMedicationSchedule () {
+      this.setMedicalSchedule('PATIENT-DETAIL')
     }
   }
 }

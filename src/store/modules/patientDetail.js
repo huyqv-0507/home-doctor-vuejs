@@ -121,8 +121,20 @@ const mutations = {
 
             break
           case 17:
-            person = 'patient'
-            description = 'Trở lại trạng thái bình thường'
+            person = ''
+            description = ''
+            break
+          case 18:
+            person = ''
+            description = ''
+            break
+          case 19:
+            person = ''
+            description = ''
+            break
+          case 20:
+            person = ''
+            description = ''
             break
 
           default:

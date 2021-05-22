@@ -23,11 +23,17 @@ const state = () => ({
   vitalSignSchedule: [],
   appointmentIdForVitalSign: -1,
   heartRateValues: [],
-  heartRateSchedule: {}
+  heartRateSchedule: {},
+  vitalSignTypes: [],
+  choosingTypes: [],
+  allVitalSignShare: []
 })
 const getters = {
   findStatusOfPatient: state => (patientId) => {
     return state.vitalSignOverviews.find(patientVitalSign => patientVitalSign.patientId === parseInt(patientId))
+  },
+  findTypeByName: state => (name) => {
+    return state.vitalSignTypes.find(type => type.vitalSignName === name)
   }
 }
 const actions = {
@@ -80,7 +86,7 @@ const actions = {
     })
   },
   getVitalSignHealthPatient ({ commit, rootState }) {
-    const now = new Date()
+    const now = new Date(rootState.time.timeNow)
     const data = {
       patientId: rootState.medicalInstruction.patientSelected.patientId,
       healthRecordId: rootState.medicalInstruction.patientSelected.healthRecordId,
@@ -89,7 +95,7 @@ const actions = {
     vitalSignRepository.getVitalSignHealthPatient(data).then(response => {
       console.log(response.data)
       commit('setVitalSignValue', response.data)
-      commit('setHeartRateChart', response.data)
+      commit('setHeartRateChart', now)
     }).catch((error) => {
       console.log(error)
       Message.error('Vui lòng kiểm tra kết nối mạng!')
@@ -179,7 +185,7 @@ const actions = {
         dispatch('modals/closeAddNewVitalSign', null, { root: true })
         dispatch('getVitalSigns')
         if (rootState.appointments.appointmentIdToCreateVitalSign !== null) {
-          dispatch('appointment/finishAppointment', vts.diagnose, { root: true })
+          dispatch('appointments/finishAppointment', vts.diagnose, { root: true })
         }
       }
     }).catch((error) => {
@@ -188,11 +194,45 @@ const actions = {
     })
     console.log('vitalSigns:::', vts)
   },
+  getVitalSignTypes ({ commit }) {
+    vitalSignRepository.getVitalSignTypes().then(response => {
+      commit('setVitalSignTypes', response.data)
+    }).catch(err => {
+      console.log(err)
+      commit('setVitalSignTypes', [{
+        vitalSignTypeId: 1,
+        vitalSignName: "Nhịp tim"
+      },
+      {
+        vitalSignTypeId: 2,
+        vitalSignName: "Huyết áp"
+      },
+      {
+        vitalSignTypeId: 3,
+        vitalSignName: "Acid Uric"
+      },
+      {
+        vitalSignTypeId: 4,
+        vitalSignName: "Cholesterol"
+      }])
+    })
+  },
+  getAllVitalSignShare ({ commit, rootState }) {
+    vitalSignRepository.getAllVitalSignShare(rootState.medicalInstruction.patientSelected.healthRecordId).then(response => {
+      commit('setAllVitalSignShare', response.data)
+    }).catch(err => {
+      console.log(err)
+      commit('setAllVitalSignShare', [])
+    })
+  },
   clearState ({ commit }) {
     commit('clearState')
   }
 }
 const mutations = {
+  setChoosingType (state, types) {
+    state.choosingTypes = types
+  },
   setVitalSignSchedule (state, data) {
     state.vitalSignSchedule = data.map(vitalSign => {
       return {
@@ -288,7 +328,6 @@ const mutations = {
         }
       })
     }
-    console.log('deviceConnecting:::', state.deviceConnecting)
   },
   setVitalSignOverviews (state, vitalSignOverviews) {
     state.vitalSignOverviews = vitalSignOverviews.map(vitalSign => {
@@ -298,6 +337,12 @@ const mutations = {
       }
     })
     console.log('vitalSignOverviews:::', state.vitalSignOverviews)
+  },
+  setVitalSignTypes (state, vitalSignTypes) {
+    state.vitalSignTypes = vitalSignTypes
+  },
+  setAllVitalSignShare (state, vitalSignSharing) {
+    state.allVitalSignShare = vitalSignSharing
   },
   clearState (state) {
     state = () => ({})

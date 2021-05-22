@@ -2,7 +2,7 @@
   <div class="mainContent">
     <div>
       <el-breadcrumb separator="/" class="breadcrumb">
-        <el-breadcrumb-item :to="{ path: '/' }">Bệnh nhân</el-breadcrumb-item>
+        <el-breadcrumb-item>Bệnh nhân</el-breadcrumb-item>
         <el-breadcrumb-item>Timeline</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -77,14 +77,15 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      date: new Date(),
+      date: new Date(this.$store.state.time.timeNow),
       pickerOptions: {
         disabledDate: this.handleDisabledDate
       }
     }
   },
   computed: {
-    ...mapState('patientDetail', ['storiesOfDay', 'dateStories'])
+    ...mapState('patientDetail', ['storiesOfDay', 'dateStories']),
+    ...mapState('time', ['timeNow'])
   },
   methods: {
     ...mapActions('patientDetail', [
@@ -112,10 +113,12 @@ export default {
         tmpTime.getMonth() === date.getMonth() &&
         tmpTime.getDate() === date.getDate()
       )
-    }
+    },
+    ...mapActions('time', ['getTimeSystem'])
   },
   mounted () {
-    const now = new Date()
+    this.getTimeSystem()
+    const now = new Date(this.timeNow.split('T')[0])
     this.getStories(`${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`)
     this.getDateStories()
   }

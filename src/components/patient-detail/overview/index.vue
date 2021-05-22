@@ -2,7 +2,7 @@
   <div class="mainContent">
     <div>
       <el-breadcrumb separator="/" class="breadcrumb">
-        <el-breadcrumb-item :to="{ path: '/' }">Bệnh nhân</el-breadcrumb-item>
+        <el-breadcrumb-item>Bệnh nhân</el-breadcrumb-item>
         <el-breadcrumb-item>Tổng quan</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -84,9 +84,9 @@
               >
                 <div v-if="mi.images !== null">
                   <el-image
-                    v-on:click="openImageShow()"
+                    v-on:click="showMedicalInstructionImageDetail(mi.medicalInstructionId)"
                     :src="im.url"
-                    v-for="(im, index) in medicalInstruction.images"
+                    v-for="(im, index) in mi.images"
                     :key="`i${index}`"
                     style="width: 100px; margin: .3em;"
                   />
@@ -119,9 +119,9 @@
               >
                 <div v-if="mi.images !== null">
                   <el-image
-                    v-on:click="openImageShow()"
+                    v-on:click="showMedicalInstructionImageDetail(mi.medicalInstructionId)"
                     :src="im.url"
-                    v-for="(im, index) in medicalInstruction.images"
+                    v-for="(im, index) in mi.images"
                     :key="`i${index}`"
                     style="width: 100px; margin: .3em;"
                   />
@@ -150,7 +150,7 @@
               >
                 <div v-if="mi.images !== null">
                   <el-image
-                    v-on:click="openImageShow()"
+                    v-on:click="showMedicalInstructionImageDetail(mi.medicalInstructionId)"
                     :src="im.url"
                     v-for="(im, index) in mi.images"
                     :key="`i${index}`"
@@ -167,13 +167,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   computed: {
     ...mapState('patients', ['patientOverview']),
     ...mapState('medicalInstruction', ['patientSelected'])
   },
   methods: {
+    ...mapActions('image', ['showMedicalInstructionImageDetail']),
     handleView (mi) {
       const medicalInstruction = {
         medicalInstructionId: mi.medicalInstructionId,

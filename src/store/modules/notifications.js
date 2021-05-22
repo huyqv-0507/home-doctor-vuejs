@@ -1,7 +1,7 @@
 import { RepositoryFactory } from '../../repositories/RepositoryFactory'
 import { toDateTitle, toTimeAgo } from '../../utils/common'
 import router from '../../router'
-import { MessageBox } from 'element-ui'
+import { MessageBox, Notification } from 'element-ui'
 const notificationRepository = RepositoryFactory.get('notificationRepository')
 /*
   notificationTypeId:
@@ -40,7 +40,7 @@ const actions = {
         dispatch('systemHandler/newMessageSystemNotification', notificationData, { root: true })
         break
       case 3:
-
+        dispatch('patients/getRequestMedicalInstructions', null, { root: true })
         break
       case 4:
         commit('newMessageNotification')
@@ -89,6 +89,9 @@ const actions = {
       case 17:
         dispatch('systemHandler/newMessageSystemNotification', notificationData, { root: true })
         break
+      case 22:
+        dispatch('systemHandler/newMessageSystemNotification', notificationData, { root: true })
+        break
       default:
         break
     }
@@ -122,21 +125,16 @@ const actions = {
       }
     })
   },
-  sendRequireBand ({ commit, rootState }) {
+  sendRequireBand ({ rootState }) {
     var info = {
-      deviceType: 1,
-      notificationType: 11,
       senderAccountId: parseInt(rootState.users.user.accountId),
-      recipientAccountId: rootState.patients.patientDetailUsing.accountPatientId
+      recipientAccountId: rootState.medicalInstruction.patientSelected.accountPatientId
     }
-    console.log(info)
     notificationRepository.sendRequireBand(
-      info.deviceType,
-      info.notificationType,
       info.senderAccountId,
       info.recipientAccountId).then(response => {
-      if (response.status === 200) {
-        MessageBox.alert('Bạn đã đề nghị bệnh nhân kết nối thiết bị. Vui lòng chờ.', 'Thông báo', { confirmButtonText: 'Đồng ý' })
+      if (response.status === 201) {
+        Notification.success('Bạn đã đề nghị bệnh nhân kết nối thiết bị. Vui lòng chờ.', 'Thông báo', { confirmButtonText: 'Đồng ý' })
       }
     }).catch((error) => { console.log(error) })
   },
@@ -202,8 +200,18 @@ const actions = {
             break
         }
         break
-      case 3:
-        dispatch('patients/getRequestMedicalInstructions', null, { root: true })
+      case 3: // Bệnh nhân chia sẻ phiếu y lệnh
+        patient = rootGetters['patients/getPatientApproveByContract'](parseInt(notificationData.notification.contractId))
+        commit('medicalInstruction/setPatientSelected', patient, { root: true })
+        router.push('/patient-detail-page/health-record')
+        break
+      case 28: // Xác nhận hoàn thành cuộc hẹn
+        dispatch('appointments/getAppointmentById', notificationData.notification.appointmentId, { root: true })
+        break
+      case 29: // Bệnh nhân gửi sinh hiệu cho bác sĩ
+        if (notificationData.notification.medicalInstructionId !== null) {
+
+        }
         break
     }
     commit('showNotify')

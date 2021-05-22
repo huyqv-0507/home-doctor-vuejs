@@ -60,7 +60,7 @@ export default {
     ...mapState('tabs', ['tabStatus'])
   },
   data () {
-    const now = new Date()
+    const now = new Date(this.$store.state.time.timeNow)
     var weekDay = ''
     if (now.getDay() === 0) {
       // weekDay [0-6]
@@ -91,9 +91,11 @@ export default {
   },
   mounted () {
     this.setDefaultTab()
+    this.getTimeSystem()
   },
   methods: {
-    ...mapActions('tabs', ['setDefaultTab', 'setTabActive'])
+    ...mapActions('tabs', ['setDefaultTab', 'setTabActive']),
+    ...mapActions('time', ['getTimeSystem'])
   }
 }
 </script>

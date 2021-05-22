@@ -85,7 +85,6 @@ export default {
             dateExamination: info.dateExamination,
             contractId: info.contractId
           }
-          console.log('appointmentUpdate', appointmentUpdate)
           this.updateAppointment(appointmentUpdate)
         })
         .catch(() => {

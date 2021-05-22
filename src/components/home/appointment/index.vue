@@ -1,7 +1,7 @@
 <template>
   <div class="mainContent">
     <el-breadcrumb separator="/" class="breadcrumb">
-      <el-breadcrumb-item :to="{ path: '/' }">Trang chủ</el-breadcrumb-item>
+      <el-breadcrumb-item>Trang chủ</el-breadcrumb-item>
       <el-breadcrumb-item>Lịch hẹn</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="content bg-theme">
@@ -10,8 +10,8 @@
         <el-button
           class="content__body_add"
           size="mini"
-          @click="openAppointmentPatientsModal()"
-        >Thêm</el-button>
+          @click="handleOpenAppointmentPatientsModal()"
+        >Thêm lịch hẹn</el-button>
         <el-calendar class="content__body_calendar">
           <template slot="dateCell" slot-scope="{date, data}">
             <p>{{data.day.split('-')[2]}}</p>
@@ -35,7 +35,11 @@ export default {
   },
   methods: {
     ...mapActions('modals', ['openAppointmentPatientsModal']),
-    ...mapActions('appointments', ['getAppointments', 'appointmentDateChoose'])
+    ...mapActions('appointments', ['getAppointments', 'appointmentDateChoose']),
+    handleOpenAppointmentPatientsModal () {
+      this.$store.commit('appointments/setSelectPatient', false, { root: true })
+      this.$store.dispatch('modals/openAppointmentPatientsModal', null, { root: true })
+    }
   },
   mounted () {
     this.getAppointments()

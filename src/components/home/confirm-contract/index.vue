@@ -1,7 +1,7 @@
 <template>
   <div class="mainContent">
     <el-breadcrumb separator="/" class="breadcrumb">
-      <el-breadcrumb-item :to="{ path: '/' }">Danh sách yêu cầu</el-breadcrumb-item>
+      <el-breadcrumb-item>Danh sách yêu cầu</el-breadcrumb-item>
       <el-breadcrumb-item>Thông tin bệnh nhân</el-breadcrumb-item>
       <el-breadcrumb-item>Xác nhận hợp đồng</el-breadcrumb-item>
     </el-breadcrumb>
@@ -192,7 +192,7 @@
             <b>{{ contractSample.price }} VNĐ</b>
             từ ngày {{contractSample.dateStarted.split('-')[2]}} tháng {{contractSample.dateStarted.split('-')[1]}} năm {{contractSample.dateStarted.split('-')[0]}} đến ngày {{contractSample.dateContractFinished.day}} tháng {{contractSample.dateContractFinished.month}} năm {{contractSample.dateContractFinished.year}}
           </p>
-          <p>- Phương thức thanh toán: Chuyển khoản trực tiếp vào tài khoản của HDr thông qua VNPay</p>
+          <p>- Phương thức thanh toán: Thanh toán trực tiếp vào tài khoản của Home Doctor thông qua VNPAY</p>
         </el-row>
         <el-row class="margin-line">
           <b>Điều 7: {{contractSample.collectiveCommitment.title}}:</b>

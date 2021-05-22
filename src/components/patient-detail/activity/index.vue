@@ -2,7 +2,7 @@
   <div class="mainContent">
     <div>
       <el-breadcrumb separator="/" class="breadcrumb">
-        <el-breadcrumb-item :to="{ path: '/' }">Bệnh nhân</el-breadcrumb-item>
+        <el-breadcrumb-item>Bệnh nhân</el-breadcrumb-item>
         <el-breadcrumb-item>Hoạt động</el-breadcrumb-item>
       </el-breadcrumb>
     <el-collapse>

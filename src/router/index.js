@@ -27,7 +27,6 @@ import HistoryPage from '../components/history'
 import ContractHistory from '../components/history/contract-history'
 import MedicalInstructionHistory from '../components/history/medical-instruction-history'
 import PrescriptionHistory from '../components/history/prescription-history'
-import NewMedicalScheduleByReuse from '../components/home/medical-instruction/NewMedicalScheduleByReuse.vue'
 import ActivityPatient from '../components/patient-detail/activity'
 import Appointment from '../components/home/appointment'
 import AppointmentHistory from '../components/history/appointment-history'
@@ -104,11 +103,6 @@ const routes = [
         component: RequestDetail
       },
       {
-        path: 'request-pending/:contractId',
-        name: 'request-pending',
-        component: () => import('../components/home/request-detail/PendingDetail.vue')
-      },
-      {
         path: 'confirm-contract',
         name: 'confirm-contract',
         component: ConfirmContract
@@ -122,11 +116,6 @@ const routes = [
         path: 'new-medical-schedule',
         name: 'new-medical-schedule',
         component: NewMedicalSchedule
-      },
-      {
-        path: 'reuse-medical-schedule',
-        name: 'reuse-medical-schedule',
-        component: NewMedicalScheduleByReuse
       },
       {
         path: 'appointment',
@@ -157,12 +146,15 @@ const routes = [
       {
         path: 'charts',
         component: Charts
+      },
+      {
+        path: 'vital-sign-schedule',
+        component: () => import('../components/home/medical-instruction/VitalSignSchedule.vue')
       }
     ]
   },
   {
     path: '/history',
-    name: 'history',
     component: History,
     children: [
       {
@@ -204,7 +196,7 @@ const routes = [
         component: TimelinePatient
       },
       {
-        path: 'vital-sign-patient',
+        path: 'vital-sign-detail',
         component: VitalSignPatient
       },
       {
@@ -221,16 +213,19 @@ const routes = [
       },
       {
         path: 'new-medical-schedule',
-        name: 'new-medical-schedule',
         component: NewMedicalSchedule
-      },
-      {
-        path: 'vital-sign',
-        component: VitalSign
       },
       {
         path: 'contract-history',
         component: () => import('../components/home/contract/detail')
+      },
+      {
+        path: 'vital-sign-patient',
+        component: VitalSign
+      },
+      {
+        path: 'vital-sign-schedule',
+        component: () => import('../components/home/medical-instruction/VitalSignSchedule.vue')
       }
     ]
   }

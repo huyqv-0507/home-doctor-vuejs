@@ -14,21 +14,67 @@ const state = () => ({
   isChartView: false,
   isRequestMedicalInstruction: false,
   isRequestMedicalInstructionList: false,
-  isFinishAppointmentShow: false
+  isFinishAppointmentShow: false,
+  isViewImage: false,
+  isAddMedicalInstructionForm: false,
+  isShowImage: false,
+  isShowAddMoreDiagnoseToPrescription: false,
+  isOpenChoosingVitalSignType: false,
+  isViewHeartRateShare: false
 })
 const getters = {}
 const actions = {
+  openViewHeartRateShare ({ commit }) {
+    commit('setViewHeartRateShare', true)
+  },
+  closeViewHeartRateShare ({ commit }) {
+    commit('setViewHeartRateShare', false)
+  },
+  openChoosingVitalSignType ({ commit }) {
+    commit('setOpenChoosingVitalSignType', true)
+  },
+  closeChoosingVitalSignType ({ commit }) {
+    commit('setOpenChoosingVitalSignType', false)
+  },
+  openShowAddMoreDiagnoseToPrescription ({ commit, rootState }) {
+    rootState.prescription.defaultDiagnose = ''
+    console.log('rootState.prescription', rootState.prescription)
+    commit('openShowAddMoreDiagnoseToPrescription')
+  },
+  closeShowAddMoreDiagnoseToPrescription ({ commit }) {
+    commit('closeShowAddMoreDiagnoseToPrescription')
+  },
+  openShowImage ({ commit }, medicalInstructionId) {
+    console.log(medicalInstructionId)
+    commit('openShowImage')
+  },
+  closeShowImage ({ commit }) {
+    commit('closeShowImage')
+  },
+  openAddMedicalInstructionForm ({ commit }) {
+    commit('openAddMedicalInstructionForm')
+  },
+  closeAddMedicalInstructionForm ({ commit }) {
+    commit('closeAddMedicalInstructionForm')
+  },
+  openViewImage ({ commit }) {
+    commit('openViewImage')
+  },
+  closeViewImage ({ commit }) {
+    commit('closeViewImage')
+  },
   openFinishAppointmentShow ({ commit }) {
     commit('openFinishAppointmentShow')
   },
   closeFinishAppointmentShow ({ commit }) {
     commit('closeFinishAppointmentShow')
   },
-  openRequestMedicalInstructionList ({ commit }) {
-    console.log('openRequestMedicalInstructionList')
+  openRequestMedicalInstructionList ({ commit, rootState }) {
+    rootState.image.isAddMedicalInstruction = true
     commit('openRequestMedicalInstructionList')
   },
-  closeRequestMedicalInstructionList ({ commit }) {
+  closeRequestMedicalInstructionList ({ commit, rootState }) {
+    rootState.image.isAddMedicalInstruction = false
     commit('closeRequestMedicalInstructionList')
   },
   openRequestMedicalInstruction ({ commit }) {
@@ -70,7 +116,7 @@ const actions = {
     rootState.medicalInstruction.medicalInstructionStatus = false
     commit('closeMedicalInstruction')
   },
-  openAddMedicine ({ commit }) {
+  openAddMedicine ({ commit, rootState }) {
     commit('openAddMedicine')
   },
   // Đóng modal thêm lịch uống thuốc của bệnh nhân
@@ -86,7 +132,6 @@ const actions = {
   },
   // Mở modal tạo cuộc hẹn cho bênh nhân
   openAppointmentPatientsModal ({ commit, rootState }) {
-    rootState.appointments.isSelectPatient = false
     rootState.appointments.patientInfoForAppointment = {}
     commit('setOpenAppointmentPatientsModal')
   },
@@ -138,6 +183,33 @@ const actions = {
   }
 }
 const mutations = {
+  setOpenChoosingVitalSignType (state, isOpen) {
+    state.isOpenChoosingVitalSignType = isOpen
+  },
+  openShowAddMoreDiagnoseToPrescription (state) {
+    state.isShowAddMoreDiagnoseToPrescription = true
+  }, // mở modal thêm 1 chuẩn đoán khác vào đơn thuốc
+  closeShowAddMoreDiagnoseToPrescription (state) {
+    state.isShowAddMoreDiagnoseToPrescription = false
+  }, // mở modal thêm 1 chuẩn đoán khác vào đơn thuốc
+  openShowImage (state) {
+    state.isShowImage = true
+  },
+  closeShowImage (state) {
+    state.isShowImage = false
+  },
+  openAddMedicalInstructionForm (state) {
+    state.isAddMedicalInstructionForm = true
+  },
+  closeAddMedicalInstructionForm (state) {
+    state.isAddMedicalInstructionForm = false
+  },
+  openViewImage (state) {
+    state.isViewImage = true
+  },
+  closeViewImage (state) {
+    state.isViewImage = false
+  },
   openFinishAppointmentShow (state) {
     state.isFinishAppointmentShow = true
   },
@@ -187,6 +259,7 @@ const mutations = {
     state.visibleMedicalInstruction = false
   },
   openAddMedicine (state) {
+    console.log('openAddMedicine')
     state.visibleAddMedicineForm = true
   },
   closeAddMedicine (state) {

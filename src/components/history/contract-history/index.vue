@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div>
       <el-breadcrumb separator="/" class="breadcrumb">
-        <el-breadcrumb-item :to="{ path: '/' }">Trang chủ</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/home' }">Trang chủ</el-breadcrumb-item>
         <el-breadcrumb-item>Nhật ký hoạt động</el-breadcrumb-item>
         <el-breadcrumb-item>Hợp đồng</el-breadcrumb-item>
       </el-breadcrumb>

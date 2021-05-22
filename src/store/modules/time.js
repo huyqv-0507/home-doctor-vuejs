@@ -16,6 +16,7 @@ const actions = {
 const mutations = {
   setTimeNow (state, time) {
     state.timeNow = time
+    console.log('Time system', state.timeNow)
   }
 }
 

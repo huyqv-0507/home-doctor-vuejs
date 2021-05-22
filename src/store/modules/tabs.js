@@ -52,7 +52,7 @@ const mutations = {
           activity: false
         }
         break
-      case '/patient-detail-page/vital-sign':
+      case '/patient-detail-page/vital-sign-detail':
         state.tabStatus = {
           overview: false,
           timeline: false,
@@ -114,7 +114,7 @@ const mutations = {
           healthRecord: false,
           activity: false
         }
-        router.push('/patient-detail-page/vital-sign')
+        router.push('/patient-detail-page/vital-sign-detail')
         break
       case 'health-record':
         state.tabStatus = {

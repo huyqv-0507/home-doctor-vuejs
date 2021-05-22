@@ -1,8 +1,8 @@
 <template>
   <div class="mainContent">
     <el-breadcrumb separator="/" class="breadcrumb">
-      <el-breadcrumb-item :to="{ path: '/' }" v-if="routeFrom === 'HOME'">Trang chủ</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/' }" v-if="routeFrom === 'PATIENT-DETAIL'">Bệnh nhân</el-breadcrumb-item>
+      <el-breadcrumb-item v-if="routeFrom === 'HOME'">Trang chủ</el-breadcrumb-item>
+      <el-breadcrumb-item v-if="routeFrom === 'PATIENT-DETAIL'">Bệnh nhân</el-breadcrumb-item>
       <el-breadcrumb-item>Y lệnh</el-breadcrumb-item>
       <el-breadcrumb-item>Lịch đo sinh hiệu</el-breadcrumb-item>
     </el-breadcrumb>
@@ -81,6 +81,9 @@ export default {
   },
   methods: {
     ...mapActions('modals', ['openAddNewVitalSign'])
+    // openAddNewVitalSign () {
+    // this.$router.push('vital-sign-schedule')
+    // }
   }
 }
 </script>

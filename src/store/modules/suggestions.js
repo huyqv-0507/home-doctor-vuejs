@@ -28,13 +28,11 @@ const actions = {
     commit('getMedicineByMedicineId', medicine)
   },
   getDiagnoses ({ commit }) {
-    /* medicalInstructionRepository.getDiagnoses().then(response => {
-      if (response.status === 200) {
-        commit('setDiagnoses', response.data)
-      }
-    }) */
-    const diagnoses = medicalInstructionRepository.getDiagnoses()
-    commit('setDiagnoses', diagnoses)
+    medicalInstructionRepository.getDiagnoses().then(response => {
+      commit('setDiagnoses', response.data)
+    }).catch(err => {
+      console.log(err)
+    })
   },
   clearState ({ commit }) {
     commit('clearState')
@@ -52,21 +50,16 @@ const mutations = {
   },
   // Lấy danh sách chuẩn đoán
   setDiagnoses (state, diagnoses) {
-    state.diagnoses = diagnoses.map(diagnose => {
-      // var startCode = parseInt(diagnose.diseaseId.split('-')[0].substring(1))
-      // var endCode = parseInt(diagnose.diseaseId.split('-')[1].substring(1))
-      // var firstChar = diagnose.diseaseId.split('-')[0].charAt(0)
-      // var arrString = ''
-      /* for (let index = startCode; index < endCode; index++) {
-        if (index < 10) {
-          index = '0' + index
-        }
-        arrString = arrString + firstChar + index
-      } */
-
+    var tmp = []
+    diagnoses.forEach(diagnose => {
+      diagnose.diseaseLevelThrees.forEach(t => {
+        tmp.push(t)
+      })
+    })
+    state.diagnoses = tmp.map(diagnose => {
       return {
-        code: diagnose.code, // diagnose.diseaseId,
-        description: diagnose.description, // diagnose.nameDisease,
+        code: diagnose.diseaseLevelThreeId, // diagnose.diseaseId,
+        description: diagnose.diseaseLevelThreeName, // diagnose.nameDisease,
         arrCode: '' // arrString
       }
     })

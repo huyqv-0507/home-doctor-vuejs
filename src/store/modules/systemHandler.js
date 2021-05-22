@@ -1,6 +1,7 @@
 import { RepositoryFactory } from '../../repositories/RepositoryFactory'
 import { toTimeAgo, toDateTitle } from '../../utils/common'
 import { MessageBox } from 'element-ui'
+import router from '../../router'
 const notificationRepository = RepositoryFactory.get('notificationRepository')
 
 const state = () => ({
@@ -11,11 +12,15 @@ const state = () => ({
 })
 const getters = {}
 const actions = {
-  async initState ({ dispatch, rootState }) {
-    await dispatch('patients/getPatientApproved', null, { root: true })
-    await dispatch('notifications/getNotifications', null, { root: true })
-    await dispatch('systemHandler/getSystemNotifications', null, { root: true })
-    await dispatch('appointments/getAppointmentsByCurrentDate', null, { root: true })
+  async initState ({ dispatch }) {
+    try {
+      await dispatch('patients/getPatientApproved', null, { root: true })
+      await dispatch('notifications/getNotifications', null, { root: true })
+      await dispatch('systemHandler/getSystemNotifications', null, { root: true })
+      await dispatch('appointments/getAppointmentsByCurrentDate', null, { root: true })
+    } catch (error) {
+      console.log('initState error:', error)
+    }
   },
   // Lấy tất cả notification của hệ thống bằng accountId
   getSystemNotifications ({ commit, rootState }) {
@@ -88,8 +93,11 @@ const actions = {
         dispatch('systemHandler/getSystemNotifications', null, { root: true })
         dispatch('patients/getPatientApproved', null, { root: true })
         break
-      case 16: // Thông báo bệnh nhân trở về trạng thái bình thường
+      case 16: // Thông báo bác sĩ bị khoá hợp đồng khi ko tạo y lệnh
         commit('newMessageSystemNotification')
+        if (rootState.medicalInstruction.patientSelected.contractId === parseInt(systemNotificationData.data.contractId)) {
+          router.push('/home')
+        }
         dispatch('systemHandler/getSystemNotifications', null, { root: true })
         dispatch('patients/getPatientApproved', null, { root: true })
         break
@@ -97,6 +105,13 @@ const actions = {
         commit('newMessageSystemNotification')
         dispatch('systemHandler/getSystemNotifications', null, { root: true })
         dispatch('patients/getPatientApproved', null, { root: true })
+        break
+      case 22:
+        commit('newMessageSystemNotification')
+        dispatch('systemHandler/getSystemNotifications', null, { root: true })
+        dispatch('patients/getPatientApproved', null, { root: true })
+        dispatch('patients/getOverviews', null, { root: true })
+        dispatch('time/getTimeSystem', null, { root: true })
         break
 
       default:

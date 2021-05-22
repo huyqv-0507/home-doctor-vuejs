@@ -11,9 +11,9 @@
     </div>
     <div>
       <el-row class="margin-default items">
-        <el-col :span="6">Chuẩn đoán:</el-col>
+        <el-col :span="6">Bệnh nhân:</el-col>
         <el-col :span="18">
-          <el-input size="mini" v-model="vitalSignForm.diagnose"></el-input>
+          <el-text>{{patientSelected.patientName}}</el-text>
         </el-col>
       </el-row>
       <el-row class="margin-default items">
@@ -25,7 +25,7 @@
       <el-row class="margin-bottom-default items">
         <el-col :span="6">Mô tả:</el-col>
         <el-col :span="18">
-          <el-input size="mini" v-model="vitalSignForm.description"></el-input>
+          <el-input type="textarea" size="mini" v-model="vitalSignForm.description"></el-input>
         </el-col>
       </el-row>
       <div class="content__vital-sign" v-if="isAutoVitalSign === true">
@@ -54,7 +54,7 @@
             </el-row>
             <el-row class="margin-default content__vital-sign_body-vitalsign">
               <el-col :span="6">
-                <p>Khoảng thời gian vượt mức dẫn đến nguy hiểm:</p>
+                <p>Thời gian dẫn đến nguy hiểm:</p>
               </el-col>
               <el-col :span="18">
                 <el-input-number
@@ -65,7 +65,7 @@
             </el-row>
             <el-row class="margin-default content__vital-sign_body-vitalsign">
               <el-col :span="6">
-                <p>Khoảng thời gian nhịp tim trở lại bình thường:</p>
+                <p>Thời gian trở lại bình thường:</p>
               </el-col>
               <el-col :span="18">
                 <el-input-number
@@ -76,7 +76,7 @@
             </el-row>
             <el-row>
               <el-col :span="6">
-                <p>Khoảng thời gian nhịp tim trở lại bình thường:</p>
+                <p>Thời gian bắt đầu đo:</p>
               </el-col>
               <el-col :span="18">
                   <el-time-select

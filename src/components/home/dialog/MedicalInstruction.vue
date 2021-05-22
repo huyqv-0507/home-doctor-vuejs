@@ -18,7 +18,7 @@
           v-on:click="handleSelectPatient(patient)"
           v-for="patient in approvedPatients"
           :key="`approved-patient-${patient.patientId}`"
-          class="patient-card pointer"
+          class="patient-card pointer"  v-bind:class="{ locked: patient.contractStatus === 'LOCKED'}"
         >
           <el-row class="fullwidth verticalCenter">
             <el-col :span="5">
@@ -30,15 +30,15 @@
               </h5>
               <p>
                 <span class="patient-disease">
-                  <strong>Bệnh lý:</strong>
                   <span v-if="patient.diseaseContract.length === 0">Chưa cập nhật</span>
                   <span
                     v-else
                     v-for="(disease, index) in patient.diseaseContract"
                     :key="`disease-${index}`"
                   >
-                    <p>- ({{disease.diseaseId}}) {{disease.diseaseName}}</p>
+                    <p v-if="index < 2">- ({{disease.diseaseId}}) {{disease.diseaseName}}</p>
                   </span>
+                  <p v-if="patient.diseaseContract.length >= 2">...</p>
                 </span>
               </p>
             </el-col>
@@ -47,7 +47,7 @@
       </span>
       <span v-show="medicalInstructionStatus === true" class="wrapper_shortcut-items">
         <h4>Danh sách y lệnh</h4>
-        <div v-on:click="setMedicalSchedule('HOME')" class="pointer">
+        <div v-if="isFirstAppointmentFinished" v-on:click="goToMedicationSchedule()" class="pointer">
           <el-row
             :gutter="20"
             class="wrapper_shortcut-items_item"
@@ -109,7 +109,8 @@ export default {
     ]),
     ...mapState('patients', [
       'approvedPatients' // Danh sách bệnh nhân đang theo dõi của bác sĩ (Max = 5)
-    ])
+    ]),
+    ...mapState('businessValidator', ['isFirstAppointmentFinished'])
   },
   methods: {
     ...mapActions('medicalInstruction', [
@@ -128,12 +129,15 @@ export default {
           'Hợp đồng giữa bác và bệnh nhân đã bị khoá vì bác sĩ đã không ra y lệnh cho bệnh nhân sau 4 ngày hợp đồng có hiệu lực',
           'Cảnh báo',
           {
-            confirmButtonText: 'Đồng ý'
+            confirmButtonText: 'Đã hiểu'
           }
         )
       } else {
         this.selectPatient(patient)
       }
+    },
+    goToMedicationSchedule () {
+      this.setMedicalSchedule('HOME')
     }
   }
 }

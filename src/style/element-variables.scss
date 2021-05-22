@@ -9,6 +9,13 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 .el-table .cell {
 	word-break: keep-all;
 }
+.el-table__row .cell {
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 .el-input.is-disabled .el-input__inner {
 	color: #606266;
 }

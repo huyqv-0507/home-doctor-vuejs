@@ -1,0 +1,1625 @@
+VM13083:1 A00: Bệnh tả
+VM13083:1 A01: Bệnh thương hàn và phó thương hàn
+VM13083:1 A02: Nhiễm salmonella khác
+VM13083:1 A03: Bệnh lỵ trực khuẩn
+VM13083:1 A04: Nhiễm trùng đường ruột do vi khuẩn khác
+VM13083:1 A05: Ngộ độc thức ăn do vi trùng khác, không phân loại nơi khác
+VM13083:1 A06: Bệnh do amíp
+VM13083:1 A07: Bệnh đường ruột do đơn bào khác
+VM13083:1 A08: Nhiễm trùng đường ruột do virus và tác nhân xác định khác
+VM13083:1 A09: Viêm dạ dày - ruột và đại tràng do nguyên nhân nhiễm trùng và không xác định được nguồn gốc nhiễm trùng
+VM13083:1 A15: Lao hô hấp, có xác nhận về vi khuẩn học và mô học
+VM13083:1 A16: Lao đường hô hấp, không xác nhận về vi khuẩn học hoặc mô học
+VM13083:1 A17: Lao hệ thần kinh
+VM13083:1 A18: Lao các cơ quan khác
+VM13083:1 A19: Lao kê
+VM13083:1 A20: Dịch hạch
+VM13083:1 A21: Bệnh Tularensis
+VM13083:1 A22: Bệnh than
+VM13083:1 A23: Bệnh do Brucella
+VM13083:1 A24: Bệnh Malleomyces mallei và bệnh Malleomyces pseudomallei
+VM13083:1 A25: Sốt do chuột cắn
+VM13083:1 A26: Bệnh do Erysipelothrix rhusiopathiae (viêm quầng)
+VM13083:1 A27: Bệnh do leptospira
+VM13083:1 A28: Bệnh nhiễm trùng khác do động vật truyền sang người, không phân loại nơi khác
+VM13083:1 A30: Bệnh phong (bệnh Hansen)
+VM13083:1 A31: Nhiễm trùng do mycobacteria khác
+VM13083:1 A32: Nhiễm trùng do Listeria monocytogenes
+VM13083:1 A33: Bệnh uốn ván sơ sinh
+VM13083:1 A34: Bệnh uốn ván sản khoa
+VM13083:1 A35: Bệnh uốn ván khác
+VM13083:1 A36: Bệnh bạch hầu
+VM13083:1 A37: Bệnh ho gà
+VM13083:1 A38: Bệnh tinh hồng nhiệt
+VM13083:1 A39: Nhiễm trùng do não mô cầu
+VM13083:1 A40: Nhiễm khuẩn huyết do liên cầu
+VM13083:1 A41: Nhiễm khuẩn huyết khác
+VM13083:1 A42: Bệnh do actinomyces
+VM13083:1 A43: Bệnh do Nocardia
+VM13083:1 A44: Bệnh do Bartonella
+VM13083:1 A46: Viêm quầng (nhiễm streptococcus ở da)
+VM13083:1 A48: Bệnh nhiễm khuẩn khác, không phân loại nơi khác
+VM13083:1 A49: Nhiễm trùng ở các vị trí không xác định
+VM13083:1 A50: Giang mai bẩm sinh
+VM13083:1 A51: Giang mai sớm
+VM13083:1 A52: Giang mai muộn
+VM13083:1 A53: Giang mai khác và không xác định
+VM13083:1 A54: Bệnh lậu
+VM13083:1 A55: Viêm hạch lympho do Chlamydia (Bệnh hột xoài)
+VM13083:1 A56: Bệnh khác do chlamydia lây truyền qua đường tình dục
+VM13083:1 A57: Bệnh hạ cam
+VM13083:1 A58: U hạt ở bẹn
+VM13083:1 A59: Bệnh do trichomonas
+VM13083:1 A60: Bệnh do Herpes simplex vùng hậu môn sinh dục
+VM13083:1 A63: Bệnh lây khác chủ yếu qua đường tình dục, không phân loại nơi khác
+VM13083:1 A64: Bệnh lây truyền qua đường tình dục không xác định
+VM13083:1 A65: Giang mai không lây qua đường tình dục
+VM13083:1 A66: Ghẻ cóc (do nhiễm Treponema pertenue)
+VM13083:1 A67: Bệnh Pinta (bệnh do Treponema carateum)
+VM13083:1 A68: Bệnh sốt hồi qui
+VM13083:1 A69: Bệnh do xoắn trùng khác
+VM13083:1 A70: Bệnh do Chlamydia psittaci
+VM13083:1 A71: Bệnh mắt hột
+VM13083:1 A74: Bệnh khác do chlamydia
+VM13083:1 A75: Bệnh sốt phát ban do Rickettsia
+VM13083:1 A77: Sốt phát ban dạng đốm (bệnh Rickttsia do bọ ve truyền )
+VM13083:1 A78: Sốt Q
+VM13083:1 A79: Các bệnh do Rickettsia khác
+VM13083:1 A80: Bệnh bại liệt cấp
+VM13083:1 A81: Bệnh do virus không điển hình ở hệ thần kinh trung ương
+VM13083:1 A82: Bệnh dại
+VM13083:1 A83: Viêm não virus do muỗi truyền
+VM13083:1 A84: Viêm não virus do ve truyền
+VM13083:1 A85: Viêm não virus khác, chưa phân loại
+VM13083:1 A86: Viêm não virus không xác định
+VM13083:1 A87: Viêm màng não do virus
+VM13083:1 A88: Nhiễm virus khác của hệ thần kinh trung ương, chưa phân loại
+VM13083:1 A89: Nhiễm virus không xác định của hệ thần kinh trung ương
+VM13083:1 A92: Bệnh sốt virus khác do muỗi truyền
+VM13083:1 A93: Sốt virus khác do tiết túc truyền, chưa phân loại
+VM13083:1 A94: Sốt virus do tiết túc truyền không xác định
+VM13083:1 A95: Sốt vàng
+VM13083:1 A96: Sốt xuất huyết do Arenavirus
+VM13083:1 A97: Sốt xuất huyết Dengue
+VM13083:1 A98: Sốt xuất huyết do virus khác, chưa phân loại
+VM13083:1 A99: Sốt xuất huyết do virus không xác định
+VM13083:1 B00: Bệnh do Herpes simplex
+​ B01: Thuỷ đậu
+​ B02: Bệnh do herpes zoster
+​ B03: Đậu mùa
+​ B04: Đậu khỉ
+​ B05: Sởi
+​ B06: Bệnh rubella (sởi Đức)
+​ B07: Bệnh mụn cóc do virus
+​ B08: Nhiễm virus khác, có biểu hiện tổn thương tại da và niêm mạc, chưa phân loại
+​ B09: Nhiễm virus không xác định, có biểu hiện tổn thương tại da và niêm mạc
+​ B15: Viêm gan A cấp
+​ B16: Viêm gan B cấp
+​ B17: Viêm gan virus cấp khác
+​ B18: Viêm gan virus mạn
+​ B19: Viêm gan virus không xác định
+​ B20: Bệnh HIV dẫn đến bệnh nhiễm trùng và ký sinh trùng
+​ B21: Bệnh HIV gây u ác tính
+​ B22: Bệnh HIV dẫn đến các bệnh xác định khác
+​ B23: Bệnh HIV dẫn đến bệnh lý khác
+​ B24: Bệnh do HIV không xác định
+​ B25: Nhiễm virus đại bào
+​ B26: Bệnh quai bị
+​ B27: Bệnh tăng bạch cầu đơn nhân nhiễm trùng
+​ B30: Viêm kết mạc do virus
+​ B33: Bệnh nhiễm virus khác, chưa phân loại
+​ B34: Nhiễm virus ở vị trí không xác định
+​ B35: Nhiễm nấm da
+​ B36: Nhiễm nấm nông khác
+​ B37: Nhiễm candida
+​ B38: Nhiễm nấm coccidioides
+​ B39: Nhiễm histoplasma
+​ B40: Nhiễm nấm blastomyces
+​ B41: Nhiễm nấm paracoccidioides
+​ B42: Nhiễm sporotrichum
+​ B43: Nhiễm nấm chromoblastomycosa (nấm màu) và áp xe do phaeomyces
+​ B44: Nhiễm aspergillus
+​ B45: Nhiễm cryptococcus
+​ B46: Nhiễm zygomycota
+​ B47: U nấm
+​ B48: Nhiễm nấm khác, không phân loại nơi khác
+​ B49: Nhiễm nấm không xác định
+​ B50: Sốt rét do Plasmodium falciparum
+​ B51: Sốt rét do Plasmodium vivax
+​ B52: Sốt rét do Plasmodium malariae
+​ B53: Sốt rét khác có xác nhận về ký sinh trùng học
+​ B54: Sốt rét không xác định
+​ B55: Bệnh do Leishmania
+​ B56: Bệnh do trypanosoma châu Phi
+​ B57: Bệnh Chagas
+​ B58: Bệnh do toxoplasma
+​ B59: Bệnh do pneumocystosis
+​ B60: Bệnh do ký sinh trùng đơn bào khác, chưa phân loại
+​ B64: Bệnh do ký sinh trùng đơn bào không xác định
+​ B65: Bệnh sán máng [bilharziasis]
+​ B66: Bệnh sán lá gan khác
+​ B67: Bệnh do Echinococcus
+​ B68: Bệnh sán dây
+​ B69: Bệnh ấu trùng sán lợn
+​ B70: Bệnh sán diphyllobothrium và sparganum
+​ B71: Nhiễm sán dây khác
+​ B72: Bệnh giun Dracunculus
+​ B73: Bệnh giun chỉ
+​ B74: Bệnh giun chỉ
+​ B75: Bệnh giun xoắn Trichinella
+​ B76: Bệnh giun móc
+​ B77: Bệnh giun đũa
+​ B78: Bệnh giun lươn
+​ B79: Bệnh giun tóc
+​ B80: Bệnh giun kim
+​ B81: Nhiễm giun đường ruột khác, chưa phân loại
+​ B82: Bệnh ký sinh trùng đường ruột không xác định
+​ B83: Bệnh giun sán khác
+​ B85: Bệnh chấy rận
+​ B86: Bệnh ghẻ
+​ B87: Bệnh giòi
+​ B88: Nhiễm ký sinh trùng khác
+​ B89: Bệnh do ký sinh trùng không xác định
+​ B90: Di chứng do lao
+​ B91: Di chứng của bệnh bại liệt
+​ B92: Di chứng của bệnh phong
+​ B94: Di chứng của bệnh nhiễm trùng và ký sinh trùng khác, không xác định
+​ B95: Liên cầu và tụ cầu là nguyên nhân gây bệnh, được phân loại ở các chương khác
+​ B96: Tác nhân vi khuẩn xác định khác như là nguyên nhân gây bệnh, phân loại ở các chương khác
+​ B97: Tác nhân virus gây các bệnh đã được phân loại ở chương khác
+​ B98: Tác nhân nhiễm trùng xác định khác gây các bệnh đã được phân loại ở chương khác
+VM13083:1 B99: Các bệnh nhiễm trùng khác và không xác định
+VM13083:1 C00-C75: U ác được chẩn đoán xác định hay nghi ngờ là nguyên phát của các cơ quan xác định, ngoại trừ của mô bạch huyết, mô tạo huyết và mô liên kết
+VM13083:1 C76-C80: U ác tính không điển hình, thứ phát và vị trí không xác định
+VM13083:1 C81-C96: U ác của hệ lympho, hệ tạo máu và các mô liên quan
+VM13083:1 C97: U ác có nhiều vị trí độc lập (nguyên phát) nhiều vị trí, ung thư nguyên phát đa ổ
+VM13083:1 D00: Ung thư biểu mô tại chỗ của khoang miệng, thực quản và dạ dày
+VM13083:1 D01: Ung thư biểu mô tại chỗ của cơ quan tiêu hoá khác và không xác định
+VM13083:1 D02: Ung thư biểu mô tại chỗ của tai giữa và hệ hô hấp
+VM13083:1 D03: U hắc tố tại chỗ
+VM13083:1 D04: Ung thư biểu mô tại chỗ của da
+VM13083:1 D05: Ung thư biểu mô tại chỗ của vú
+VM13083:1 D06: Ung thư biểu mô tại chỗ của cổ tử cung
+VM13083:1 D07: Ung thư biểu mô tại chỗ của cơ quan sinh dục khác và không xác định
+VM13083:1 D09: Ung thư biểu mô tại chỗ ở vị trí khác và không xác định
+VM13083:1 D10: U lành của miệng và hầu
+VM13083:1 D11: U lành của các tuyến nước bọt chính
+VM13083:1 D12: U lành của đại tràng, trực tràng, hậu môn và ống hậu môn
+VM13083:1 D13: U lành của phần khác và không rõ ràng của hệ tiêu hoá
+VM13083:1 D14: U lành tai giữa và hệ hô hấp
+VM13083:1 D15: U lành của cơ quan khác và không xác định trong lồng ngực
+VM13083:1 D16: U lành của xương và sụn khớp
+VM13083:1 D17: U mỡ
+VM13083:1 D18: U mạch máu và u hạch bạch huyết, vị trí bất kỳ
+VM13083:1 D19: U lành của trung mô
+VM13083:1 D20: U lành mô mềm sau phúc mạc và phúc mạc
+VM13083:1 D21: U lành khác của mô liên kết và mô mềm khác
+VM13083:1 D22: Nốt ruồi
+VM13083:1 D23: U lành khác của da
+VM13083:1 D24: U lành vú
+VM13083:1 D25: U cơ trơn tử cung
+VM13083:1 D26: U lành khác của tử cung
+VM13083:1 D27: U lành buồng trứng
+VM13083:1 D28: U lành của cơ quan sinh dục khác và không xác định
+VM13083:1 D29: U lành của cơ quan sinh dục nam
+VM13083:1 D30: U lành của cơ quan tiết niệu
+VM13083:1 D31: U lành của mắt và phần phụ
+VM13083:1 D32: U lành của màng não
+VM13083:1 D33: U lành của não và các phần khác của hệ thần kinh trung ương
+VM13083:1 D34: U lành của tuyến giáp
+VM13083:1 D35: U lành của tuyến nội tiết và không xác định
+VM13083:1 D36: U lành có vị trí khác và không xác định
+VM13083:1 D37: U tân sinh không rõ hoặc không biết tính chất của khoang miệng và cơ quan tiêu hoá
+VM13083:1 D38: U tân sinh không rõ hoặc không biết tính chất của tai giữa, cơ quan hô hấp và cơ quan trong lồng ngực
+VM13083:1 D39: U không chắc chắn hoặc không biết tính chất của cơ quan sinh dục nữ
+VM13083:1 D40: U tân sinh không chắc chắn hoặc không biết tính chất của cơ quan sinh dục nam
+VM13083:1 D41: U tân sinh không chắc chắn hoặc không biết tính chất của cơ quan tiết niệu
+VM13083:1 D42: U tân sinh không chắc chắn hoặc không biết tính chất của màng não
+​ D43: U tân sinh không chắc chắn hoặc không biết tính chất của não và hệ thần kinh trung ương
+​ D44: U tân sinh không chắc chắn hoặc không biết tính chất của tuyến nội tiết
+​ D45: Bệnh đa hồng cầu
+​ D46: Hội chứng loạn sản tuỷ xương
+​ D47: U tân sinh khác không chắc chắn hoặc không biết sinh chất của mô ulympho, mô tạo huyết và mô liên quan
+​ D48: U tân sinh không chắc chắn hoặc không biết tính chất có vị trí khác và không xác định
+​ D50: Thiếu máu do thiếu sắt
+​ D51: Thiếu máu do thiếu vitamin B12
+​ D52: Thiếu máu do chế độ dinh dưỡng
+​ D53: Các thiếu máu dinh dưỡng khác
+​ D55: Thiếu máu do rối loạn men
+​ D56: Bệnh Thalassaemia
+​ D57: Bệnh hồng cầu liềm
+​ D58: Các thiếu máu tan máu di truyền khác
+​ D59: Thiếu máu tan máu mắc phải
+​ D60: Suy tuỷ xương một dòng hồng cầu mắc phải (giảm nguyên hồng cầu)
+​ D61: Các thể suy tuỷ xương khác
+​ D62: Thiếu máu sau chảy máu cấp tính
+​ D63: Thiếu máu trong các bệnh mạn tính đã được phân loại ở phần khác
+​ D64: Các thiếu máu khác
+​ D65: Đông máu nội mạch rải rác (hội chứng tiêu fibrin)
+​ D66: Thiếu yếu tố VIII di truyền
+​ D67: Thiếu yếu tố IX di truyền
+​ D68: Các bất thường đông máu khác
+​ D69: Ban xuất huyết và các tình trạng xuất huyết khác
+​ D70: Tình trạng mất bạch cầu hạt
+​ D71: Rối loạn chức năng bạch cầu hạt trung tính
+​ D72: Các rối loạn khác của bạch cầu
+​ D73: Bệnh lý lách
+​ D74: methemoglobin máu
+​ D75: Các bệnh máu và cơ quan tạo máu khác
+​ D76: Các bệnh của tổ chức lympho- liên võng và - (tổ chức bào) mô bào- liên võng xác định khác
+​ D77: Rối loạn của máu và cơ quan tạo máu trong các bệnh khác
+​ D80: Thiếu hụt miễn dịch chủ yếu do bất thường kháng thể
+​ D81: Suy giảm miễn dịch kết hợp
+​ D82: Suy giảm miễn dịch liên quan đến các bất thường nặng khác
+​ D83: Một số các biến thể khác của suy giảm miễn dịch
+​ D84: Các suy giảm miễn dịch khác
+​ D86: Bệnh sarcoid
+VM13083:1 D89: Rối loạn liên quan đến cơ chế miễn dịch, không phân loại nơi khác
+VM13083:1 E00: Hội chứng thiếu iod bẩm sinh
+VM13083:1 E01: Rối loạn tuyến giáp liên quan đến thiếu iod và bệnh phối hợp
+VM13083:1 E02: Suy giáp do thiếu iod dưới lâm sàng
+VM13083:1 E03: Suy giáp khác
+VM13083:1 E04: Bướu không độc khác
+VM13083:1 E05: Nhiễm độc giáp (cường giáp)
+VM13083:1 E06: Viêm giáp
+VM13083:1 E07: Các rối loạn khác của tuyến giáp
+VM13083:1 E10: Bệnh đái tháo đường phụ thuộc insuline type 1
+VM13083:1 E11: Bệnh đái tháo đường không phụ thuộc insuline type 2
+VM13083:1 E12: Bệnh đái tháo đường liên quan đến suy dinh dưỡng
+VM13083:1 E13: Bệnh đái tháo đường xác định khác
+VM13083:1 E14: Các thể loại đái tháo đường không xác định
+VM13083:1 E15: Hôn mê hạ đường máu không do đái tháo đường
+VM13083:1 E16: Rối loạn khác của tuyến tuỵ nội tiết
+VM13083:1 E20: Suy cận giáp
+VM13083:1 E21: Cường cận giáp và các rối loạn khác của tuyến cận giáp
+VM13083:1 E22: Cường tuyến yên
+VM13083:1 E23: Suy chức năng và rối loạn khác của tuyến yên
+VM13083:1 E24: Hội chứng Cushing
+VM13083:1 E25: Rối loạn thượng thận sinh dục
+VM13083:1 E26: Cường aldosterone
+VM13083:1 E27: Các rối loạn khác của tuyến thượng thận
+VM13083:1 E28: Rối loạn chức năng buồng trứng
+VM13083:1 E29: Rối loạn chức năng tinh hoàn
+VM13083:1 E30: Rối loạn lúc dậy thì, không phân loại ở phần khác
+VM13083:1 E31: Rối loạn chức năng đa tuyến
+VM13083:1 E32: Bệnh tuyến ức
+VM13083:1 E34: Rối loạn nội tiết khác
+VM13083:1 E35: Rối loạn tuyến nội tiết trong các bệnh đã được phân loại ở phần khác
+VM13083:1 E40: Kwashiorkor
+VM13083:1 E41: Suy dinh dưỡng thể marasmus
+VM13083:1 E42: Thể hỗn hợp Kwashiorkor-marasmus
+VM13083:1 E43: Suy dinh dưỡng nặng do thiếu protein - năng lượng, không đặc hiệu
+VM13083:1 E44: Suy dinh dưỡng vừa và nhẹ do thiếu protein - năng lượng
+VM13083:1 E45: Chậm phát triển sau suy dinh dưỡng do thiếu protein năng lượng
+VM13083:1 E46: Suy dinh dưỡng do thiếu protein năng lượng không xác định
+VM13083:1 E50: Thiếu vitamin A
+VM13083:1 E51: Thiếu thiamine
+VM13083:1 E52: Thiếu niacin
+VM13083:1 E53: Thiếu các vitamin nhóm B khác
+VM13083:1 E54: Thiếu acid ascorbic
+VM13083:1 E55: Thiếu Vitamin D
+VM13083:1 E56: Thiếu Vitamin khác
+VM13083:1 E58: Thiếu Calci do chế độ ăn
+VM13083:1 E59: Thiếu Selen do chế độ ăn
+​ E60: Thiếu kẽm do chế độ ăn
+​ E61: Thiếu các yếu tố dinh dưỡng khác
+​ E63: Thiếu dinh dưỡng khác
+​ E64: Di chứng của suy dinh dưỡng và bệnh thiếu dinh dưỡng khác
+​ E65: Béo phì khu trú
+​ E66: Bệnh béo phì
+​ E67: Tình trạng thừa dinh dưỡng khác
+​ E68: Di chứng của thừa dinh dưỡng
+​ E70: Rối loạn chuyển hoá acid amin thơm
+​ E71: Rối loạn chuyển hoá acid amin chuỗi nhánh và rối loạn chuyển hoá acid béo
+​ E72: Các rối loạn khác của chuyển hoá acid amin
+​ E73: Không dung nạp lactose
+​ E74: Rối loạn khác của chuyển hoá carbohydrat
+​ E75: Rối loạn chuyển hoá sphingolipid và rối loạn tích luỹ lipid
+​ E76: Rối loạn chuyển hoá glycosaminoglycan
+​ E77: Rối loạn chuyển hoá glycoprotein
+​ E78: Rối loạn chuyển hoá lipoprotein và tình trạng tăng lipid máu khác
+​ E79: Rối loạn chuyển hoá purine và pyrimidine
+​ E80: Rối loạn chuyển hoá porphyrin và bilirubin
+​ E83: Rối loạn chuyển hoá chất khoáng
+​ E84: Xơ nang
+​ E85: Thoái hoá dạng bột
+​ E86: Giảm thể tích
+​ E87: Rối loạn cân bằng nước, điện giải và thăng bằng kiềm toan
+​ E88: Rối loạn chuyển hoá khác
+​ E89: Rối loạn nội tiết và chuyển hoá sau điều trị, không phân loại nơi khác
+​ E90: Rối loạn chuyển hoá và dinh dưỡng trong các bệnh đã được phân loại ở phần khác
+​ F00: Sa sút trí tuệ trong bệnh Alzheimer (G30.-†)
+​ F01: Sa sút trí tuệ do nguyên nhân mạch
+​ F02: Sa sút trí tuệ trong các bệnh khác phân loại nơi khác
+​ F03: Sa sút trí tuệ không biệt định
+​ F04: Hội chứng quên thực tổn không do rượu và chất tác động tâm thần khác
+​ F05: Sảng không do rượu và chất tác động tâm thần khác
+​ F06: Rối loạn tâm thần khác do tổn thương và rối loạn chức năng não và do bệnh cơ thể
+​ F07: Các rối loạn nhân cách và hành vi do bệnh lý não, tổn thương não và rối loạn chức năng não
+​ F09: Rối loạn tâm thần thực tổn hoặc triệu chứng không biệt định
+​ F10: Rối loạn tâm thần và hành vi do sử dụng rượu
+​ F11: Rối loạn tâm thần và hành vi do sử dụng các dạng thuốc phiện
+​ F12: Rối loạn tâm thần và hành vi do sử dụng cần sa
+​ F13: Rối loạn tâm thần và hành vi do sử dụng các chất an dịu hoặc các thuốc ngủ
+​ F14: Rối loạn tâm thần và hành vi do sử dụng cocain
+​ F15: Rối loạn tâm thần và hành vi do sử dụng chất kích thích khác, bao gồm cả caffein
+​ F16: Rối loạn tâm thần và hành vi do sử dụng các chất gây ảo giác
+​ F17: Rối loạn tâm thần và hành vi do sử dụng thuốc lá
+​ F18: Rối loạn tâm thần và hành vi do sử dụng dung môi dễ bay hơi
+​ F19: Rối loạn tâm thần và hành vi do sử dụng nhiều loại ma tuý và chất tác động tâm thần khác
+​ F20: Tâm thần phân liệt
+​ F21: Rối loạn loại phân liệt
+​ F22: Rối loạn hoang tưởng dai dẳng
+​ F23: Rối loạn loạn thần cấp và nhất thời
+​ F24: Rối loạn hoang tưởng cảm ứng
+​ F25: Rối loạn phân liệt cảm xúc
+​ F28: Rối loạn loạn thần không thực tổn khác
+​ F29: Loạn thần không thực tổn không biệt định
+​ F30: Giai đoạn hưng cảm
+​ F31: Rối loạn cảm xúc lưỡng cực
+​ F32: Giai đoạn trầm cảm
+​ F33: Rối loạn trầm cảm tái diễn
+VM13083:1 F34: Rối loạn khí sắc [cảm xúc] dai dẳng
+VM13083:1 F38: Rối loạn khí sắc [cảm xúc] khác
+VM13083:1 F39: Rối loạn khí sắc (cảm xúc) biệt định
+VM13083:1 F40: Rối loạn lo âu ám ảnh sợ hãi
+VM13083:1 F41: Các rối loạn lo âu khác
+VM13083:1 F42: Rối loạn ám ảnh nghi thức
+VM13083:1 F43: Phản ứng với stress trầm trọng và rối loạn sự thích ứng
+VM13083:1 F44: Các rối loạn phân ly [chuyển di]
+VM13083:1 F45: Rối loạn dạng cơ thể
+VM13083:1 F48: Các rối loạn tâm căn khác
+VM13083:1 F50: Các rối loạn ăn uống
+VM13083:1 F51: Rối loạn giấc ngủ không thực tổn
+VM13083:1 F52: Loạn chức năng tình dục, không do rối loạn hoặc bệnh thực tổn
+VM13083:1 F53: Rối loạn hành vi và tâm thần kết hợp với thời kì sinh đẻ, không phân loại nơi khác
+VM13083:1 F54: Các nhân tố tâm lý và hành vi kết hợp với rối loạn hoặc các bệnh phân loại nơi khác
+VM13083:1 F55: Lạm dụng các chất không gây nghiện
+VM13083:1 F59: Các hội chứng hành vi ứng xử không biệt định kết hợp với rối loạn sinh lý và yếu tố thể chất
+VM13083:1 F60: Rối loạn nhân cách đặc hiệu
+VM13083:1 F61: Rối loạn nhân cách khác và hỗn hợp
+VM13083:1 F62: Biến đổi nhân cách kéo dài, không thể quy cho một tổn thương hay bệnh não
+VM13083:1 F63: Rối loạn thói quen và xung động
+VM13083:1 F64: Các rối loạn phân định giới tính
+VM13083:1 F65: Rối loạn trong ưa chuộng tình dục
+VM13083:1 F66: Những rối loạn tâm lý và hành vi kết hợp với sự phát triển và định hướng tình dục
+VM13083:1 F68: Rối loạn khác về hành vi và nhân cách ở người trưởng thành
+VM13083:1 F69: Rối loạn không biệt định về nhân cách và hành vi ở người trưởng thành
+VM13083:1 F70: Chậm phát triển tâm thần nhẹ
+VM13083:1 F71: Chậm phát triển tâm thần trung bình
+VM13083:1 F72: Chậm phát triển tâm thần nặng
+VM13083:1 F73: Chậm phát triển tâm thần nghiêm trọng
+VM13083:1 F78: Chậm phát triển tâm thần khác
+VM13083:1 F79: Chậm phát triển tâm thần không biệt định
+VM13083:1 F80: Các rối loạn đặc hiệu về phát triển lời nói và ngôn ngữ
+VM13083:1 F81: Rối loạn đặc hiệu về phát triển các kỹ năng ở trường
+VM13083:1 F82: Rối loạn đặc hiệu sự phát triển chức năng vận động
+VM13083:1 F83: Các rối loạn đặc hiệu hỗn hợp của sự phát triển
+VM13083:1 F84: Rối loạn lan tỏa sự phát triển
+VM13083:1 F88: Các rối loạn khác của phát triển tâm lý
+VM13083:1 F89: Rối loạn không biệt định của phát triển tâm lý
+VM13083:1 F90: Các rối loạn tăng động
+VM13083:1 F91: Rối loạn hành vi
+VM13083:1 F92: Các rối loạn hỗn hợp về hành vi và cảm xúc
+VM13083:1 F93: Rối loạn cảm xúc với sự khởi phát đặc biệt ở trẻ em
+VM13083:1 F94: Các rối loạn hoạt động xã hội khởi phát đặc biệt ở tuổi trẻ em và thanh thiếu niên
+VM13083:1 F95: Các rối loạn Tic
+VM13083:1 F98: Các rối loạn tác phong và cảm xúc khác thường khởi phát ở lứa tuổi trẻ em và thanh thiếu niên
+VM13083:1 F99: Rối loạn tâm thần không biệt định khác
+​ G00: Viêm màng não vi khuẩn, không phân loại nơi khác
+​ G01*: Viêm màng não trong bệnh nhiễm khuẩn phân loại nơi khác
+​ G02: Viêm màng não trong bệnh nhiễm trùng và ký sinh trùng phân loại nơi khác
+​ G03: Viêm màng não do nguyên nhân khác và không xác định
+​ G04: Viêm não, viêm tuỷ và viêm não-tuỷ
+​ G05*: Viêm não, viêm tuỷ và viêm não- tuỷ trong bệnh phân loại nơi khác
+​ G06: Áp xe và u hạt nội sọ và nội tuỷ
+​ G07: Áp xe và u hạt nội sọ và nội tuỷ trong bệnh phân loại nơi khác
+​ G08: Viêm tĩnh mạch và viêm tắc tĩnh mạch nội sọ và nội tuỷ
+​ G09: Di chứng của bệnh viêm hệ thần kinh trung ương
+​ G10: Bệnh Hungtington
+​ G11: Thất điều di truyền
+​ G12: Teo cơ do tổn thương tuỷ sống và hội chứng liên quan
+​ G13: Bệnh teo hệ thống ảnh hưởng chủ yếu tới hệ thần kinh trung ương trong bệnh phân loại nơi khác
+​ G14: Hội chứng sau bại liệt
+​ G20: Bệnh Parkinson
+​ G21: Hội chứng Parkinson thứ phát
+​ G22: Hội chứng Parkinson trong bệnh phân loại nơi khác
+​ G23: Bệnh thoái hoá khác của hạch nền não
+​ G24: Loạn trương lực cơ
+​ G25: Hội chứng ngoại tháp và rối loạn vận động khác
+​ G26: Hội chứng ngoại tháp và rối loạn vận động trong bệnh phân loại nơi khác
+​ G30: Bệnh Alzheimer
+​ G31: Bệnh thoái hoá khác của hệ thần kinh, không phân loại nơi khác
+​ G32: Bệnh thoái hoá khác của hệ thần kinh, trong bệnh phân loại nơi khác
+​ G35: Đa xơ cứng, xơ cứng rải rác
+​ G36: Thoái hoá myelin rải rác cấp tính khác
+​ G37: Bệnh Thoái hoá myelin khác của hệ thần kinh trung ương
+​ G40: Động kinh
+​ G41: Trạng thái động kinh
+​ G43: Migraine
+​ G44: Hội chứng đau đầu khác
+​ G45: Cơn thiếu máu não cục bộ thoáng qua và hội chứng liên quan
+​ G46: Hội chứng mạch máu não trong bệnh mạch não (I60-I67†)
+VM13083:1 G47: Rối loạn giấc ngủ
+VM13083:1 G50: Bệnh dây thần kinh tam thoa
+VM13083:1 G51: Bệnh dây thần kinh mặt
+VM13083:1 G52: Bệnh các dây thần kinh sọ khác
+VM13083:1 G53: Bệnh dây thần kinh sọ trong bệnh phân loại nơi khác
+VM13083:1 G54: Bệnh rễ và đám rối thần kinh
+VM13083:1 G55: Chèn ép rễ thần kinh và đám rối trong bệnh phân loại nơi khác
+VM13083:1 G56: Bệnh đơn dây thần kinh chi trên
+VM13083:1 G57: Bệnh đơn dây thần kinh chi dưới
+VM13083:1 G58: Bệnh đơn dây thần kinh khác
+VM13083:1 G59: Bệnh đơn dây thần kinh đã phân loại nơi khác
+VM13083:1 G60: Bệnh dây thần kinh di truyền và nguyên phát
+VM13083:1 G61: Viêm đa dây thần kinh
+VM13083:1 G62: Bệnh đa dây thần kinh khác
+VM13083:1 G63: Bệnh đa dây thần kinh trong các bệnh phân loại nơi khác
+VM13083:1 G64: Bệnh khác của hệ thần kinh ngoại vi
+VM13083:1 G70: Nhược cơ và bệnh thần kinh - cơ khác
+VM13083:1 G71: Bệnh cơ tiên phát
+VM13083:1 G72: Bệnh cơ khác
+VM13083:1 G73: Bệnh khớp thần kinh- cơ và cơ trong các bệnh phân loại nơi khác
+VM13083:1 G80: Bại não
+VM13083:1 G81: Liệt nửa người
+VM13083:1 G82: Liệt hai chân và liệt tứ chi
+VM13083:1 G83: Hội chứng liệt khác
+VM13083:1 G90: Bệnh hệ thần kinh tự động
+VM13083:1 G91: Tràn dịch não
+VM13083:1 G92: Bệnh não nhiễm độc
+VM13083:1 G93: Bệnh khác của não
+VM13083:1 G94: Bệnh khác của não trong bệnh phân loại nơi khác
+VM13083:1 G95: Bệnh khác của tuỷ sống
+VM13083:1 G96: Bệnh khác của hệ thần kinh trung ương
+VM13083:1 G97: Bệnh hệ thần kinh sau phẫu thuật, thủ thuật, không phân loại nơi khác
+VM13083:1 G98: Bệnh khác của hệ thần kinh không phân loại nơi khác
+VM13083:1 G99: Bệnh khác của hệ thần kinh trong bệnh phân loại nơi khác
+VM13083:1 H00: Lẹo và chắp
+VM13083:1 H01: Viêm khác của mí mắt
+VM13083:1 H02: Bệnh khác của mí mắt
+VM13083:1 H03: Bệnh mí mắt trong các bệnh phân loại nơi khác
+VM13083:1 H04: Bệnh của lệ bộ
+VM13083:1 H05: Bệnh của hốc mắt
+VM13083:1 H06: Bệnh của lệ bộ và hốc mắt trong các bệnh phân loại nơi khác
+VM13083:1 H10: Viêm kết mạc
+VM13083:1 H11: Bệnh khác của kết mạc
+VM13083:1 H13: Bệnh của kết mạc trong các bệnh phân loại nơi khác
+VM13083:1 H15: Bệnh của củng mạc
+VM13083:1 H16: Viêm giác mạc
+VM13083:1 H17: Sẹo và đục giác mạc
+​ H18: Bệnh khác của giác mạc
+​ H19: Bệnh củng mạc và giác mạc trong các bệnh phân loại nơi khác
+​ H20: Viêm mống thể mi
+​ H21: Bệnh khác của mống mắt và thể mi
+​ H22: Bệnh của mống mắt và thể mi trong bệnh phân loại nơi khác
+​ H25: Đục thuỷ tinh thể người già
+​ H26: Đục thuỷ tinh thể khác
+​ H27: Các bệnh khác của thuỷ tinh thể
+​ H28: Đục thuỷ tinh thể và bệnh của thuỷ tinh thể khác trong các bệnh phân loại nơi khác
+​ H30: Viêm hắc võng mạc
+​ H31: Bệnh khác của hắc mạc
+​ H32: Bệnh hắc võng mạc trong các bệnh phân loại nơi khác
+​ H33: Bong và rách võng mạc
+​ H34: Tắc mạch võng mạc
+​ H35: Các bệnh võng mạc khác
+​ H36: Bệnh võng mạc trong các bệnh phân loại nơi khác
+​ H40: Glocom
+​ H42: Glocom trong các bệnh phân loại nơi khác
+​ H43: Bệnh của dịch kính
+​ H44: Bệnh của nhãn cầu
+​ H45: Bệnh của dịch kính và nhãn cầu trong các bệnh phân loại nơi khác
+VM13083:1 H46: Viêm thần kinh thị
+VM13083:1 H47: Các bệnh khác của thần kinh thị (dây thần kinh II) và đường thị giác
+VM13083:1 H48: Bệnh thần kinh thị và đường dẫn thị giác trong các bệnh phân loại nơi khác
+VM13083:1 H49: Lác liệt
+VM13083:1 H50: Lác khác
+VM13083:1 H51: Các rối loạn vận nhãn hai mắt khác
+VM13083:1 H52: Bệnh khúc xạ và điều tiết
+VM13083:1 H53: Rối loạn thị giác
+VM13083:1 H54: Giảm thị lực bao gồm mù lòa (hai mắt hoặc một mắt)
+VM13083:1 H55: Rung giật nhãn cầu và rối loạn vận nhãn khác
+VM13083:1 H57: Các bệnh khác của mắt và phần phụ
+VM13083:1 H58: Bệnh khác của mắt và phần phụ trong các bệnh phân loại nơi khác
+VM13083:1 H59: Bệnh mắt và phần phụ sau phẫu thuật không phân loại nơi khác
+VM13083:1 H60: Viêm tai ngoài
+VM13083:1 H61: Bệnh khác của tai ngoài
+VM13083:1 H62: Bệnh tai ngoài trong bệnh phân loại nơi khác
+VM13083:1 H65: Viêm tai giữa không nung mủ viêm tai giữa không mủ
+VM13083:1 H66: Viêm tai giữa nung mủ và không đặc hiệu
+VM13083:1 H67: Viêm tai giữa trong bệnh phân loại nơi khác
+VM13083:1 H68: Viêm và tắc vòi Eustache
+VM13083:1 H69: Bệnh khác của vòi Eustache
+VM13083:1 H70: Viêm xương chũm và tình trạng liên quan
+VM13083:1 H71: Cholesteatoma của tai giữa
+VM13083:1 H72: Thủng màng nhĩ
+VM13083:1 H73: Bệnh khác của màng nhĩ
+VM13083:1 H74: Bệnh khác của tai giữa và xương chũm
+VM13083:1 H75: Bệnh khác của tai giữa và xương chũm trong bệnh phân loại nơi khác
+VM13083:1 H80: Xốp xơ tai
+VM13083:1 H81: Rối loạn chức năng tiền đình
+VM13083:1 H82: Rối loạn chức năng tiền đình
+VM13083:1 H83: Bệnh khác của tai trong
+VM13083:1 H90: Điếc dẫn truyền và điếc thần kinh giác quan điếc dẫn truyền và tiếp nhận
+VM13083:1 H91: Nghe kém khác
+VM13083:1 H92: Đau tai và chảy dịch ở tai
+VM13083:1 H93: Bệnh khác của tai, không phân loại nơi khác
+VM13083:1 H94: Bệnh khác của tai trong bệnh phân loại nơi khác
+VM13083:1 H95: Bệnh tai và xương chũm sau phẫu thuật, không phân loại nơi khác
+VM13083:1 I00: Thấp không có tổn thương tim
+VM13083:1 I01: Thấp ảnh hưởng đến tim
+VM13083:1 I02: Múa giật do thấp
+VM13083:1 I05: Bệnh lý van hai lá do thấp
+VM13083:1 I06: Bệnh van động mạch chủ do thấp
+VM13083:1 I07: Bệnh lý van ba lá do thấp
+VM13083:1 I08: Bệnh lý của nhiều van tim
+VM13083:1 I09: Các bệnh tim khác do thấp
+VM13083:1 I10: Tăng huyết áp vô căn (nguyên phát)
+VM13083:1 I11: Bệnh tim do tăng huyết áp
+​ I12: Bệnh thận do tăng huyết áp
+​ I13: Bệnh tim và thận do tăng huyết áp
+​ I15: Tăng huyết áp thứ phát
+​ I20: Cơn đau thắt ngực
+​ I21: Nhồi máu cơ tim cấp
+​ I22: Nhồi máu cơ tim tiến triển
+​ I23: Một số biến chứng thường gặp sau nhồi máu cơ tim cấp
+​ I24: Bệnh tim do thiếu máu cục bộ cấp khác
+​ I25: Bệnh tim thiếu máu cục bộ mạn
+​ I26: Tắc mạch phổi
+​ I27: Các bệnh tim do phổi khác
+​ I28: Bệnh mạch máu phổi khác
+​ I30: Viêm màng ngoài tim cấp
+​ I31: Các bệnh màng ngoài tim khác
+​ I32: Viêm màng ngoài tim trong bệnh phân loại nơi khác
+​ I33: Viêm nội tâm mạc cấp và bán cấp
+​ I34: Bệnh van hai lá không do thấp
+​ I35: Bệnh van động mạch chủ không do thấp
+​ I36: Bệnh van ba lá không do thấp
+​ I37: Bệnh van động mạch phổi
+​ I38: Viêm nội tâm mạc, không xác định
+​ I39: Viêm nội tâm mạc và bệnh van tim trong bệnh phân loại nơi khác
+​ I40: Viêm cơ tim cấp
+​ I41: Viêm cơ tim trong bệnh phân loại nơi khác
+​ I42: Bệnh cơ tim
+​ I43: Bệnh cơ tim trong bệnh phân loại nơi khác
+​ I44: Blốc nhĩ thất và nhánh trái
+​ I45: Rối loạn dẫn truyền khác
+​ I46: Ngưng tim
+​ I47: Nhịp nhanh kịch phát
+​ I48: Rung nhĩ và cuồng nhĩ
+​ I49: Loạn nhịp tim khác
+​ I50: Suy tim
+​ I51: Biến chứng và bệnh lý được xác định là do bệnh tim mạch
+​ I52: Các bệnh lý khác trong các bệnh đã phân loại nơi khác
+​ I60: Xuất huyết dưới màng nhện
+​ I61: Xuất huyết nội sọ
+​ I62: Xuất huyết nội sọ không do chấn thương khác
+​ I63: Nhồi máu não
+​ I64: Đột quị, không xác định do xuất huyết hay nhồi máu (Tai biến mạch máu não)
+​ I65: Nghẽn tắc và hẹp động mạch trước não, không dẫn đến nhồi máu não
+​ I66: Nghẽn tắc và hẹp động mạch não, không dẫn đến nhồi máu não
+​ I67: Bệnh mạch máu não khác
+​ I68: Bệnh mạch máu não trong bệnh phân loại nơi khác
+​ I69: Di chứng bệnh mạch máu não
+​ I70: Xơ vữa động mạch
+​ I71: Phình và tách thành động mạch chủ
+​ I72: Phình và tách động mạch khác
+​ I73: Bệnh mạch máu ngoại biên
+VM13083:1 I74: Thuyên tắc và huyết khối động mạch
+VM13083:1 I77: Các bệnh khác của hệ động mạch và tiểu động mạch
+VM13083:1 I78: Bệnh của mao mạch
+VM13083:1 I79: Bệnh động mạch, tiểu động mạch và mao mạch trong bệnh phân loại nơi khác
+VM13083:1 I80: Viêm tĩnh mạch và tắc tĩnh mạch
+VM13083:1 I81: Huyết khối tĩnh mạch cửa
+VM13083:1 I82: Các thuyên tắc và huyết khối tĩnh mạch khác
+VM13083:1 I83: Dãn tĩnh mạch chi dưới
+VM13083:1 I85: Dãn tĩnh mạch thực quản
+VM13083:1 I86: Dãn tĩnh mạch vị trí khác
+VM13083:1 I87: Rối loạn khác của tĩnh mạch
+VM13083:1 I88: Viêm hạch bạch huyết không đặc hiệu
+VM13083:1 I89: Rối loạn mạch bạch huyết và hạch bạch huyết không nhiễm trùng khác
+VM13083:1 I95: Huyết áp thấp (hạ huyết áp)
+VM13083:1 I97: Rối loạn hệ tuần hoàn sau phẫu thuật, không phân loại nơi khác
+VM13083:1 I98: Rối loạn khác của hệ tuần hoàn trong bệnh phân loại nơi khác
+VM13083:1 I99: Rối loạn hệ tuần hoàn khác và không xác định của hệ tuần hoàn
+VM13083:1 J00: Viêm mũi họng cấp [cảm thường]
+VM13083:1 J01: Viêm xoang cấp
+VM13083:1 J02: Viêm họng cấp
+VM13083:1 J03: Viêm amidan cấp
+VM13083:1 J04: Viêm thanh quản và khí quản cấp
+VM13083:1 J05: Viêm thanh quản tắc nghẽn [tắc nghẽn thanh quản] và nắp thanh môn cấp
+VM13083:1 J06: Nhiễm trùng đường hô hấp trên cấp ở nhiều nơi và vị trí không phân loại
+VM13083:1 J09: Cúm do virus đã được định danh
+VM13083:1 J10: Cảm cúm do virus cúm được định danh khác
+VM13083:1 J11: Cúm, virus không được định danh
+VM13083:1 J12: Viêm phổi do virus, không phân loại nơi khác
+VM13083:1 J13: Viêm phổi do phế cầu Streptococcus pneumoniae
+VM13083:1 J14: Viêm phổi do vi khuẩn Haemophilus influenzae
+VM13083:1 J15: Viêm phổi do vi khuẩn, không phân loại nơi khác
+VM13083:1 J16: Viêm phổi do tác nhân nhiễm khuẩn khác, không phân loại nơi khác
+VM13083:1 J17*: Viêm phổi trong các bệnh đã phân loại nơi khác
+VM13083:1 J18: Viêm phổi, tác nhân không xác định
+VM13083:1 J20: Viêm phế quản cấp
+VM13083:1 J21: Viêm tiểu phế quản cấp
+VM13083:1 J22: Nhiễm trùng hô hấp dưới cấp không phân loại
+VM13083:1 J30: Viêm mũi vận mạch và viêm mũi dị ứng
+VM13083:1 J31: Viêm mũi, viêm mũi họng, viêm họng mạn tính
+VM13083:1 J32: Viêm xoang mạn tính
+VM13083:1 J33: Políp mũi
+VM13083:1 J34: Bệnh khác của mũi và xoang
+VM13083:1 J35: Bệnh mạn tính của amidan và VA
+VM13083:1 J36: Áp xe quanh amidan
+VM13083:1 J37: Viêm thanh quản và viêm thanh khí quản mạn tính
+VM13083:1 J38: Bệnh lý của dây thanh âm và thanh quản, không phân loại nơi khác
+VM13083:1 J39: Các bệnh khác của đường hô hấp trên
+​ J40: Viêm phế quản không xác định được là cấp hay mạn tính
+​ J41: Viêm phế quản mạn tính đơn thuần và nhầy mủ
+​ J42: Viêm phế quản mạn tính không phân loại
+​ J43: Khí phế thũng
+​ J44: Các bệnh phổi tắc nghẽn mạn tính khác
+​ J45: Hen [suyễn]
+​ J46: Cơn hen ác tính
+​ J47: Dãn phế quản
+​ J60: Bệnh bụi phổi của công nhân ngành than
+​ J61: Bệnh bụi phổi amian và các sợi khoáng khác
+​ J62: Bệnh bụi phổi do bụi silic
+​ J63: Bệnh bụi phổi do bụi vô cơ khác
+​ J64: Bệnh bụi phổi không phân loại
+​ J65: Bệnh bụi phổi kết hợp với lao
+​ J66: Bệnh đường dẫn khí do bụi hữu cơ đặc biệt khác
+​ J67: Viêm phổi tăng cảm do bụi hữu cơ
+​ J68: Bệnh hô hấp do hít hoá chất, khí, khói và chất bay hơi
+​ J69: Viêm phổi do chất rắn và chất lỏng
+​ J70: Bệnh hô hấp do tác nhân bên ngoài khác
+​ J80: Hội chứng suy hô hấp ở người lớn
+​ J81: Phù phổi
+​ J82: Tăng bạch cầu ái toan ở phổi, không phân loại nơi khác
+​ J84: Bệnh phổi mô kẽ khác
+​ J85: Áp xe phổi và trung thất
+​ J86: Mủ lồng ngực
+​ J90: Tràn dịch màng phổi, không phân loại nơi khác
+​ J91: Tràn dịch màng phổi trong bệnh phân loại nơi khác
+​ J92: Mảng màng phổi
+​ J93: Tràn khí màng phổi
+​ J94: Các bệnh màng phổi khác
+​ J95: Các bệnh hô hấp sau phẫu thuật, thủ thuật, không phân loại nơi khác
+​ J96: Suy hô hấp không phân loại nơi khác
+​ J98: Các bệnh hô hấp khác
+​ J99: Bệnh hô hấp trong các bệnh đã phân loại nơi khác
+​ K00: Rối loạn phát triển răng và mọc răng
+​ K01: Răng mọc kẹt và răng ngầm
+​ K02: Sâu răng
+​ K03: Bệnh mô cứng khác của răng
+​ K04: Bệnh tuỷ và mô quanh chân răng
+​ K05: Viêm nướu và bệnh nha chu
+​ K06: Rối loạn khác của nướu và sóng hàm vùng mất răng
+​ K07: Bất thường hàm mặt [bao gồm khớp cắn lệch]
+​ K08: Bệnh khác của răng và cấu trúc nâng dỡ
+​ K09: Nang vùng miệng, không phân loại nơi khác
+​ K10: Bệnh khác của xương hàm
+​ K11: Bệnh tuyến nước bọt
+​ K12: Viêm miệng và tổn thương liên quan
+​ K13: Bệnh khác của môi và niêm mạc miệng
+​ K14: Bệnh của lưỡi
+​ K20: Viêm thực quản
+​ K21: Bệnh trào ngược dạ dày - thực quản
+​ K22: Bệnh khác của thực quản
+​ K23: Rối loạn thực quản trong bệnh phân loại nơi khác
+​ K25: Loét dạ dày
+​ K26: Loét tá tràng
+​ K27: Loét dạ dày-tá tràng, vị trí không xác định
+​ K28: Loét dạ dày-hỗng tràng
+​ K29: Viêm dạ dày và tá tràng
+​ K30: Khó tiêu chức năng
+​ K31: Bệnh khác của dạ dày và tá tràng
+​ K35: Viêm ruột thừa cấp
+​ K36: Viêm ruột thừa khác
+​ K37: Viêm ruột thừa không đặc hiệu
+​ K38: Bệnh khác của ruột thừa
+​ K40: Thoát vị bẹn
+​ K41: Thoát vị đùi
+VM13083:1 K42: Thoát vị rốn
+VM13083:1 K43: Thoát vị bụng
+VM13083:1 K44: Thoát vị hoành
+VM13083:1 K45: Thoát vị bụng khác
+VM13083:1 K46: Thoát vị bụng không đặc hiệu
+VM13083:1 K50: Bệnh Crohn (viêm ruột từng vùng)
+VM13083:1 K51: Viêm loét đại tràng chảy máu
+VM13083:1 K52: Viêm dạ dày-ruột và viêm đại tràng khác không nhiễm trùng khác
+VM13083:1 K55: Rối loạn mạch máu của ruột
+VM13083:1 K56: Liệt ruột và tắc ruột không có thoát vị
+VM13083:1 K57: Bệnh túi thừa của ruột
+VM13083:1 K58: Hội chứng ruột kích thích
+VM13083:1 K59: Rối loạn chức năng khác của ruột
+VM13083:1 K60: rò vùng hậu môn và trực tràng
+VM13083:1 K61: áp xe vùng hậu môn - trực tràng
+VM13083:1 K62: Bệnh khác của hậu môn và trực tràng
+VM13083:1 K63: Bệnh khác của ruột
+VM13083:1 K64: Trĩ và huyết khối tĩnh mạch qua hậu môn
+VM13083:1 K65: Viêm phúc mạc
+VM13083:1 K66: Bệnh lý khác của phúc mạc
+VM13083:1 K67: Rối loạn của phúc mạc trong bệnh nhiễm trùng phân loại nơi khác
+VM13083:1 K70: Bệnh gan do rượu
+VM13083:1 K71: Bệnh gan do độc chất
+VM13083:1 K72: Suy gan, không phân loại nơi khác
+VM13083:1 K73: Viêm gan mạn tính, không phân loại nơi khác
+VM13083:1 K74: Gan xơ hoá và xơ gan
+VM13083:1 K75: Bệnh viêm gan khác
+VM13083:1 K76: Bệnh gan khác
+VM13083:1 K77*: Rối loạn chức năng gan trong bệnh phân loại nơi khác
+VM13083:1 K80: Sỏi mật
+VM13083:1 K81: Viêm túi mật
+VM13083:1 K82: Bệnh khác của túi mật
+VM13083:1 K83: Bệnh khác của đường mật
+VM13083:1 K85: Viêm tuỵ cấp
+VM13083:1 K86: Bệnh tuỵ khác
+VM13083:1 K87: Rối loạn của túi mật, đường mật và tuỵ đã phân loại nơi khác
+VM13083:1 K90: Ruột kém hấp thu
+VM13083:1 K91: Rối loạn tiêu hoá sau phẫu thuật không phân loại nơi khác
+VM13083:1 K92: Bệnh khác của hệ tiêu hoá
+VM13083:1 K93: Rối loạn của cơ quan tiêu hoá khác đã phân loại nơi khác
+VM13083:1 L00: Hội chứng bong vảy da do tụ cầu
+VM13083:1 L01: Chốc
+VM13083:1 L02: Áp xe da, nhọt, nhọt cụm
+VM13083:1 L03: Viêm mô bào
+VM13083:1 L04: Viêm hạch bạch huyết cấp tính
+VM13083:1 L05: Kén nang lông
+VM13083:1 L08: Nhiễm trùng khu trú khác của da và mô dưới da
+​ L10: Pemphigus
+​ L11: Các bệnh da ly gai khác
+​ L12: Pemphigus
+​ L13: Các bệnh da có bọng nước khác
+​ L14: Các bệnh da bọng nước trong các bệnh đã được phân loại ở phần khác
+​ L20: Viêm da cơ địa
+​ L21: Viêm da dầu
+​ L22: Viêm da tã lót
+​ L23: Viêm da tiếp xúc dị ứng
+​ L24: Viêm da tiếp xúc kích ứng
+​ L25: Viêm da tiếp xúc không đặc hiệu
+​ L26: Đỏ da toàn thân
+​ L27: Viêm da do các chất được đưa vào trong cơ thể
+​ L28: Lichen đơn dạng mạn tính và sẩn ngứa
+​ L29: Ngứa
+​ L30: Các viêm da khác
+​ L40: Vảy nến
+​ L41: Á vảy nến
+​ L42: Vảy phấn hồng
+​ L43: Lichen phẳng
+​ L44: Các bệnh sẩn có vảy khác
+​ L45: Các bệnh sẩn có vảy trong các bệnh đã phân loại nơi khác
+​ L50: Mày đay
+​ L51: Hồng ban đa dạng
+​ L52: Hồng ban nút
+​ L53: Các trạng thái hồng ban khác
+​ L54: Hồng ban trong các bệnh đã phân loại ở phần khác
+​ L55: Bỏng nắng
+​ L56: Biến đổi da cấp tính khác do bức xạ tia cực tím
+​ L57: Bệnh da do tiếp xúc lâu dài với bức xạ không ion hoá
+​ L58: Viêm da do quang tuyến
+​ L59: Các bệnh khác ở da và tổ chức dưới da liên quan đến bức xạ
+​ L60: Các bệnh về móng
+​ L62: Các bệnh móng trong các bệnh đã phân loại ở phần khác
+​ L63: Rụng tóc từng mảng
+​ L64: Rụng tóc do nội tiết tố nam tính
+​ L65: Rụng tóc không sẹo khác
+​ L66: Rụng tóc có sẹo
+​ L67: Bất thường về màu và sợi tóc
+​ L68: Rậm lông tóc
+​ L70: Trứng cá
+​ L71: Trứng cá đỏ
+​ L72: Kén nang lông của da và tổ chức dưới da
+​ L73: Các bệnh nang lông khác
+​ L74: Các bệnh của tuyến mồ hôi
+​ L75: Bệnh tuyến mồ hôi bán huỷ (nội tiết)
+​ L80: Bạch biến
+​ L81: Bệnh rối loạn sắc tố khác
+​ L82: Dày sừng da dầu
+​ L83: Bệnh gai đen
+​ L84: Mắt cá và chai chân
+​ L85: Dày thượng bì khác
+​ L86: Dày sừng trong các bệnh đã được phân loại ở phần khác
+​ L87: Các bệnh loại bỏ dị vật qua thượng bì
+​ L88: Viêm da mủ hoại thư
+​ L89: Loét nằm và vùng đè ép
+​ L90: Teo da
+​ L91: Các bệnh quá sản của da
+​ L92: U hạt của da và tổ chức dưới da
+​ L93: Lupus ban đỏ
+​ L94: Các bệnh tổ chức liên kết khu trú khác
+​ L95: Viêm mao mạch ở da, chưa phân loại ở phần khác
+​ L97: Loét chi dưới, chưa phân loại ở phần khác
+​ L98: Bệnh khác của da và mô dưới da không phân loại nơi khác
+​ L99: Bệnh khác của da và tổ chức dưới da trong các bệnh đã phân loại ở phần khác
+​ M00-M03: Bệnh khớp nhiễm trùng
+​ M05-M14: Viêm đa khớp
+​ M15-M19: Bệnh thoái hoá khớp
+​ M20-M25: Bệnh khác ở khớp
+​ M30: Viêm nút quanh động mạch và bệnh liên quan
+​ M31: Bệnh mạch máu hoại tử khác
+​ M32: Lupus ban đỏ hệ thống
+​ M33: Viêm da cơ
+​ M34: Xơ cứng toàn thể
+​ M35: Các tổn thương hệ thống khác của mô liên kết
+​ M36: Tổn thương mô liên kết hệ thống trong các bệnh phân loại nơi khác
+​ M40-M43: Biến dạng cột sống
+​ M45-M49: Bệnh lý cột sống
+​ M50-M54: Các bệnh khác của cột sống
+​ M60-M63: Các bệnh cơ
+​ M65-M68: Bệnh của màng hoạt dịch và gân
+​ M70-M79: Những bệnh khác của mô mềm
+​ M80-M85: Rối loạn về tỉ trọng (mật độ) và cấu trúc xương
+​ M86-M90: Bệnh khác của xương
+​ M91-M94: Các bệnh lý sụn
+​ M95: Các biến dạng mắc phải của hệ cơ-xương-khớp và mô liên kết
+​ M96: Các bệnh lý của hệ cơ-xương-khớp sau can thiệp, không phân loại nơi khác
+​ M99: Các tổn thương cơ sinh học, không phân loại nơi khác
+​ N00: Hội chứng viêm cầu thận cấp
+​ N01: Hội chứng viêm cầu thận tiến triển nhanh
+​ N02: Đái máu dai dẳng và tái phát
+​ N03: Hội chứng viêm cầu thận mạn
+​ N04: Hội chứng thận hư
+​ N05: Hội chứng viêm thận không đặc hiệu
+​ N06: Protein niệu đơn độc với tổn thương hình thái đặc hiệu
+​ N07: Bệnh thận di truyền, không phân loại nơi khác
+​ N08: Biến đổi cầu thận trong các bệnh đã được phân loại ở phần khác
+​ N10: Viêm mô kẽ ống thận cấp
+VM13083:1 N11: Viêm mô kẽ ống thận mạn
+VM13083:1 N12: Viêm mô kẽ ống thận, không xác định cấp hay mạn
+VM13083:1 N13: Bệnh tiết niệu trào ngược và tắc nghẽn
+VM13083:1 N14: Bệnh ống thận và kẽ ống thận do thuốc và kim loại nặng
+VM13083:1 N15: Các bệnh kẽ ống thận khác
+VM13083:1 N16: Biến đổi kẽ ống thận trong các bệnh đã được phân loại ở phần khác
+VM13083:1 N17: Suy thận cấp
+VM13083:1 N18: Suy thận mạn tính
+VM13083:1 N19: Suy thận không xác định
+VM13083:1 N20: Sỏi thận và niệu quản
+VM13083:1 N21: Sỏi đường tiết niệu dưới
+VM13083:1 N22: Sỏi đường tiết niệu trong các bệnh đã được phân loại ở phần khác
+VM13083:1 N23: Cơn đau quặn thận không xác định
+VM13083:1 N25: Rối loạn do suy giảm chức năng ống thận
+VM13083:1 N26: Thận nhỏ không xác định
+VM13083:1 N27: Thận teo nhỏ không rõ nguyên nhân
+VM13083:1 N28: Các biến đổi khác của thận và niệu quản, không phân loại nơi khác
+VM13083:1 N29: Các biến đổi khác của thận và niệu quản trong các bệnh đã được phân loại ở phần khác
+VM13083:1 N30: Viêm bàng quang
+VM13083:1 N31: Rối loạn chức năng thần kinh cơ bàng quang, không phân loại nơi khác
+VM13083:1 N32: Các rối loạn khác của bàng quang
+VM13083:1 N33: Rối loạn bàng quang trong bệnh đã được phân loại ở phần khác
+VM13083:1 N34: Viêm niệu đạo và hội chứng niệu đạo
+VM13083:1 N35: Hẹp niệu đạo
+VM13083:1 N36: Các biến đổi khác của niệu đạo
+VM13083:1 N37: Biến đổi niệu đạo trong các bệnh đã được phân loại ở phần khác
+VM13083:1 N39: Biến đổi khác của hệ tiết niệu
+VM13083:1 N40: Tăng sản tuyến tiền liệt
+VM13083:1 N41: Các bệnh viêm tuyến tiền liệt
+VM13083:1 N42: Biến đổi khác của tuyến tiền liệt
+VM13083:1 N43: Tràn dịch màng tinh và sa tinh
+VM13083:1 N44: Xoắn tinh hoàn
+VM13083:1 N45: Viêm tinh hoàn và viêm mào tinh hoàn
+VM13083:1 N46: Vô sinh nam
+VM13083:1 N47: Bao quy đầu rộng, hẹp bao quy đầu và nghẹt bao quy đầu
+VM13083:1 N48: Biến đổi khác của dương vật
+VM13083:1 N49: Viêm của cơ quan sinh dục nam, không phân loại nơi khác
+VM13083:1 N50: Biến đổi khác của cơ quan sinh dục nam
+VM13083:1 N51: Biến đổi cơ quan sinh dục nam trong các bệnh đã được phân loại ở phần khác
+VM13083:1 N60: Loạn sản vú lành tính
+VM13083:1 N61: Viêm vú
+VM13083:1 N62: Vú phì đại
+VM13083:1 N63: Khối u không xác định ở vú
+VM13083:1 N64: Biến đổi khác ở vú
+VM13083:1 N70: Viêm vòi và viêm buồng trứng
+VM13083:1 N71: Viêm tử cung, trừ cổ tử cung
+VM13083:1 N72: Viêm cổ tử cung
+​ N73: Các bệnh viêm vùng chậu nữ khác
+​ N74: Viêm vùng chậu nữ trong các bệnh đã được phân loại ở phần khác
+​ N75: Bệnh của tuyến Bartholin
+​ N76: Các viêm khác của âm đạo và âm hộ
+​ N77: Viêm và loét âm đạo, âm hộ trong bệnh đã được phân loại ở phần khác
+​ N80: Bệnh lạc nội mạc tử cung
+​ N81: Sa sinh dục nữ
+​ N82: Rò đường sinh dục nữ
+​ N83: Các biến đổi không do viêm của buồng trứng, vòi trứng và dây chằng rộng
+​ N84: Polyp đường sinh dục nữ
+​ N85: Các biến đổi không do viêm khác của tử cung trừ cổ tử cung
+​ N86: Xước & lộn niêm mạc cổ tử cung
+​ N87: Loạn sản cổ tử cung
+​ N88: Các biến đổi không do viêm khác của cổ tử cung
+​ N89: Biến đổi không do viêm khác của âm đạo
+​ N90: Biến đổi không do viêm khác của âm hộ và tầng sinh môn
+​ N91: Vô kinh, thiểu kinh, hiếm kinh
+​ N92: Kinh nguyệt nhiều, hay xuất hiện và không đều
+​ N93: Chảy máu bất thường khác của tử cung và âm đạo
+​ N94: Đau và tình trạng khác liên quan đến cơ quan sinh dục nữ và chu kỳ kinh nguyệt
+​ N95: Rối loạn mãn kinh và rối loạn tiền mãn kinh
+​ N96: Hay sảy thai
+​ N97: Vô sinh nữ
+​ N98: Biến chứng liên quan đến thụ thai nhân tạo
+​ N99: Các rối loạn sau phẫu thuật, thủ thuật của hệ sinh dục tiết niệu, không phân loại nơi khác
+​ O00: thai ngoài tử cung
+​ O01: thai trứng
+​ O02: Bất thường khác của trứng
+​ O03: Sảy thai tự nhiên
+​ O04: Phá thai nội khoa
+​ O05: Phá thai khác
+​ O06: Phá thai không xác định
+​ O07: Phá thai thất bại
+​ O08: Biến chứng sau sảy thai, thai ngoài tử cung và thai trứng
+​ O10: Tăng huyết áp có sẵn gây biến chứng cho thai kỳ, cuộc đẻ và sau khi đẻ
+​ O11: Tiền sản giật kèm theo tăng huyết áp mạn tính
+​ O12: Phù khi thai kỳ (do thai kỳ gây ra) và protein niệu mà không có tăng huyết áp
+​ O13: Tăng huyết áp thai kỳ (do thai kỳ gây ra)
+​ O14: Tiền sản giật
+​ O15: Sản giật
+​ O16: Tăng huyết áp bà mẹ không xác định
+​ O20: Ra máu trong thời kỳ đầu thai kỳ
+​ O21: Nôn quá mức trong lúc có thai
+​ O22: Biến chứng tĩnh mạch và trĩ trong khi có thai
+​ O23: Nhiễm trùng đường tiết niệu - sinh dục trong khi có thai
+​ O24: Đái tháo đường trong khi có thai
+​ O25: Thiếu dinh dưỡng khi có thai
+​ O26: Chăm sóc bà mẹ vì những tình trạng khác chủ yếu liên quan đến thai kỳ
+​ O28: Các dấu hiệu bất thường của bà mẹ phát hiện khi khám thai
+​ O29: Các biến chứng của gây mê trong thời gian thai kỳ
+​ O30: Đa thai
+​ O31: Biến chứng xác định của đa thai
+​ O32: Chăm sóc bà mẹ vì ngôi thai bất thường hay nghi ngờ bất thường
+​ O33: Chăm sóc bà mẹ vì bất tương xứng hay nghi ngờ có bất tương xứng
+​ O34: Chăm sóc bà mẹ do hoặc nghi do do bất thường ở các tạng trong chậu hông
+​ O35: Chăm sóc bà mẹ vì các bất thường, tổn thương của thai hay nghi ngờ
+​ O36: Chăm sóc bà mẹ vì có hay nghi ngờ có vấn đề của thai
+​ O40: Đa ối
+​ O41: Các rối loạn khác của nước ối và màng ối
+​ O42: Vỡ ối sớm
+​ O43: Bệnh lý bánh rau
+​ O44: Rau tiền đạo
+​ O45: Rau bong non
+​ O46: Chảy máu trước đẻ, không phân loại nơi khác
+​ O47: Chuyển dạ giả
+​ O48: Thai quá ngày sinh
+​ O60: Chuyển dạ sớm và đẻ
+​ O61: Khởi phát chuyển dạ thất bại
+​ O62: Bất thường về động lực chuyển dạ
+​ O63: Chuyển dạ kéo dài
+​ O64: Chuyển dạ đình trệ do ngôi và thế của thai bất thường
+​ O65: Chuyển dạ đình trệ do khung chậu bất thường
+​ O66: Chuyển dạ đình trệ khác
+​ O67: Chuyển dạ và đẻ có biến chứng chảy máu trong đẻ, không phân loại nơi khác
+​ O68: Chuyển dạ và đẻ có biến chứng suy thai
+​ O69: Chuyển dạ và đẻ có biến chứng dây rốn
+VM13083:1 O70: Rách tầng sinh môn trong đẻ
+VM13083:1 O71: Chấn thương sản khoa khác
+VM13083:1 O72: Chảy máu sau đẻ
+VM13083:1 O73: Sót rau và màng rau không có chảy máu
+VM13083:1 O74: Biến chứng của gây mê trong chuyển dạ và trong đẻ
+VM13083:1 O75: Biến chứng khác của chuyển dạ, không phân loại nơi khác
+VM13083:1 O80: Đẻ thường một thai
+VM13083:1 O81: Đẻ một thai bằng forcep hay giác hút
+VM13083:1 O82: Mổ lấy thai cho một thai
+VM13083:1 O83: Đẻ một thai với thủ thuật khác
+VM13083:1 O84: Đẻ nhiều thai
+VM13083:1 O85: Nhiễm trùng huyết sau đẻ
+VM13083:1 O86: Nhiễm trùng sau đẻ khác
+VM13083:1 O87: Biến chứng tĩnh mạch và trĩ trong thời gian sau đẻ
+VM13083:1 O88: Tắc mạch sản khoa
+VM13083:1 O89: Biến chứng của gây mê trong thời kỳ sau đẻ
+VM13083:1 O90: Biến chứng sau đẻ, không phân loại nơi khác
+VM13083:1 O91: Nhiễm trùng vú liên quan đến đẻ
+VM13083:1 O92: Các rối loạn khác của vú và tiết sữa phối hợp với đẻ
+VM13083:1 O94: Di chứng của biến chứng do thai kỳ, sinh đẻ và sau đẻ
+VM13083:1 O95: Tử vong sản khoa vì nguyên nhân không xác định
+VM13083:1 O96: Tử vong vì bất kỳ nguyên nhân sản khoa nào khác sau khi đẻ 42 ngày và dưới 1 năm
+VM13083:1 O97: Tử vong vì di chứng của nguyên nhân sản khoa
+VM13083:1 O98: Nhiễm khuẩn bà mẹ và bệnh ký sinh trùng đã phân loại nơi khác nhưng gây biến chứng cho thai kỳ, khi đẻ và sau khi đẻ
+VM13083:1 O99: Các bệnh khác của bà mẹ đã phân loại nơi khác nhưng gây biến chứng cho thai kỳ, khi đẻ và sau khi đẻ
+VM13083:1 P00: Thai nhi và trẻ sơ sinh bị ảnh hưởng do các yếu tố của mẹ có thể không liên quan đến lần thai kỳ hiện nay
+VM13083:1 P01: Thai nhi và trẻ sơ sinh bị ảnh hưởng do biến chứng thai kỳ của mẹ
+VM13083:1 P02: Thai nhi và trẻ sơ sinh bị ảnh hưởng do các biến chứng của bánh rau, dây rốn và các màng thai
+VM13083:1 P03: Thai nhi và trẻ sơ sinh bị ảnh hưởng do các biến chứng của chuyển dạ và cuộc đẻ
+VM13083:1 P04: Thai nhi và trẻ sơ sinh bị ảnh hưởng do độc tố truyền qua bánh rau hoặc qua sữa mẹ
+VM13083:1 P05: Thai nhi chậm phát triển và thai suy dinh dưỡng
+VM13083:1 P07: Các rối loạn liên quan đến đẻ non và nhẹ cân lúc đẻ, không phân loại nơi khác
+VM13083:1 P08: Rối loạn liên quan đến thai già tháng và trẻ nặng cân
+VM13083:1 P10: Rách, vỡ và chảy máu nội sọ do chấn thương khi sinh
+VM13083:1 P11: Các chấn thương hệ thần kinh trung ương khi sinh
+VM13083:1 P12: Chấn thương da đầu khi sinh
+VM13083:1 P13: Chấn thương hệ xương khi sinh
+VM13083:1 P14: Chấn thương hệ thần kinh ngoại vi khi sinh
+VM13083:1 P15: Chấn thương khác khi sinh
+VM13083:1 P20: Thiếu oxy trong tử cung
+VM13083:1 P21: Ngạt khi sinh
+VM13083:1 P22: Suy hô hấp của trẻ sơ sinh
+VM13083:1 P23: Viêm phổi bẩm sinh
+VM13083:1 P24: Các hội chứng hít của trẻ sơ sinh
+VM13083:1 P25: Tràn khí tổ chức kẽ phổi và các bệnh lý liên quan xuất phát trong thời kỳ chu sinh
+VM13083:1 P26: Chảy máu phổi chu sinh
+VM13083:1 P27: Bệnh hô hấp mạn tính xuất phát từ giai đoạn chu sinh
+​ P28: Các bệnh lý hô hấp khác xuất phát từ giai đoạn chu sinh
+​ P29: Rối loạn tim mạch xuất phát từ thời kỳ chu sinh
+​ P35: Bệnh nhiễm virus bẩm sinh
+​ P36: Nhiễm khuẩn huyết của trẻ sơ sinh
+​ P37: Bệnh nhiễm trùng và ký sinh trùng bẩm sinh khác
+​ P38: Viêm rốn trẻ sơ sinh có hoặc không có chảy máu mức độ nhẹ
+​ P39: Nhiễm khuẩn đặc hiệu khác trong thời kỳ chu sinh
+​ P50: Mất máu thai
+​ P51: Chảy máu rốn của trẻ sơ sinh
+​ P52: Chảy máu nội sọ không do chấn thương của thai nhi và trẻ sơ sinh
+​ P53: Bệnh chảy máu của thai nhi và trẻ sơ sinh
+​ P54: Các chảy máu sơ sinh khác
+​ P55: Bệnh huyết tán của bào thai và trẻ sơ sinh
+​ P56: Phù thai do bệnh huyết tán
+​ P57: Vàng da nhân xám
+​ P58: Vàng da sơ sinh do huyết tán quá mức
+​ P59: Vàng da sơ sinh do các nguyên nhân khác và nguyên nhân không được định rõ
+​ P60: Đông máu rải rác trong lòng mạch của thai và trẻ sơ sinh
+​ P61: Các rối loạn huyết học chu sinh khác
+​ P70: Các rối loạn chuyển hoá carbon hydrat thoáng qua đặc hiệu với thai và trẻ sơ sinh
+​ P71: Các rối loạn chuyển hoá calci và magie thoáng qua của sơ sinh
+​ P72: Các rối loạn nội tiết tạm thời khác của trẻ sơ sinh
+​ P74: Các rối loạn chuyển hoá và điện giải tạm thời khác của trẻ sơ sinh
+​ P75: Tắc ruột phân xu trong bệnh xơ nang
+​ P76: Tắc ruột non khác của trẻ sơ sinh
+​ P77: Viêm ruột hoại tử của thai và trẻ sơ sinh
+​ P78: Các rối loạn khác của hệ tiêu hoá trong giai đoạn chu sinh
+​ P80: Hạ thân nhiệt của trẻ sơ sinh
+​ P81: Các rối loạn điều nhiệt khác của trẻ sơ sinh
+​ P83: Các bệnh lý khác của da đặc hiệu cho thai và trẻ sơ sinh
+​ P90: Cơn co giật của trẻ sơ sinh
+​ P91: Rối loạn khác của tình trạng não trẻ sơ sinh
+​ P92: Vấn đề nuôi dưỡng sơ sinh
+​ P93: Phản ứng và nhiễm độc thuốc dùng cho thai và trẻ sơ sinh
+​ P94: Rối loạn trương lực cơ của trẻ sơ sinh
+​ P95: Thai chết vì nguyên nhân không được định rõ
+​ P96: Các bệnh lý khác xuất phát trong giai đoạn chu sinh
+​ Q00: Dị tật không não và các dị tật tương tự
+​ Q01: Thoát vị não
+​ Q02: Tật đầu nhỏ
+​ Q03: Não úng thuỷ bẩm sinh
+​ Q04: Dị tật bẩm sinh khác của não
+​ Q05: Nứt đốt sống
+​ Q06: Các dị tật bẩm sinh khác của tuỷ sống
+​ Q07: Dị tật bẩm sinh khác của hệ thần kinh
+​ Q10: Các dị tật bẩm sinh của mi mắt, ổ mắt và bộ máy bài tiết nước mắt
+​ Q11: Các dị tật không có mắt, mắt bé, mắt to
+​ Q12: Các dị tật bẩm sinh của thuỷ tinh thể
+​ Q13: Dị tật bẩm sinh phần trước mắt
+​ Q14: Các dị tật bẩm sinh phần sau của mắt
+​ Q15: Các dị tật bẩm sinh khác của mắt
+​ Q16: Các dị tật ở tai gây ảnh hưởng tới thính lực
+​ Q17: Các dị tật bẩm sinh khác ở tai
+​ Q18: Các dị tật bẩm sinh khác của mặt và cổ
+​ Q20: Các dị tật bẩm sinh của các buồng tim và bộ phận nối
+​ Q21: Các dị tật bẩm sinh của vách tim
+​ Q22: Các dị tật bẩm sinh của van ba lá và động mạch phổi
+​ Q23: Các dị tật bẩm sinh của van hai lá và động mạch chủ
+​ Q24: Các dị tật bẩm sinh khác của tim
+​ Q25: Các dị tật bẩm sinh của các động mạch lớn
+​ Q26: Các dị tật bẩm sinh của các tĩnh mạch lớn
+​ Q27: Các dị tật bẩm sinh khác của hệ thống mạch máu ngoại biên
+​ Q28: Các dị tật bẩm sinh khác của hệ thống tuần hoàn
+​ Q30: Các bất thường-bẩm sinh ở mũi
+​ Q31: Các bất thường bẩm sinh của thanh quản
+​ Q32: Các bất thường bẩm sinh ở khí quản và phế quản
+VM13083:1 Q33: Các dị tật bẩm sinh của phổi
+VM13083:1 Q34: Các bất thường bẩm sinh khác của bộ máy hô hấp
+VM13083:1 Q35: Khe hở vòm miệng
+VM13083:1 Q36: Khe hở môi
+VM13083:1 Q37: Khe hở vòm miệng cùng với khe hở môi
+VM13083:1 Q38: Các dị tật bẩm sinh khác của lưỡi, miệng và họng
+VM13083:1 Q39: Các dị tật bẩm sinh của thực quản
+VM13083:1 Q40: Các dị tật bẩm sinh khác của đường tiêu hoá trên
+VM13083:1 Q41: Không có, teo và hẹp bẩm sinh tiểu tràng
+VM13083:1 Q42: Không có, teo và hẹp bẩm sinh đại tràng
+VM13083:1 Q43: Các dị tật bẩm sinh khác của ruột
+VM13083:1 Q44: Các dị tật bẩm sinh của túi mật, đường mật và gan
+VM13083:1 Q45: Các dị tật bẩm sinh khác của hệ tiêu hoá
+VM13083:1 Q50: Những dị tật bẩm sinh của buồng trứng, vòi trứng và dây chằng rộng
+VM13083:1 Q51: Dị tật bẩm sinh của tử cung và cổ tử cung
+VM13083:1 Q52: Các dị tật bẩm sinh khác của cơ quan sinh dục nữ
+VM13083:1 Q53: Tinh hoàn lạc chỗ
+VM13083:1 Q54: Lỗ đái lệnh thấp
+VM13083:1 Q55: Các dị tật bẩm sinh khác của cơ quan sinh dục nam
+VM13083:1 Q56: Không xác định giới tính và hội chứng giả lưỡng giới
+VM13083:1 Q60: Không có thận và các Khuyết tật khác của thận
+VM13083:1 Q61: Các bệnh nang thận
+VM13083:1 Q62: Các bệnh lý tắc bẩm sinh của bể thận và các dị tật bẩm sinh của niệu quản
+VM13083:1 Q63: Các dị tật bẩm sinh khác của thận
+VM13083:1 Q64: Các dị tật bẩm sinh khác của hệ tiết niệu
+VM13083:1 Q65: Biến dạng bẩm sinh của khớp háng
+VM13083:1 Q66: Các biến dạng bẩm sinh của bàn chân
+VM13083:1 Q67: Các biến dạng cơ xương bẩm sinh của đầu, mặt, cột sống và ngực
+VM13083:1 Q68: Các biến dạng cơ xương bẩm sinh khác
+VM13083:1 Q69: Tật đa ngón
+VM13083:1 Q70: Tật dính ngón
+VM13083:1 Q71: Các Khuyết tật thiếu hụt của chi trên
+VM13083:1 Q72: Các Khuyết tật thiếu hụt của chi dưới
+VM13083:1 Q73: Các Khuyết tật thiếu hụt của chi không đặc hiệu
+VM13083:1 Q74: Các dị tật bẩm sinh khác của chi
+VM13083:1 Q75: Các dị tật bẩm sinh khác của xương sọ và xương mặt
+VM13083:1 Q76: Các dị tật bẩm sinh của xương sống và xương lồng ngực
+VM13083:1 Q77: Loạn sản xương sụn với các Khuyết tật trưởng thành của các xương ống và cột sống
+VM13083:1 Q78: Các loạn sản xương sụn khác
+VM13083:1 Q79: Các dị tật bẩm sinh của hệ cơ xương, không phân loại nơi khác
+VM13083:1 Q80: Bệnh vảy cá bẩm sinh
+VM13083:1 Q81: Bong biểu bì bọng nước
+VM13083:1 Q82: Dị tật bẩm sinh khác về da
+VM13083:1 Q83: Dị tật bẩm sinh của vú
+VM13083:1 Q84: Dị tật bẩm sinh khác của bộ phận bao bọc
+VM13083:1 Q85: Hội chứng u thần kinh - da ngoại bì, không phân loại nơi khác
+VM13083:1 Q86: Các hội chứng dị tật bẩm sinh do những nguyên nhân bên ngoài đã biết, không phân loại nơi khác
+​ Q87: Các hội chứng dị tật bẩm sinh khác gây tổn thương nhiều hệ thống
+​ Q89: Các dị tật bẩm sinh khác, chưa phân loại
+​ Q90: Hội chứng Down
+​ Q91: Hội chứng Edwards và hội chứng Patau
+​ Q92: Ba nhiễm sắc thể và một phần ba nhiễm sắc thể khác của nhiễm sắc thể thường, không phân loại nơi khác
+​ Q93: Đơn nhiễm sắc thể và thiếu một đoạn của nhiễm sắc thể thường, không phân loại nơi khác
+​ Q95: Sắp xếp lại cân bằng và dấu ấn cấu trúc, không phân loại nơi khác
+​ Q96: Hội chứng Turner
+​ Q97: Bất thường nhiễm sắc thể giới tính khác, kiểu hình nữ, không phân loại nơi khác
+​ Q98: Bất thường nhiễm sắc thể giới tính khác, kiểu hình nam, không phân loại nơi khác
+​ Q99: Bất thường nhiễm sắc thể khác, không phân loại nơi khác
+​ R00: Bất thường của nhịp tim
+​ R01: Tiếng thổi tim và các tiếng tim khác
+​ R02: Hoại tử, không phân loại nơi khác
+​ R03: Bất thường số đo huyết áp, không có chẩn đoán
+​ R04: Chảy máu đường hô hấp
+​ R05: Ho
+​ R06: Bất thường về thở
+​ R07: Đau họng và ngực
+​ R09: Triệu chứng và dấu hiệu khác liên quan tới hệ tuần hoàn và hô hấp
+​ R10: Đau bụng và vùng chậu
+​ R11: Buồn nôn và nôn
+​ R12: Nóng rát ngực
+​ R13: Khó nuốt
+​ R14: Đầy hơi và các tình trạng liên quan
+​ R15: Đại tiện mất tự chủ
+​ R16: Gan to và lá lách to, không phân loại nơi khác
+​ R17: Vàng da không xác định
+​ R18: Cổ chướng
+​ R19: Triệu chứng và dấu hiệu khác liên quan tới hệ tiêu hoá và bụng
+​ R20: Rối loạn cảm giác da
+​ R21: Ban và phát ban không đặc hiệu
+​ R22: Sưng cục bộ, khối cục ở da và tổ chức dưới da
+​ R23: Các thay đổi khác của da
+​ R25: Vận động không tự chủ bất thường
+​ R26: Bất thường dáng đi và chuyển động
+​ R27: Thiếu phối hợp khác
+​ R29: Triệu chứng và dấu hiệu khác liên quan tới hệ thần kinh và cơ xương
+​ R30: Đau liên quan với tiểu tiện
+​ R31: Đái máu không xác định
+​ R32: Tiểu tiện mất tự chủ không xác định
+​ R33: Bí đái
+​ R34: Vô niệu và thiểu niệu
+​ R35: Đa niệu
+​ R36: Chất tiết niệu đạo
+​ R39: Triệu chứng và dấu hiệu khác liên quan tới hệ tiết niệu
+​ R40: Buồn ngủ, lơ mơ và hôn mê
+​ R41: Triệu chứng và dấu hiệu khác liên quan đến chức năng nhận thức và tri giác
+​ R42: Hoa mắt và chóng mặt
+​ R43: Rối loạn về mùi và vị
+​ R44: Triệu chứng và dấu hiệu khác về cảm giác và tri giác tổng quát
+​ R45: Triệu chứng và dấu hiệu về trạng thái cảm xúc
+​ R46: Triệu chứng cơ năng và thực thể khác liên quan đến hình dáng và hành vi
+​ R47: Rối loạn lời nói, không phân loại nơi khác
+​ R48: Rối loạn khả năng đọc và các rối loạn khác không phân loại nơi khác
+​ R49: Rối loạn giọng nói
+​ R50: Sốt không rõ nguyên nhân và khác
+​ R51: Đau đầu
+​ R52: Đau không phân loại nơi khác
+​ R53: Khó ở và mệt mỏi
+​ R54: Suy yếu do tuổi già
+​ R55: Ngắt và ngã quỵ
+​ R56: Co giật, không phân loại nơi khác
+​ R57: Sốc không phân loại nơi khác
+​ R58: Chảy máu không phân loại nơi khác
+​ R59: Hạch bạch huyết to
+​ R60: Phù, không phân loại nơi khác
+​ R61: Tăng tiết mồ hôi
+​ R62: Phát triển sinh lý không bình thường như mong muốn
+​ R63: Triệu chứng và dấu hiệu liên quan tới thực phẩm và dịch đưa vào cơ thể
+​ R64: Suy mòn
+​ R65: Hội chứng đáp ứng viêm hệ thống
+​ R68: Triệu chứng và dấu hiệu toàn thể khác
+​ R69: Nguyên nhân mắc bệnh không đặc hiệu và không rõ
+​ R70: Độ lắng hồng cầu và bất thường độ nhớt huyết tương
+​ R71: Bất thường về hồng cầu
+​ R72: Bất thường về bạch cầu, không phân loại nơi khác
+​ R73: Tăng nồng độ Glucoza máu
+​ R74: Bất thường nồng độ enzym huyết thanh
+​ R75: Biểu hiện cận lâm sàng của virus gây suy giảm miễn dịch ở người (HIV)
+VM13083:1 R76: Các phát hiện bất thường khác về miễn dịch trong huyết thanh
+VM13083:1 R77: Bất thường khác về protein huyết tương
+VM13083:1 R78: Phát hiện các loại thuốc và các chất khác không thường có trong máu
+VM13083:1 R79: Các phát hiện sinh hoá máu bất thường khác
+VM13083:1 R80: Protein niệu riêng lẻ
+VM13083:1 R81: Glucose niệu
+VM13083:1 R82: Các phát hiện bất thường khác về nước tiểu
+VM13083:1 R83: Các phát hiện bất thường về dịch não tuỷ
+VM13083:1 R84: Các phát hiện bất thường trong mẫu bệnh phẩm từ cơ quan hô hấp và lồng ngực
+VM13083:1 R85: Các phát hiện bất thường trong mẫu bệnh phẩm từ cơ quan tiêu hoá và ổ bụng
+VM13083:1 R86: Các phát hiện bất thường trong mẫu vật của cơ quan sinh dục nam
+VM13083:1 R87: Các phát hiện bất thường trong mẫu vật của cơ quan sinh dục nữ
+VM13083:1 R89: Các phát hiện bất thường trong mẫu vật của các cơ quan, hệ thống và mô khác
+VM13083:1 R90: Các phát hiện bất thường về chẩn đoán hình ảnh của hệ thần kinh trung ương
+VM13083:1 R91: Các phát hiện bất thường về chẩn đoán hình ảnh của phổi không xác định
+VM13083:1 R92: Các phát hiện bất thường về chẩn đoán hình ảnh của ngực
+VM13083:1 R93: Các phát hiện bất thường về chẩn đoán hình ảnh của các cơ quan khác
+VM13083:1 R94: Kết quả bất thường về thăm dò chức năng
+VM13083:1 R95: Hội chứng đột tử trẻ em
+VM13083:1 R96: Đột tử khác không rõ nguyên nhân
+VM13083:1 R98: Tử vong không ai biết
+VM13083:1 R99: Nguyên nhân tử vong không xác định khác và bệnh xác định không đặc hiệu khác
+VM13083:1 S00: Tổn thương nông ở đầu
+VM13083:1 S01: Vết thương hở ở đầu
+VM13083:1 S02: Vỡ xương sọ và gãy xương mặt
+VM13083:1 S03: Sai khớp, bong gân và căng cơ của khớp và các dây chằng của đầu
+VM13083:1 S04: Tổn thương dây thần kinh sọ
+VM13083:1 S05: Tổn thương mắt và ổ mắt
+VM13083:1 S06: Tổn thương nội sọ
+VM13083:1 S07: Tổn thương giập nát của đầu
+VM13083:1 S08: Chấn thương đứt lìa phần của đầu
+VM13083:1 S09: Tổn thương khác và không đặc hiệu của đầu
+VM13083:1 S10: Tổn thương nông của cổ
+VM13083:1 S11: Vết thương hở của cổ
+VM13083:1 S12: Gãy cổ
+VM13083:1 S13: Sai khớp, bong gân và căng cơ quá mức của khớp và các dây chằng thuộc vùng cổ-
+VM13083:1 S14: Tổn thương dây thần kinh và tuỷ sống (đoạn) cổ
+VM13083:1 S15: Tổn thương mạch máu vùng cổ
+VM13083:1 S16: Tổn thương cơ và gân vùng cổ
+VM13083:1 S17: Tổn thương giập nát của cổ
+VM13083:1 S18: Chấn thương đứt lìa vùng cổ
+VM13083:1 S19: Tổn thương không xác định khác ở cổ
+VM13083:1 S20: Tổn thương của lồng ngực
+VM13083:1 S21: Vết thương hở của ngực
+VM13083:1 S22: Gãy xương sườn, xương ức và gai sống ngực
+VM13083:1 S23: Sai khớp, bong gân và căng cơ quá mức của khớp và dây chằng của ngực
+VM13083:1 S24: Tổn thương dây thần kinh và tuỷ sống (vùng) ngực
+​ S25: Tổn thương mạch máu của ngực
+​ S26: Tổn thương tim
+​ S27: Tổn thương của các cơ quan không đặc hiệu và khác trong lồng ngực
+​ S28: Tổn thương giập nát của ngực và Chấn thương đứt lìa phần của ngực
+​ S29: Tổn thương không đặc hiệu và khác của ngực
+​ S30: Tổn thương nông của bụng, lưng dưới và chậu hông
+​ S31: Vết thương hở của bụng, lưng dưới và chậu hông
+​ S32: Gãy cột sống thắt lưng và chậu hông
+​ S33: Sai khớp, bong gân và giãn khớp và dây chằng cột sống thắt lưng và chậu
+​ S34: Tổn thương dây thần kinh và dây sống tại bụng, lưng và chậu hông
+​ S35: Tổn thương mạch máu vùng bụng, lưng và chậu
+​ S36: Tổn thương các cơ quan trong ổ bụng
+​ S37: Tổn thương của hệ tiết niệu và cơ quan ở chậu hông
+​ S38: Tổn thương giập nát và chấn thương đứt lìa phần của bụng, lưng dưới và chậu
+​ S39: Tổn thương không xác định khác và khác của bụng, lưng dưới và chậu
+​ S40: Vết thương nông của vai và cánh tay
+​ S41: Vết thương hở của vai và cánh tay
+​ S42: Gãy xương vai và xương cánh tay
+​ S43: Sai khớp, bong gân và giãn khớp và dây chằng của vòng ngực
+​ S44: Vết thương dây thần kinh tại vai và cánh tay trên
+​ S45: Vết thương mạch máu tại vai cánh tay trên
+​ S46: Vết thương cơ và gân tại vai và cánh tay trên
+​ S47: Tổn thương giập nát vai và cánh tay trên
+​ S48: Chấn thương đứt lìa vai và cánh tay trên
+​ S49: Tổn thương khác và không xác định ở vai và cánh tay trên
+​ S50: Tổn thương nông ở cẳng tay
+​ S51: Vết thương hở ở cẳng tay
+​ S52: Gãy xương ở cẳng tay
+​ S53: Sai khớp, bong gân và căng cơ của khớp và dây chằng khuỷu tay
+​ S54: Tổn thương dây thần kinh cẳng tay
+​ S55: Tổn thương mạch máu ở tầm cẳng tay
+​ S56: Tổn thương cơ bắp và gân ở tầm cẳng tay
+​ S57: Tổn thương giập nát ở cẳng tay
+​ S58: Chấn thương đứt lìa ở cẳng tay
+​ S59: Tổn thương khác và không xác định của cẳng tay
+VM13083:1 S60: Tổn thương nông ở cổ tay và bàn tay
+VM13083:1 S61: Vết thương hở ở cổ tay và bàn tay
+VM13083:1 S62: Gãy xương tầm cổ tay và bàn tay
+VM13083:1 S63: Sai khớp, bong gân và căng cơ của khớp và dây chằng tầm cổ tay và bàn tay
+VM13083:1 S64: Tổn thương dây thần kinh tầm cổ tay và bàn tay
+VM13083:1 S65: Tổn thương mạch máu tại tầm cổ tay và bàn tay
+VM13083:1 S66: Tổn thương cơ bắp và gân tại tầm cổ tay và bàn tay
+VM13083:1 S67: Tổn thương giập nát cổ tay và bàn tay
+VM13083:1 S68: Chấn thương đứt lìa cổ tay và bàn tay
+VM13083:1 S69: Tổn thương khác và không xác định của cổ tay và bàn tay
+VM13083:1 S70: Tổn thương nông tại háng và đùi
+VM13083:1 S71: Vết thương hở tại háng và đùi
+VM13083:1 S72: Gãy xương đùi
+VM13083:1 S73: Sai khớp, bong gân và căng cơ khớp và dây chằng háng
+VM13083:1 S74: Tổn thương dây thần kinh tầm háng và đùi
+VM13083:1 S75: Tổn thương mạch máu tại tầm háng và đùi
+VM13083:1 S76: Tổn thương cơ bắp và gân tại tầm háng và đùi
+VM13083:1 S77: Chấn thương giập nát háng và đùi
+VM13083:1 S78: Chấn thương đứt lìa ở háng và đùi
+VM13083:1 S79: Tổn thương khác không xác định của háng và đùi
+VM13083:1 S80: Tổn thương nông tại cẳng chân
+VM13083:1 S81: Vết thương hở tại cẳng chân
+VM13083:1 S82: Gãy xương cẳng chân, bao gồm cổ chân
+VM13083:1 S83: Sai khớp, bong gân và căng cơ khớp và dây chằng đầu gối
+VM13083:1 S84: Tổn thương dây thần kinh tại tầm cẳng chân
+VM13083:1 S85: Tổn thương mạch máu tại tầm cẳng chân
+VM13083:1 S86: Tổn thương cơ bắp và gân tại tầm cẳng chân
+VM13083:1 S87: Tổn thương giập nát tại cẳng chân
+VM13083:1 S88: Chấn thương đứt lìa ở cẳng chân
+VM13083:1 S89: Tổn thương khác và không xác định tại cẳng chân
+VM13083:1 S90: Tổn thương nông tại cổ chân và bàn chân
+VM13083:1 S91: Vết thương hở tại cổ chân và bàn chân
+VM13083:1 S92: Gãy xương bàn chân, trừ cổ chân
+VM13083:1 S93: Sai khớp, bong gân, căng cơ khớp và dây chằng tại tầm cẳng chân và bàn chân
+VM13083:1 S94: Tổn thương dây thần kinh tại tầm cổ chân và bàn chân
+VM13083:1 S95: Tổn thương mạch máu tại tầm cổ chân và bàn chân
+VM13083:1 S96: Tổn thương cơ bắp và gân tại tầm cổ chân và bàn chân
+VM13083:1 S97: Tổn thương giập nát tại cổ chân và bàn chân
+VM13083:1 S98: Chấn thương đứt lìa cổ chân và bàn chân
+VM13083:1 S99: Tổn thương khác và không xác định của cổ chân và bàn chân
+VM13083:1 T00: Tổn thương nông liên quan nhiều vùng cơ thể
+VM13083:1 T01: Vết thương hở liên quan nhiều vùng cơ thể
+VM13083:1 T02: Gãy xương liên quan nhiều vùng cơ thể
+VM13083:1 T03: Sai khớp, bong gân, căng cơ liên quan của nhiều vùng cơ thể
+VM13083:1 T04: Tổn thương giập nát liên quan nhiều vùng cơ thể
+VM13083:1 T05: Chấn thương đứt lìa tác động nhiều vùng cơ thể
+VM13083:1 T06: Tổn thương khác tác động nhiều vùng cơ thể, không phân loại nơi khác
+​ T07: Đa tổn thương không xác định
+​ T08: Gãy cột sống, mức độ không xác định
+VM13083:1 T09: Tổn thương khác của cột sống và thân, tầm không xác định
+VM13083:1 T10: Gãy xương của chi trên, tầm không xác định
+VM13083:1 T11: Tổn thương khác tại chi trên, tầm không xác định
+VM13083:1 T12: Gãy xương chi dưới, tầm không xác định
+VM13083:1 T13: Tổn thương khác chi dưới, tầm không xác định
+VM13083:1 T14: Tổn thương không xác định vùng cơ thể
+VM13083:1 T15: Dị vật ở mắt ngoài
+VM13083:1 T16: Dị vật ở tai
+VM13083:1 T17: Dị vật trong đường hô hấp
+VM13083:1 T18: Dị vật trong đường tiêu hoá
+VM13083:1 T19: Dị vật trong đường tiết niệu sinh dục
+VM13083:1 T20-T25: Bỏng và ăn mòn mặt ngoài cơ thể, xác định theo vị trí
+VM13083:1 T26-T28: Bỏng và ăn mòn giới hạn tại mắt và các nội tạng
+VM13083:1 T29-T32: Bỏng và ăn mòn nhiều vùng cơ thể và không xác định
+VM13083:1 T33: Tổn thương nông do cóng lạnh
+VM13083:1 T34: Tổn thương do cóng lạnh với hoại tử mô
+VM13083:1 T35: Tổn thương do cóng lạnh tác động nhiều vùng cơ thể và không xác định
+VM13083:1 T36: Ngộ độc do dùng kháng sinh toàn thân
+VM13083:1 T37: Ngộ độc do chất chống nhiễm trùng và chống ký sinh trùng khác dùng toàn thân
+VM13083:1 T38: Ngộ độc do nội tiết và chất tổng hợp thay thế và chất đối kháng, không phân loại nơi khác
+VM13083:1 T39: Ngộ độc do thuốc giảm đau không opioid, hạ nhiệt và chống thấp khớp
+VM13083:1 T40: Ngộ độc chất gây nghiện và thuốc hưng thần (thuốc gây ảo giác)
+VM13083:1 T41: Ngộ độc do gây tê và khí trị liệu
+VM13083:1 T42: Ngộ độc do thuốc động kinh, an thần- gây ngủ và chống hội chứng Parkison
+VM13083:1 T43: Ngộ độc do thuốc hướng tâm thần, không phân loại nơi khác
+VM13083:1 T44: Ngộ độc do thuốc tác động chủ yếu hệ thần kinh tự động
+VM13083:1 T45: Ngộ độc do thuốc chủ yếu toàn thân và huyết học, không phân loại nơi khác
+VM13083:1 T46: Ngộ độc do thuốc tác động chủ yếu hệ thống tim mạch
+VM13083:1 T47: Ngộ độc do thuốc tác động chủ yếu trên hệ thống tiêu hoá
+VM13083:1 T48: Ngộ độc do thuốc tác động chủ yếu trên cơ trơn và cơ xương và hệ thống hô hấp
+VM13083:1 T49: Ngộ độc do thuốc dùng tại chỗ tác động chủ yếu trên da và niêm mạc và do thuốc dùng chữa mắt, tai và răng
+VM13083:1 T50: Ngộ độc do thuốc lợi tiểu và thuốc khác, không xác định, thuốc và chất sinh học
+VM13083:1 T51: Ngộ độc cồn
+VM13083:1 T52: Ngộ độc dung môi hữu cơ
+VM13083:1 T53: Ngộ độc dẫn xuất halogen của hydrocarbon béo và thơm
+VM13083:1 T54: Ngộ độc chất ăn mòn
+VM13083:1 T55: Tác dụng độc của xà phòng và chất giặt tẩy
+VM13083:1 T56: Ngộ độc kim loại
+VM13083:1 T57: Ngộ độc chất vô cơ
+VM13083:1 T58: Ngộ độc carbon monoxide
+VM13083:1 T59: Ngộ độc khí khác, khói và hơi
+VM13083:1 T60: Ngộ độc thuốc trừ sâu
+VM13083:1 T61: Ngộ độc các chất độc do ăn đồ biển
+VM13083:1 T62: Ngộ độc chất độc do ăn thực phẩm
+VM13083:1 T63: Ngộ độc do tiếp xúc với động vật tiết nọc độc
+VM13083:1 T64: Ngộ độc do thực phẩm nhiễm aflatoxin và độc tố nấm khác
+VM13083:1 T65: Ngộ độc do chất khác và không xác định
+VM13083:1 T66: Tác dụng không xác định của tia xạ
+VM13083:1 T67: Tác dụng do nhiệt và ánh sáng
+VM13083:1 T68: Hạ nhiệt độ
+VM13083:1 T69: Tác dụng khác của giảm nhiệt độ
+VM13083:1 T70: Tác động của áp lực không khí và áp lực nước
+VM13083:1 T71: Ngạt thở
+VM13083:1 T73: Tác động của các thiếu hụt khác
+VM13083:1 T74: Hội chứng đối xử sai trái
+VM13083:1 T75: Tác động của các nguyên nhân bên ngoài khác
+VM13083:1 T76: Các tác dụng không xác định của nguyên nhân bên ngoài
+VM13083:1 T78: Tác dụng phụ, không phân loại nơi khác
+VM13083:1 T79: Một vài biến chứng sớm của chấn thương, không phân loại nơi khác
+VM13083:1 T80: Biến chứng sau truyền dịch, truyền máu và tiêm thuốc
+VM13083:1 T81: Biến chứng của phẫu thuật, thủ thuật, không phân loại nơi khác
+VM13083:1 T82: Biến chứng các thiết bị nhân tạo của tim và huyết quản, cấy và ghép
+VM13083:1 T83: Biến chứng của thiết bị nhân tạo cơ quan tiết niệu sinh dục, cấy và ghép
+VM13083:1 T84: Biến chứng của thiết bị chỉnh hình bên trong, cấy và ghép
+VM13083:1 T85: Biến chứng của thiết bị nhân tạo bên trong khác, cấy và ghép
+VM13083:1 T86: Thất bại và thải bỏ ghép phủ tạng và tổ chức
+VM13083:1 T87: Các biến chứng đặc biệt do nối lại và cắt cụt
+VM13083:1 T88: Biến chứng khác của phẫu thuật và chăm sóc y tế, không phân loại nơi khác
+VM13083:1 T90: Di chứng tổn thương đầu
+VM13083:1 T91: Di chứng tổn thương cổ và thân mình
+VM13083:1 T92: Di chứng tổn thương chi trên
+VM13083:1 T93: Di chứng tổn thương chi dưới
+VM13083:1 T94: Di chứng tổn thương và không xác định vùng cơ thể
+VM13083:1 T95: Di chứng bỏng, ăn mòn và tổn thương do cóng lạnh
+VM13083:1 T96: Di chứng ngộ độc do thuốc, dược phẩm và chất sinh học
+VM13083:1 T97: Di chứng có tác động độc của chất nguồn chủ yếu không phải dược phẩm
+VM13083:1 T98: Di chứng do tác động khác và không xác định của các nguyên nhân từ bên ngoài
+VM13083:1 V01-V99: Tai nạn giao thông
+VM13083:1 W00-X59: Thương tích vì tai nạn do nguyên nhân bên ngoài khác
+VM13083:1 X60: Cố tình tự đầu độc bằng và phơi nhiễm chất giảm đau hạ sốt và chống thấp khớp không có thuốc phiện
+​ X61: Cố tình tự đầu độc bằng và phơi nhiễm thuốc chống động kinh, an thần - gây ngủ, chống parkinson và thuốc tâm thần, không phân loại nơi khác
+​ X62: Cố tình tự đầu độc bằng và phơi nhiễm thuốc mê và hưng phấn tâm thần (gây hoang tưởng), không phân loại nơi khác
+​ X63: Cố tình tự đầu độc bằng và phơi nhiễm các thuốc khác tác dụng lên hệ thống thần kinh tự động
+VM13083:1 X64: Cố tình tự đầu độc bằng và phơi nhiễm các thuốc và sinh chất không rõ đặc điểm khác
+VM13083:1 X65: Cố tình tự đầu độc bằng và phơi nhiễm với cồn
+VM13083:1 X66: Cố tình tự đầu độc bằng và phơi nhiễm dung môi hữu cơ, hydrocacbon halogen và hơi của chúng
+VM13083:1 X67: Cố tình tự đầu độc bằng và phơi nhiễm các khí và hơi khác
+VM13083:1 X68: Cố tình tự đầu độc bằng và phơi nhiễm chất diệt súc vật
+VM13083:1 X69: Cố tình tự đầu độc bằng và phơi nhiễm các hoá chất và chất có hại khác không rõ đặc điểm
+VM13083:1 X70: Cố tình tự hại bằng treo, làm nghẹt và ngạt thở
+VM13083:1 X71: Cố tình tự hại bằng nhảy xuống nước, trầm mình dưới nước
+VM13083:1 X72: Cố tình tự hại bằng đạn súng ngắn
+VM13083:1 X73: Cố tình tự hại bằng súng trường, súng dài hơn
+VM13083:1 X74: Cố tình tự hại bằng súng khác không rõ đặc điểm
+VM13083:1 X75: Cố tình tự hại bằng chất nổ
+VM13083:1 X76: Cố tình tự hại bằng khói, đám cháy và ngọn lửa
+VM13083:1 X77: Cố tình tự hại bằng hơi nước, hơi nóng và vật nóng
+VM13083:1 X78: Cố tình tự hại bằng vật nhọn
+VM13083:1 X79: Cố tình tự hại bằng vật tầy
+VM13083:1 X80: Cố tình tự hại bằng nhảy từ 1 chỗ cao
+VM13083:1 X81: Cố tình tự hại bằng nhảy hay nằm ra trước vật đang chuyển động
+VM13083:1 X82: Cố tình tự hại bằng đâm xe động cơ
+VM13083:1 X83: Cố tình tự hại bằng các phương tiện khác có biết đặc điểm
+VM13083:1 X84: Cố tình tự hại bằng các phương tiện không rõ đặc điểm
+VM13083:1 X85: Tấn công bằng thuốc, dược chất và chất sinh học
+VM13083:1 X86: Tấn công bằng chất ăn da
+VM13083:1 X87: Tấn công bằng chất diệt côn trùng
+VM13083:1 X88: Tấn công bằng khí và hơi nước
+VM13083:1 X89: Tấn công bằng hoá chất hay chất có hại khác xác định
+VM13083:1 X90: Tấn công bằng hoá chất hay chất có hại không xác định
+VM13083:1 X91: Tấn công bằng treo, làm nghẹt, ngạt thở
+VM13083:1 X92: Tấn công bằng bỏ xuống nước, làm ngập nước
+VM13083:1 X93: Tấn công bằng đạn súng tay
+VM13083:1 X94: Tấn công bằng súng trường, súng ngắn và súng lớn hơn
+VM13083:1 X95: Tấn công bằng súng khác và không xác định
+VM13083:1 X96: Tấn công bằng chất nổ
+VM13083:1 X97: Tấn công bằng khói, đám cháy và ngọn lửa
+VM13083:1 X98: Tấn công bằng hơi nước, hơi nước nóng và vật nóng
+VM13083:1 X99: Tấn công bằng vật nhọn, sắc
+VM13083:1 Y00: Tấn công bằng vật tù
+VM13083:1 Y01: Tấn công bằng đẩy từ chỗ cao
+VM13083:1 Y02: Tấn công bằng đẩy hay đặt nạn nhân trước vật đang chuyển động
+VM13083:1 Y03: Tấn công bằng đâm xe cơ giới
+VM13083:1 Y04: Tấn công bằng sức cơ thể
+VM13083:1 Y05: Tấn công tình dục bằng sức người
+VM13083:1 Y06: Cẩu thả hay bỏ rơi
+VM13083:1 Y07: Các hội chứng hành hạ khác
+VM13083:1 Y08: Tấn công bằng phương tiện khác, biết đặc điểm
+VM13083:1 Y09: Tấn công bằng phương tiện khác và không xác định
+VM13083:1 Y10: Ngộ độc và phơi nhiễm thuốc giảm đau không có thuốc phiện, thuốc hạ sốt và thuốc chống thấp không rõ ý đồ
+VM13083:1 Y11: Ngộ độc và phơi nhiễm thuốc chống động kinh, an thần-gây ngủ, chống parkinson và hướng thần, không phân loại nơi khác và ý đồ không xác định
+VM13083:1 Y12: Ngộ độc và phơi nhiễm chất gây nghiện và thuốc hưng thần (thuốc gây ảo giác), không phân loại nơi khác và ý đồ không xác định
+VM13083:1 Y13: Ngộ độc và phơi nhiễm các thuốc khác tác dụng trên hệ thần kinh tự động không rõ ý đồ
+VM13083:1 Y14: Ngộ độc và phơi nhiễm thuốc , dược chất, sinh chất khác và không xác định, không rõ ý đồ
+VM13083:1 Y15: Ngộ độc và phơi nhiễm rượu, không rõ ý đồ
+VM13083:1 Y16: Ngộ độc và phơi nhiễm chất dung môi hữu cơ và hologenat carbon và các chất hơi của chúng, không rõ ý đồ
+VM13083:1 Y17: Ngộ độc và phơi nhiễm các khí và hơi khác, không rõ ý đồ
+VM13083:1 Y18: Ngộ độc và phơi nhiễm chất diệt côn trùng, không rõ ý đồ
+VM13083:1 Y19: Ngộ độc và phơi nhiễm với hoá chất và chất có hại khác và không xác định, không rõ ý đồ
+VM13083:1 Y20: Treo, làm nghẹt, làm ngạt thở, không rõ ý đồ
+VM13083:1 Y21: Tai nạn đuối nước (chết đuối) và chết ngập nước, không xác định được ý đồ
+VM13083:1 Y22: Đạn súng tay không rõ ý đồ
+VM13083:1 Y23: Đạn súng trường, súng ngắn và súng to hơn không rõ ý đồ
+VM13083:1 Y24: Đạn súng khác và không xác định, không rõ ý đồ
+VM13083:1 Y25: Tiếp xúc chất nổ, không rõ ý đồ
+VM13083:1 Y26: Phơi nhiễm khói, đám cháy và ngọn lửa, không rõ ý đồ
+VM13083:1 Y27: Phơi nhiễm hơi nước, hơi nước nóng và vật nóng, không xác định được ý đồ
+VM13083:1 Y28: Tiếp xúc vật nhọn, sắc, không rõ ý đồ
+VM13083:1 Y29: Tiếp xúc vật tù, không rõ ý đồ
+VM13083:1 Y30: Ngã, nhảy hay bị đẩy từ một chỗ cao, không rõ ý đồ
+VM13083:1 Y31: Ngã, nằm hay chạy trước hay chạy vào vật đang chuyển động, không rõ ý đồ
+VM13083:1 Y32: Bị mô tô cán không rõ ý đồ
+VM13083:1 Y33: Các biến cố khác xác định, không rõ ý đồ
+VM13083:1 Y34: Biến cố không xác định, không rõ ý đồ
+VM13083:1 Y35: Can thiệp pháp lý
+VM13083:1 Y36: Hành động trong chiến tranh
+VM13083:1 Y40-Y59: Thuốc, dược chất và chất sinh học gây tác dụng không mong muốn [ADR] trong khi sử dụng điều trị
+VM13083:1 Y60-Y69: Rủi ro của bệnh nhân trong điều trị nội, ngoại khoa
+VM13083:1 Y70-Y82: Sử dụng dụng cụ y tế gây tai biến trong chẩn đoán và điều trị
+VM13083:1 Y83-Y84: Thủ thuật nội khoa hay phẫu thuật ngoại khoa là nguyên nhân của phản ứng bất thường của bệnh nhân hay biến chứng muộn, mà không đề cập đến rủi ro tại thời điểm làm phẫu thuật, thủ thuật
+VM13083:1 Y85: Di chứng của tai nạn giao thông
+VM13083:1 Y86: Di chứng của các tai nạn khác
+VM13083:1 Y87: Di chứng của cố tình tự hại, tấn công hay biến cố không xác định
+VM13083:1 Y88: Di chứng của chăm sóc ngoại khoa và nội khoa như là nguyên nhân bên ngoài
+VM13083:1 Y89: Di chứng của các nguyên nhân bên ngoài khác
+VM13083:1 Y90: Bằng chứng liên quan đến rượu xác định bằng mức cồn trong máu
+VM13083:1 Y91: Bằng chứng liên quan đến rượu xác định bằng mức độ nhiễm độc
+VM13083:1 Y95: tình trạng bệnh viện
+VM13083:1 Y96: tình trạng liên quan đến lao động
+VM13083:1 Y97: tình trạng liên quan đến ô nhiễm môi trường
+VM13083:1 Y98: tình trạng liên quan đến cách sống
+VM13083:1 Z00: Khám tổng quát và kiểm tra sức khỏe cho những người không có bệnh được chẩn đoán trước đó hoặc không có than phiền về sức khỏe
+VM13083:1 Z01: Khám chuyên khoa và kiểm tra sức khỏe khác cho những người không có bệnh được chẩn đoán trước đó hoặc không có than phiền về sức khỏe
+VM13083:1 Z02: Khám vì lý do hành chính
+VM13083:1 Z03: Theo dõi và đánh giá nghi ngờ một số bệnh, nhưng đã loại trừ
+VM13083:1 Z04: Khám và theo dõi vì những lý do khác
+VM13083:1 Z08: Khám theo dõi sau điều trị u ác tính
+VM13083:1 Z09: Khám theo dõi sau điều trị các bệnh khác không phải u ác tính
+VM13083:1 Z10: Kiểm tra sức khỏe tổng quát thường quy cho nhóm đối tượng xác định
+VM13083:1 Z11: Khám sàng lọc chuyên khoa các bệnh nhiễm khuẩn và ký sinh trùng
+VM13083:1 Z12: Khám sàng lọc chuyên khoa các khối u
+VM13083:1 Z13: Khám sàng lọc chuyên khoa các bệnh và các rối loạn khác
+VM13083:1 Z20: Tiếp xúc và phơi nhiễm với các bệnh lây truyền
+VM13083:1 Z21: Trạng thái nhiễm virus suy giảm miễn dịch (HIV) không triệu chứng
+VM13083:1 Z22: Mang mầm bệnh nhiễm trùng
+VM13083:1 Z23: Cần tiêm chủng phòng các bệnh nhiễm khuẩn đơn thuần
+VM13083:1 Z24: Cần tiêm chủng phòng một số bệnh virus đơn thuần
+VM13083:1 Z25: Cần tiêm chủng phòng các bệnh virus khác
+VM13083:1 Z26: Cần tiêm chủng phòng các bệnh nhiễm trùng đơn độc khác
+VM13083:1 Z27: Cần tiêm chủng phòng các bệnh nhiễm trùng phối hợp
+VM13083:1 Z28: Chưa tiêm chủng
+VM13083:1 Z29: Cần có các biện pháp phòng bệnh khác
+VM13083:1 Z30: Tránh thai
+VM13083:1 Z31: Quản lý sinh sản
+VM13083:1 Z32: Thăm khám và xét nghiệm xác định có thai
+VM13083:1 Z33: Tình cờ phát hiện có thai
+VM13083:1 Z34: Theo dõi thai bình thường
+VM13083:1 Z35: Theo dõi thai có nguy cơ cao
+VM13083:1 Z36: Khám sàng lọc trước sinh
+VM13083:1 Z37: Kết quả cuộc đẻ
+VM13083:1 Z38: Trẻ sinh ra sống theo nơi sinh
+VM13083:1 Z39: Chăm sóc và thăm khám sau đẻ
+VM13083:1 Z40: Phẫu thuật dự phòng
+VM13083:1 Z41: Các thủ thuật vì những mục đích khác không phải phục hồi sức khỏe
+VM13083:1 Z42: Chăm sóc theo dõi liên quan phẫu thuật tạo hình
+VM13083:1 Z43: Chăm sóc lỗ mở nhân tạo
+VM13083:1 Z44: Lắp và điều chỉnh các dụng cụ chỉnh hình gắn ngoài
+VM13083:1 Z45: Điều chỉnh và quản lý dụng cụ cấy ghép
+VM13083:1 Z46: Lắp và điều chỉnh các dụng cụ khác
+VM13083:1 Z47: Chăm sóc theo dõi sau phẫu thuật chỉnh hình khác
+VM13083:1 Z48: Chăm sóc theo dõi liên quan phẫu thuật khác
+VM13083:1 Z49: Chăm sóc về lọc máu
+VM13083:1 Z50: Chăm sóc về sử dụng các phương pháp điều trị phục hồi chức năng
+VM13083:1 Z51: Chăm sóc nội khoa khác
+VM13083:1 Z52: Hiến tạng và mô
+VM13083:1 Z53: Người bệnh đến cơ sở y tế để phẫu thuật, thủ thuật xác định nhưng chưa được thực hiện
+VM13083:1 Z54: Dưỡng sức
+VM13083:1 Z55: Những vấn đề liên quan đến giáo dục và biết chữ
+VM13083:1 Z56: Những vấn đề liên quan đến việc làm và thất nghiệp
+VM13083:1 Z57: Nghề nghiệp tiếp xúc với các yếu tố nguy cơ
+VM13083:1 Z58: Những vấn đề liên quan đến môi trường vật lý
+VM13083:1 Z59: Những vấn đề liên quan đến nhà ở và hoàn cảnh kinh tế
+VM13083:1 Z60: Vấn đề liên quan đến môi trường xã hội
+VM13083:1 Z61: Những vấn đề liên quan đến sự kiện tiêu cực của đời sống thơ ấu
+VM13083:1 Z62: Những vấn đề khác liên quan đến giáo dưỡng
+VM13083:1 Z63: Những vấn đề khác liên quan đến nhóm trợ giúp, bao gồm cả những hoàn cảnh gia đình
+VM13083:1 Z64: Các vấn đề liên quan đến một số hoàn cảnh tâm lí xã hội nhất định
+VM13083:1 Z65: Vấn đề liên quan đến hoàn cảnh tâm lý xã hội khác
+VM13083:1 Z70: Tư vấn liên quan đến thái độ, hành vi và khuynh hướng tình dục
+VM13083:1 Z71: Những người đến cơ sở y tế để tư vấn y học và tư vấn khác, không xác định
+VM13083:1 Z72: Các vấn đề liên quan đến lối sống
+VM13083:1 Z73: Các vấn đề liên quan đến khó khăn về quản trị cuộc sống
+VM13083:1 Z74: Các vấn đề liên quan đến việc phụ thuộc vào người chăm sóc
+VM13083:1 Z75: Những vấn đề liên quan đến phương tiện y học và chăm sóc sức khỏe khác
+VM13083:1 Z76: Những người đến cơ quan y tế trong những hoàn cảnh khác
+VM13083:1 Z80: Tiền sử gia đình có u ác tính
+VM13083:1 Z81: Tiền sử gia đình có rối loạn tâm thần và hành vi
+VM13083:1 Z82: Tiền sử gia đình có một số khuyết tật và bệnh mạn tính dẫn đến tàn tật
+VM13083:1 Z83: Tiền sử gia đình có các rối loạn đặc biệt khác
+VM13083:1 Z84: Tiền sử gia đình có các bệnh khác
+VM13083:1 Z85: Tiền sử cá nhân có u ác tính
+VM13083:1 Z86: Tiền sử cá nhân có một số bệnh khác
+VM13083:1 Z87: Tiền sử cá nhân có các bệnh và trạng thái bệnh khác
+VM13083:1 Z88: Tiền sử cá nhân có có các dị ứng với ma tuý, thuốc và các chất sinh vật khác
+VM13083:1 Z89: Mất chi mắc phải
+VM13083:1 Z90: Mất cơ quan mắc phải, chưa phân loại ở phần khác
+VM13083:1 Z91: Tiền sử cá nhân có yếu tố nguy cơ, chưa phân loại ở phần khác
+VM13083:1 Z92: Tiền sử cá nhân liên quan đến điều trị
+VM13083:1 Z93: Tình trạng lỗ mở nhân tạo
+VM13083:1 Z94: Tình trạng ghép mô và tạng
+VM13083:1 Z95: Cơ thể có các thiết bị cấy ghép tim và mạch máu
+VM13083:1 Z96: Tồn tại của dụng cụ cấy ghép chức năng khác
+VM13083:1 Z97: Cơ thể có các dụng cụ cấy ghép khác
+VM13083:1 Z98: Các tình trạng sau phẫu thuật khác
+VM13083:1 Z99: Tình trạng phụ thuộc vào các thiết bị và dụng cụ, không phân loại nơi khác
+VM13083:1 U04: Hội chứng suy hô hấp cấp tính nặng [SARS]
+VM13083:1 U06: Sử dụng mã U06 trong trường cấp cứu
+VM13083:1 U07: Tình huống khẩn cấp U07
+VM13083:1 U08: Tiền sử cá nhân mắc COVID-19
+VM13083:1 U09: Tình trạng bệnh lý sau điều trị COVID-19
+VM13083:1 U10: Hội chứng viêm đa cơ quan liên quan đến COVID-19
+VM13083:1 U11: Cần tiêm phòng COVID-19
+VM13083:1 U12: Vắc xin COVID-19 gây tác dụng phụ trong điều trị
+VM13083:1 U82: Kháng kháng sinh họ betalactam
+VM13083:1 U83: Kháng các kháng sinh khác
+VM13083:1 U84: Kháng các thuốc kháng sinh khác
+VM13083:1 U85: Kháng các thuốc kháng ung thư

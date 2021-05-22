@@ -37,12 +37,21 @@ const actions = {
     })
   },
   // Lấy trạng thái vital sign của bệnh nhân
-  async getOverviews ({ commit, rootState }) {
+  async getOverviews ({ commit, rootState, state }) {
     await patientRepository.getOverviewPatient(rootState.medicalInstruction.patientSelected.healthRecordId).then(response => {
       if (response.status === 200) {
         rootState.medicalInstruction.patientSelected.accountPatientId = response.data.accountPatientId
+        patientRepository.getHealthRecordDetailById(rootState.medicalInstruction.patientSelected.healthRecordId).then(contractStatus => {
+          state.contractStatus = null
+          console.log('contractStatus', contractStatus.data)
+          state.contractStatus = contractStatus.data.contractStatus
+        }).catch(err => {
+          console.error(err)
+        })
         commit('setOverviews', response.data)
       }
+    }).catch(err => {
+      console.error(err)
     })
   },
   // Lấy danh sách bệnh nhân đang được theo dõi
@@ -66,7 +75,7 @@ const actions = {
       healthRecord: false,
       activity: false
     }
-    dispatch('getOverviews')
+    await dispatch('getOverviews')
     router.push({ path: '/patient-detail-page' })
   },
   goToFinishPatientDetail ({ state, dispatch }, finishPatient) {
@@ -86,6 +95,7 @@ const actions = {
             dispatch('goToPatientDetail')
             patientRepository.getHealthRecordDetailById(patient.healthRecordId).then(response => {
               state.contractStatus = null
+              console.log('contractStatus - database', response.data)
               state.contractStatus = response.data.contractStatus
             }).catch(err => {
               console.error(err)
@@ -105,11 +115,13 @@ const actions = {
       }
     })
   },
-  sendRequestMedicalInstruction ({ rootState, dispatch }, medicalInstructionTypeId) {
+  sendRequestMedicalInstruction ({ rootState, dispatch }, medicalInstructionType) {
     const params = {
       doctorAccountId: rootState.users.user.accountId,
       patientAccountId: rootState.medicalInstruction.patientSelected.accountPatientId,
-      medicalInstructionTypeId: medicalInstructionTypeId
+      medicalInstructionTypeId: medicalInstructionType.medicalInstructionTypeId,
+      note: medicalInstructionType.note,
+      contractId: rootState.medicalInstruction.patientSelected.contractId
     }
     console.log('param action', params)
     medicalInstructionRepository.requestMedicalInstruction(params).then(response => {
@@ -121,7 +133,6 @@ const actions = {
     })
   },
   getRequestMedicalInstructions ({ commit, rootState }) {
-    console.log('rootState.medicalInstruction.patientSelected.healthRecordId', rootState.medicalInstruction.patientSelected.healthRecordId)
     medicalInstructionRepository.getMedicalInstructionsByHRId(rootState.medicalInstruction.patientSelected.healthRecordId).then(response => {
       commit('setRequestMedicalInstructions', response.data)
     }).catch((err) => {
@@ -223,7 +234,6 @@ const mutations = {
     // var patientVitalSign = {}
     try {
       state.approvedPatients = data.map(patient => {
-        console.log('patient:', patient)
         // patientVitalSign = rootGetters['vitalSign/findStatusOfPatient'](patient.patientId)
         const status = patient.personalStatus
         var patientStatus = 'Chưa xác định'
@@ -374,7 +384,18 @@ const mutations = {
       return mi.status !== 'PENDING'
     })
     try {
-      state.medicalInstructionsByType = groupBy(medicalInstructions, 'medicalInstructionTypeName', 'medicalInstructionTypeName', 'medicalInstructions')
+      const tmpMI = medicalInstructions.map(mi => {
+        return {
+          medicalInstructionId: mi.medicalInstructionId,
+          medicalInstructionTypeId: mi.medicalInstructionTypeId,
+          medicalInstructionTypeName: mi.medicalInstructionTypeName,
+          diseases: mi.diseases === null ? null : mi.diseases,
+          dateCreate: mi.dateCreate,
+          images: mi.images === null ? null : `http://45.76.186.233:8000/api/v1/Images?pathImage=${mi.images}`
+        }
+      })
+      state.medicalInstructionsByType = groupBy(tmpMI, 'medicalInstructionTypeName', 'medicalInstructionTypeName', 'medicalInstructions')
+      console.log(state.medicalInstructionsByType)
     } catch (error) {
       console.log('setMedicalInstructionsByType', error)
     }

@@ -13,11 +13,11 @@ export default {
       url: `/Notifications?notiId=${notificationId}`
     })
   },
-  async sendRequireBand (deviceType, notificationType, senderAccountId, recipientAccountId) {
-    console.log('Gửi yêu cầu kết nối thiết bị', { request: { deviceType: deviceType, notificationType: notificationType, senderAccountId: senderAccountId, recipientAccountId: recipientAccountId } })
+  async sendRequireBand (senderAccountId, recipientAccountId) {
+    console.log(`/Notifications?deviceType=2&notificationType=11&senderAccountId=${senderAccountId}&recipientAccountId=${recipientAccountId}`)
     return await request({
       method: 'post',
-      url: `/Notifications?deviceType=${deviceType}&notificationType=${notificationType}&senderAccountId=${senderAccountId}&recipientAccountId=${recipientAccountId}`
+      url: `/Notifications?deviceType=2&notificationType=11&senderAccountId=${senderAccountId}&recipientAccountId=${recipientAccountId}`
     })
   },
   async getSystemNotifications (accountId) {

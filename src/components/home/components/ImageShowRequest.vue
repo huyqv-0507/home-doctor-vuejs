@@ -30,7 +30,7 @@
           Mô tả:
           <strong>{{imageInfo.description}}</strong>
         </p>
-        <p>
+        <p v-if="imageInfo.dateCreate !== undefined">
           Ngày tạo:
           <strong>{{imageInfo.dateCreate.split('T')[0].split('-').reverse().join('/')}}</strong>
         </p>
