@@ -7,11 +7,11 @@
       </el-breadcrumb>
     </div>
     <div class="bg-theme">
-      <h2>Sinh hiệu</h2>
+      <h2 style="margin-bottom: 1em;">Sinh hiệu</h2>
       <el-tabs type="border-card">
         <el-tab-pane>
           <span slot="label">
-            <i class="el-icon-date"></i> Hàng ngày
+            <i class="el-icon-date"></i> Theo ngày
           </span>
           <div>
             <div>Chọn biểu đồ theo ngày</div>
@@ -36,8 +36,9 @@
           </span>
           <div>
             <el-table :data="allVitalSignShare">
-              <el-table-column label="STT" width="70" prop="vitalSignShareId"></el-table-column>
-              <el-table-column label="Giờ đo" width="220" prop="timeShare"></el-table-column>
+              <el-table-column label="STT" width="70" type="index"></el-table-column>
+              <el-table-column label="Ngày đo" width="110" prop="dateShare"></el-table-column>
+              <el-table-column label="Giờ đo" width="110" prop="hourShare"></el-table-column>
               <el-table-column label="Thời gian đo (phút)" width="250" prop="minuteShare"></el-table-column>
               <el-table-column label="Chi tiết" width="150">
                 <template slot-scope="scope">
@@ -68,14 +69,15 @@ export default {
     ...mapState('patients', ['patientHealth']),
     ...mapState('vitalSign', ['heartRateValues', 'patientOptions']),
     ...mapState('medicalInstruction', ['patientSelected']),
-    ...mapState('vitalSIgn', ['allVitalSignShare'])
+    ...mapState('vitalSign', ['allVitalSignShare'])
   },
   mounted () {
     this.getVitalSignHealthPatient()
+    this.getAllVitalSignShare()
   },
   methods: {
-    ...mapActions('vitalSign', ['getVitalSignHealthPatient']),
-    ...mapActions('modals', ['openSelectMedicalInstructionModalSub']),
+    ...mapActions('vitalSign', ['getVitalSignHealthPatient', 'getAllVitalSignShare', 'getVitalSignValueShare']),
+    ...mapActions('modals', ['openSelectMedicalInstructionModalSub', 'openViewHeartRateShare']),
     changeDate (event) {
       this.$store.dispatch(
         'vitalSign/setHeartRateChart',
@@ -86,8 +88,9 @@ export default {
         { root: true }
       )
     },
-    handleView () {
-      this.$store.dispatch('modals/openViewHeartRateShare', null, { root: true })
+    handleView (index, row) {
+      this.openViewHeartRateShare()
+      this.getVitalSignValueShare({ dateShare: row.dateShare.split('/').reverse().join('-'), hourShare: row.hourShare, minuteShare: row.minuteShare })
     }
   }
 }

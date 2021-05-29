@@ -30,10 +30,24 @@
                 Ghi chú:
                 <strong>{{appointment.note}}</strong>
               </p>
-        <el-link class="titleColor" v-on:click.native="toAppointmentDetail(appointment.appointmentId)">
-          Chi tiết
-          <i class="el-icon-view el-icon--right"></i>
-        </el-link>
+              <el-link
+                v-if="!isAppointmentCurrent"
+                style="margin-top: 1em; font-size: 10px;"
+                type="primary"
+                v-on:click="openUpdateAppointmentShow()"
+              >
+                Thay đổi
+                <i class="el-icon-edit-outline el-icon--right"></i>
+              </el-link>
+              <el-link
+                v-else-if="isAppointmentCurrent"
+                style="margin-top: 1em; font-size: 10px;"
+                type="primary"
+                v-on:click="openFinishAppointmentShow()"
+              >
+                Hoàn tất
+                <i class="el-icon-edit-outline el-icon--right"></i>
+              </el-link>
             </div>
           </el-col>
         </el-row>
@@ -46,6 +60,18 @@
 import { mapState, mapActions } from 'vuex'
 
 export default {
+  data () {
+    return {
+      isAppointmentCurrent:
+        this.$store.state.patients.patientOverview.appointmentNext === null
+          ? null
+          : new Date(
+            this.$store.state.patients.patientOverview.appointmentNext.dateExamination.split(
+              'T'
+            )[0]
+          ) <= new Date(this.$store.state.time.timeNow.split('T')[0])
+    }
+  },
   computed: {
     ...mapState('appointments', ['appointmentDateChoose'])
   },
@@ -56,7 +82,11 @@ export default {
       this.$store.dispatch('appointments/getAppointmentById', appointmentId, {
         root: true
       })
-    }
+    },
+    ...mapActions('modals', [
+      'openUpdateAppointmentShow',
+      'openFinishAppointmentShow'
+    ])
   }
 }
 </script>

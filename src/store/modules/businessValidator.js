@@ -2,10 +2,20 @@ import { RepositoryFactory } from '../../repositories/RepositoryFactory'
 const appointmentRepository = RepositoryFactory.get('appointmentRepository')
 const state = () => ({
   isFirstAppointmentFinished: false,
-  isAppointmentActive: false
+  isAppointmentActive: false,
+  isAppointmentCurrent: false
 })
 const getters = {}
 const actions = {
+  checkAppointmentCurrent ({ commit, rootState }) {
+    if (rootState.patients.patientOverview.appointmentNext === null) {
+      commit('setAppointmentCurrent', null)
+    } else {
+      const now = new Date(rootState.time.timeNow.split('T')[0])
+      const appointment = new Date(rootState.patients.patientOverview.appointmentNext.dateExamination.split('T')[0])
+      commit('setAppointmentCurrent', appointment >= now)
+    }
+  },
   checkFirstAppointmentFinished ({ commit, rootState }) {
     appointmentRepository.checkFirstAppointment(rootState.medicalInstruction.patientSelected.healthRecordId).then(response => {
       commit('setIsFirstAppointmentFinished', true)
@@ -24,6 +34,9 @@ const actions = {
   }
 }
 const mutations = {
+  setAppointmentCurrent (state, validate) {
+    state.isAppointmentCurrent = validate
+  },
   setIsFirstAppointmentFinished (state, validate) {
     state.isFirstAppointmentFinished = validate
   },

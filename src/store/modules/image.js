@@ -4,7 +4,8 @@ const medicalInstructionRepository = RepositoryFactory.get('medicalInstructionRe
 const state = () => ({
   imgShow: false,
   medicalInstruction: null,
-  isAddMedicalInstruction: false
+  isAddMedicalInstruction: false,
+  diagnosesAddingMi: []
 })
 const getters = {}
 const actions = {
@@ -29,6 +30,15 @@ const actions = {
   }
 }
 const mutations = {
+  addDiagnosesToAddingMi (state, diagnose) {
+    state.diagnosesAddingMi.push(diagnose.description.replace('(', '').replace(')', ' -'))
+  },
+  removeDiagnosesToAddingMi (state, index) {
+    state.diagnosesAddingMi.splice(index, 1)
+  },
+  removeAllDiagnosesToAddingMi (state) {
+    state.diagnosesAddingMi = []
+  },
   turnOnAddMedicalInstruction (state) {
     state.isAddMedicalInstruction = true
   },

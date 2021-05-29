@@ -13,7 +13,7 @@
       <el-row class="margin-default items">
         <el-col :span="6">Bệnh nhân:</el-col>
         <el-col :span="18">
-          <el-text>{{patientSelected.patientName}}</el-text>
+          <el-text v-if="patientSelected">{{patientSelected.patientName}}</el-text>
         </el-col>
       </el-row>
       <el-row class="margin-default items">
@@ -334,7 +334,9 @@ export default {
   },
   methods: {
     handleDisabledDate (time) {
-      return time < new Date(this.timeNow)
+      const now = new Date(this.timeNow)
+      now.setDate(now.getDate() - 1)
+      return time < now
     },
     ...mapActions('vitalSign', ['getDeviceSupportServices']),
     ...mapActions('modals', [

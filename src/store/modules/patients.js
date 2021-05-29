@@ -129,15 +129,18 @@ const actions = {
       dispatch('modals/closeRequestMedicalInstruction', null, { root: true })
     }).catch(err => {
       console.log(err)
-      Notification.error({ title: 'Thông báo', message: 'Gửi yêu cầu cung cấp y lệnh thất baij!', duration: 7000 })
+      Notification.error({ title: 'Thông báo', message: 'Gửi yêu cầu cung cấp y lệnh thất bại!', duration: 7000 })
     })
   },
-  getRequestMedicalInstructions ({ commit, rootState }) {
-    medicalInstructionRepository.getMedicalInstructionsByHRId(rootState.medicalInstruction.patientSelected.healthRecordId).then(response => {
-      commit('setRequestMedicalInstructions', response.data)
-    }).catch((err) => {
-      console.log(err)
-    })
+  getRequestMedicalInstructions ({ commit, rootState, state }) {
+    if (rootState.medicalInstruction.patientSelected !== null) {
+      medicalInstructionRepository.getMedicalInstructionsByHRId(rootState.medicalInstruction.patientSelected.healthRecordId).then(response => {
+        commit('setRequestMedicalInstructions', response.data)
+      }).catch((err) => {
+        state.requestMedicalInstructions = []
+        console.log(err)
+      })
+    }
   },
   getMedicalInstructionsByType ({ commit, rootState }) {
     medicalInstructionRepository.getMedicalInstructionsByHRId(rootState.medicalInstruction.patientSelected.healthRecordId).then(response => {
@@ -402,7 +405,6 @@ const mutations = {
   },
   setRequestMedicalInstructions (state, medicalInstructions) {
     state.requestMedicalInstructions = []
-    console.log('setRequestMedicalInstructions', medicalInstructions)
     medicalInstructions.forEach(mi => {
       if (mi.status === 'PENDING') {
         state.requestMedicalInstructions.push(mi)

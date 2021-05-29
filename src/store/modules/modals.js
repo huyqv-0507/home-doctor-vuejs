@@ -20,14 +20,23 @@ const state = () => ({
   isShowImage: false,
   isShowAddMoreDiagnoseToPrescription: false,
   isOpenChoosingVitalSignType: false,
-  isViewHeartRateShare: false
+  isViewHeartRateShare: false,
+  isShowAddMoreDiagnoseAddingMi: false
 })
 const getters = {}
 const actions = {
+  openShowAddMoreDiagnoseAddingMi ({ commit }) {
+    commit('setShowAddMoreDiagnoseAddingMi', true)
+  },
+  closeShowAddMoreDiagnoseAddingMi ({ commit }) {
+    commit('setShowAddMoreDiagnoseAddingMi', false)
+  },
   openViewHeartRateShare ({ commit }) {
     commit('setViewHeartRateShare', true)
   },
-  closeViewHeartRateShare ({ commit }) {
+  closeViewHeartRateShare ({ commit, rootState }) {
+    rootState.vitalSign.chartShareOption = null
+    rootState.vitalSign.currentHeartRateValue = null
     commit('setViewHeartRateShare', false)
   },
   openChoosingVitalSignType ({ commit }) {
@@ -183,6 +192,12 @@ const actions = {
   }
 }
 const mutations = {
+  setShowAddMoreDiagnoseAddingMi (state, isOpen) {
+    state.isShowAddMoreDiagnoseAddingMi = isOpen
+  },
+  setViewHeartRateShare (state, isOpen) {
+    state.isViewHeartRateShare = isOpen
+  },
   setOpenChoosingVitalSignType (state, isOpen) {
     state.isOpenChoosingVitalSignType = isOpen
   },

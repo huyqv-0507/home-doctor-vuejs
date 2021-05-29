@@ -26,7 +26,9 @@ const state = () => ({
   heartRateSchedule: {},
   vitalSignTypes: [],
   choosingTypes: [],
-  allVitalSignShare: []
+  allVitalSignShare: [],
+  currentHeartRateValue: {},
+  chartShareOption: {}
 })
 const getters = {
   findStatusOfPatient: state => (patientId) => {
@@ -99,6 +101,20 @@ const actions = {
     }).catch((error) => {
       console.log(error)
       Message.error('Vui lòng kiểm tra kết nối mạng!')
+    })
+  },
+  getVitalSignValueShare ({ commit, rootState, state }, shareParams) {
+    const params = {
+      patientId: rootState.medicalInstruction.patientSelected.patientId,
+      healthRecordId: rootState.medicalInstruction.patientSelected.healthRecordId,
+      dateTime: shareParams.dateShare
+    }
+    vitalSignRepository.getVitalSignHealthPatient(params).then(response => {
+      commit('setCurrentHeartRateValue', response.data.vitalSignValues)
+      commit('setVitalSignValueShareChart', { currentValue: state.currentHeartRateValue, hourShare: shareParams.hourShare, minuteShare: shareParams.minuteShare })
+    }).catch(err => {
+      console.log(err)
+      commit('setCurrentHeartRateValue', null)
     })
   },
   getDeviceSupportServices ({ commit }) {
@@ -230,6 +246,49 @@ const actions = {
   }
 }
 const mutations = {
+  setCurrentHeartRateValue (state, vitalSignValues) {
+    if (vitalSignValues === null) {
+      state.currentHeartRateValue = null
+    } else {
+      vitalSignValues.forEach(vsv => {
+        if (vsv.vitalSignTypeId === 1) {
+          state.currentHeartRateValue = vsv
+        }
+      })
+    }
+  },
+  setVitalSignValueShareChart (state, shareValue) {
+    const timeArr = shareValue.currentValue.timeValue.substring(0, shareValue.currentValue.timeValue.length - 1).split(',')
+    const numberArr = shareValue.currentValue.numberValue.substring(0, shareValue.currentValue.numberValue.length - 1).split(',')
+    const timeIndex = timeArr.findIndex(t => t === shareValue.hourShare)
+    const timeValues = []
+    const numberValues = []
+    for (let index = timeIndex; index < timeIndex + shareValue.minuteShare; index++) {
+      const timeValue = timeArr[index]
+      const numberValue = numberArr[index]
+      timeValues.push(timeValue)
+      numberValues.push(numberValue)
+    }
+    state.chartShareOption = {
+      title: {
+        text: 'Biểu đồ nhịp tim'
+      },
+      xAxis: {
+        type: 'category',
+        name: 'giờ',
+        data: timeValues
+      },
+      yAxis: {
+        name: 'bpm',
+        type: 'value'
+      },
+      series: [{
+        data: numberValues,
+        type: 'line'
+      }],
+      color: '#e03434'
+    }
+  },
   setChoosingType (state, types) {
     state.choosingTypes = types
   },
@@ -342,7 +401,15 @@ const mutations = {
     state.vitalSignTypes = vitalSignTypes
   },
   setAllVitalSignShare (state, vitalSignSharing) {
-    state.allVitalSignShare = vitalSignSharing
+    state.allVitalSignShare = vitalSignSharing.map(vss => {
+      return {
+        vitalSignShareId: vss.vitalSignValueShareId,
+        healthRecordId: vss.healthRecordId,
+        hourShare: vss.timeShare.split(' ')[0],
+        dateShare: vss.timeShare.split(' ')[1],
+        minuteShare: vss.minuteShare
+      }
+    })
   },
   clearState (state) {
     state = () => ({})

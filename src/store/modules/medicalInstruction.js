@@ -305,8 +305,8 @@ const actions = {
           diagnose: '',
           contractId: state.patientSelected.contractId
         }).then(response => {
-          dispatch('businessValidator/setIsFirstAppointmentFinished', true, { root: true })
-          dispatch('businessValidator/setIsAppointmentActive', false, { root: true })
+          dispatch('businessValidator/checkAppointmentActive', false, { root: true })
+          dispatch('businessValidator/checkAppointmentCurrent', false, { root: true })
         }).catch(err => { console.log(err) })
       }
       Notification.success({ title: 'Thông báo', message: 'Bác sĩ đã tạo đơn thuốc thành công', duration: 7000 })

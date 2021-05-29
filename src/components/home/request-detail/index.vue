@@ -126,9 +126,9 @@
                       <el-image
                         v-on:click="showMedicalInstructionImageDetail(mi.medicalInstructionId)"
                         :src="im.url"
-                        v-for="(im, index) in medicalInstruction.images"
+                        v-for="(im, index) in mi.images"
                         :key="`i${index}`"
-                        style="width: 100px; margin: .3em;"
+                        style="width: 100px; margin: .3em; cursor: pointer;"
                       />
                     </div>
                     <div v-else>
@@ -169,9 +169,9 @@
                       <el-image
                         v-on:click="showMedicalInstructionImageDetail(mi.medicalInstructionId)"
                         :src="im.url"
-                        v-for="(im, index) in medicalInstruction.images"
+                        v-for="(im, index) in mi.images"
                         :key="`i${index}`"
-                        style="width: 100px; margin: .3em;"
+                        style="width: 100px; margin: .3em; cursor: pointer;"
                       />
                     </div>
                     <div v-else>
@@ -210,7 +210,7 @@
                         :src="im.url"
                         v-for="(im, index) in mi.images"
                         :key="`i${index}`"
-                        style="width: 100px; margin: .3em;"
+                        style="width: 100px; margin: .3em; cursor: pointer;"
                       />
                     </div>
                   </div>
@@ -486,7 +486,7 @@ export default {
     handleDisabledDate (time) {
       let date = new Date(this.requestDetail.dateCreated)
       date = date.setDate(
-        date.getDate() + parseInt(this.contractCondition.distanceDate)
+        date.getDate() + parseInt(this.contractCondition.distanceDate) - 1
       )
       return time < date
     },

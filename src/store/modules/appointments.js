@@ -78,22 +78,19 @@ const actions = {
   handleChooseDate ({ commit }, appointment) {
     console.log(appointment)
   },
-  // Chọn bệnh nhân để tạo cuộc hẹn trong modal chọn bệnh nhân
-  selectPatientAppointment ({ commit }, patientData) {
-    commit('selectPatientAppointment', patientData)
-  },
   // Trở về bươc chọn bệnh nhân
   backToSelectPatientAppointment ({ commit }) {
     commit('backToSelectPatientAppointment')
   },
   // Xác nhận tạo cuộc hẹn
   confirmAppointment ({ commit, state, rootState, dispatch }, appointmentData) {
+    console.log('appointmentData', appointmentData)
     const params = {
-      healthRecordId: state.patientInfoForAppointment.healthRecordId,
+      healthRecordId: rootState.medicalInstruction.patientSelected.healthRecordId,
       note: appointmentData.note,
       dateExamination: appointmentData.dateExamination,
       accountDoctorId: parseInt(rootState.users.user.accountId),
-      accountPatientId: state.patientInfoForAppointment.accountPatientId
+      accountPatientId: rootState.medicalInstruction.patientSelected.accountPatientId
     }
     rootState.modals.isVisibleAppointmentPatients = false // Đóng modal lịch tái khám
     rootState.modals.isVisibleAddAppointmentForm = false // Đóng modal lịch tái khám
@@ -163,7 +160,6 @@ const actions = {
   },
   addAppointment ({ commit, dispatch }, patient) {
     dispatch('modals/openAddAppointmentForm', null, { root: true })
-    commit('selectPatientAppointment', patient)
   }, // Thêm cuộc hẹn từ màn home khi bệnh nhân chưa có ngày tái khám
   getPatientAppointments ({ commit, getters, rootState, state }) {
     state.patientAppointments = []
@@ -221,7 +217,7 @@ const actions = {
       }
     })
   },
-  finishAppointment ({ rootState, dispatch }, diagnose) {
+  finishAppointment ({ rootState, dispatch, commit }, diagnose) {
     const params = {
       appointmentId: rootState.patients.patientOverview.appointmentNext.appointmentId,
       diagnose: diagnose,
@@ -230,6 +226,7 @@ const actions = {
     appointmentRepository.finishAppointment(params).then(response => {
       Notification.success({ title: 'Thông báo', message: 'Bác sĩ đã hoàn tất cuộc hẹn thăm khám', duration: 7000 })
       dispatch('modals/closeFinishAppointmentShow', null, { root: true })
+      commit('businessValidator/setIsFirstAppointmentFinished', true, { root: true })
       dispatch('patients/getOverviews', null, { root: true })
     }).catch(err => {
       Notification.error({ title: 'Lỗi', message: 'Vui lòng kiểm tra kết nối mạng', duration: 7000 })
@@ -277,10 +274,6 @@ const mutations = {
   setChoosePatient (state, isChoose) {
     state.isChoosePatient = isChoose
   },
-  selectPatientAppointment (state, patient) {
-    state.patientInfoForAppointment.healthRecordId = patient.healthRecordId
-    state.patientInfoForAppointment.accountPatientId = patient.accountPatientId
-  }, // qua modal tạo cuộc hẹn
   backToSelectPatientAppointment (state) {
     state.isSelectPatient = false
     state.patientInfoForAppointment = {}

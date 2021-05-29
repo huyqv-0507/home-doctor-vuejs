@@ -127,8 +127,10 @@ export default {
     formData.append('HealthRecordId', data.healthRecordId)
     formData.append('PatientId', data.patientId)
     formData.append('Description', data.description)
-    formData.append('Diagnose', data.diagnose)
-    formData.append('DiseaseId', data.diseaseId)
+    formData.append('Conclusion', data.Conclusion)
+    data.diseaseIds.forEach(id => {
+      formData.append('DiseaseIds', id)
+    })
     formData.append('images', data.images)
     console.log('insertMedicalInstructionImage', formData)
     return await request({

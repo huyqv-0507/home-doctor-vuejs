@@ -13,11 +13,11 @@
           Bệnh nhân:
           <strong>{{vitalSignView.patientFullName}}</strong>
         </p>
-        <p class="margin-line">
+        <p v-show="vitalSignView.diseases !== [] && vitalSignView.disease !== null" class="margin-line">
           Chuẩn đoán:
           <strong v-for="(disease, index) in vitalSignView.diseases" :key="`disease-${index}`">{{disease.diseaseId}} - {{disease.diseaseName}}; </strong>
         </p>
-        <p class="margin-line">
+        <p v-show="vitalSignView.conclusion !== null" class="margin-line">
           Kết luận:
           <strong>{{vitalSignView.conclusion}}</strong>
         </p>

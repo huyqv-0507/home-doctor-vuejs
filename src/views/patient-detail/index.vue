@@ -7,6 +7,7 @@
       <router-view/>
       <image-show-request/>
       <add-medical-instruction-image-form/>
+      <add-more-diagnose-adding-mi />
     </template>
     <template v-slot:right-content>
       <right-content />
@@ -20,6 +21,7 @@ import PatientDetailLeft from '../../components/left-content/PatientDetail.vue'
 import PatientDetailRight from '../../components/right-content/PatientDetail.vue'
 import ImageShowRequest from '../../components/home/components/ImageShowRequest.vue'
 import AddMedicalInstructionImageForm from '../../components/modals/addMedicalInstructionImageForm'
+import AddMoreDiagnoseAddingMi from '../../components/modals/addMoreDiagnoseAddingMi'
 import { mapActions } from 'vuex'
 export default {
   components: {
@@ -27,7 +29,8 @@ export default {
     'left-content': PatientDetailLeft,
     'right-content': PatientDetailRight,
     'image-show-request': ImageShowRequest,
-    'add-medical-instruction-image-form': AddMedicalInstructionImageForm
+    'add-medical-instruction-image-form': AddMedicalInstructionImageForm,
+    'add-more-diagnose-adding-mi': AddMoreDiagnoseAddingMi
   },
   methods: {
     ...mapActions('patients', ['getOverviews'])

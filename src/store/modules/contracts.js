@@ -341,6 +341,7 @@ const actions = {
 
   // Next to create Contract
   nextCreateContract ({ commit, state, rootState, dispatch }, payload) {
+    console.log('payload nextCreateContract', payload)
     // if (rootState.medicalInstruction.medicalInstructionOfNewHealthRecord === null) {
     //  MessageBox.alert('Bác sĩ vui lòng kiểm tra những y lệnh bệnh nhân cung cấp và tiếp tục.', 'Cảnh báo', { confirmButtonText: 'Đồng ý' })
     // } else {
@@ -356,9 +357,9 @@ const actions = {
         commit('setPriceOfContract', response.data)
         commit('nextCreateContract', { dateStarted: payload.dateStarted, daysOfTracking: payload.daysOfTracking, patientId: state.requestDetail.patientId })
         dispatch('getContractSample')
+        router.push({ name: 'confirm-contract' })
       }
     })
-    router.push({ name: 'confirm-contract' })
   },
 
   backToRequestDetailContract () {
@@ -798,9 +799,9 @@ const mutations = {
     state.requestDetail.contractCode = payloadRequestDetail.contractCode
     state.requestDetail.note = payloadRequestDetail.note
     state.requestDetail.status = payloadRequestDetail.status
-    state.requestDetail.dateCreated = new Date(payloadRequestDetail.dateCreated.split('T')[0])
-    state.requestDetail.dateStarted = new Date(payloadRequestDetail.dateStarted.split('T')[0])
-    state.requestDetail.dateFinished = new Date(payloadRequestDetail.dateFinished.split('T')[0])
+    state.requestDetail.dateCreated = payloadRequestDetail.dateCreated === null ? null : payloadRequestDetail.dateCreated.split('T')[0]
+    state.requestDetail.dateStarted = payloadRequestDetail.dateStarted.split('T')[0]
+    state.requestDetail.dateFinished = payloadRequestDetail.dateFinished === null ? null : payloadRequestDetail.dateFinished.split('T')[0]
     state.requestDetail.nameLicense = payloadRequestDetail.nameLicense
     state.requestDetail.daysOfTracking = payloadRequestDetail.daysOfTracking
     state.requestDetail.priceLicense = payloadRequestDetail.priceLicense

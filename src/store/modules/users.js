@@ -114,6 +114,7 @@ const mutations = {
     console.log('Module users; State: user::: ', state.user)
   },
   loginFailed (state) {
+    state.user = {}
     state.status = 'unLogged'
   },
   setActivities (state, activities) {

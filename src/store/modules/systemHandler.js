@@ -54,8 +54,8 @@ const actions = {
         commit('medicalInstruction/setPatientSelected', patientApproved, { root: true })
         dispatch('modals/openSelectMedicalInstructionModal', null, { root: true })
         break
-      case 17: // Chuyển đến trang bệnh nhân bình thường
-
+      case 22:
+        dispatch('businessValidator/checkAppointmentCurrent', null, { root: true })
         break
       case 16: //  Tài khoản bị lock
         contract = rootGetters['contracts/getContractStatusById'](parseInt(systemNotificationData.notification.contractId))

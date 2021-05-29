@@ -65,7 +65,7 @@
     </el-card>
     <el-divider></el-divider>
     <el-row
-      v-if="isFirstAppointmentFinished"
+      v-show="isFirstAppointmentFinished"
       class="func pointer"
       v-on:click.native="goToMedicationSchedule()"
     >
@@ -89,7 +89,7 @@
       </el-col>
     </el-row>
     <el-row
-      v-if="isFirstAppointmentFinished"
+      v-show="isFirstAppointmentFinished"
       class="func pointer"
       v-on:click.native="openAddMedicalInstructionForm()"
     >
@@ -157,26 +157,17 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 export default {
-  data () {
-    return {
-      isAppointmentCurrent:
-        this.$store.state.patients.patientOverview.appointmentNext === null
-          ? null
-          : new Date(
-            this.$store.state.patients.patientOverview.appointmentNext.dateExamination.split(
-              'T'
-            )[0]
-          ) <= new Date(this.$store.state.time.timeNow.split('T')[0])
-    }
-  },
   computed: {
     ...mapState('patients', ['patientOverview']),
     ...mapState('medicalInstruction', ['patientSelected']),
     ...mapState('appointments', ['isMeetFirst']),
-    ...mapState('businessValidator', ['isFirstAppointmentFinished'])
+    ...mapState('businessValidator', ['isFirstAppointmentFinished', 'isAppointmentCurrent'])
   },
   mounted () {
     this.getTimeSystem()
+    this.checkAppointmentCurrent()
+    this.checkFirstAppointmentFinished()
+    this.checkAppointmentActive()
   },
   methods: {
     ...mapActions('notifications', ['sendRequireBand']),
@@ -188,7 +179,9 @@ export default {
     ]),
     ...mapActions('contracts', ['getContractDetail']),
     ...mapActions('time', ['getTimeSystem']),
+    ...mapActions('businessValidator', ['checkAppointmentCurrent', 'checkAppointmentActive', 'checkFirstAppointmentFinished']),
     openAddMedicalInstructionForm () {
+      this.$store.commit('image/removeAllDiagnosesToAddingMi', null, { root: true })
       this.$store.dispatch('modals/openAddMedicalInstructionForm', null, {
         root: true
       })
@@ -209,14 +202,6 @@ export default {
       this.$store.commit('appointments/setSelectPatient', true, {
         root: true
       })
-      this.$store.dispatch(
-        'appointments/selectPatientAppointment',
-        {
-          healthRecordId: patientSelected.healthRecordId,
-          accountPatientId: patientSelected.accountPatientId
-        },
-        { root: true }
-      )
       this.$store.dispatch('modals/openAppointmentPatientsModal', null, {
         root: true
       })

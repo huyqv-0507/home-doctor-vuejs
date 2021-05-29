@@ -12,12 +12,12 @@
           size="mini"
           @click="handleOpenAppointmentPatientsModal()"
         >Thêm lịch hẹn</el-button>
-        <el-calendar class="content__body_calendar">
+        <el-calendar v-model="value" class="content__body_calendar">
           <template slot="dateCell" slot-scope="{date, data}">
             <p>{{data.day.split('-')[2]}}</p>
             <div v-for="(appointment, index) in appointments" :key="`appointment-${index}`">
               <div v-if="data.day.split('-').reverse().join('/') === appointment.dateExamination">
-                  <div class="active-activity" @click="appointmentDateChoose(appointment)"></div>
+                <div class="active-activity" @click="appointmentDateChoose(appointment)"></div>
               </div>
             </div>
           </template>
@@ -30,6 +30,11 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 export default {
+  data () {
+    return {
+      value: new Date(this.$store.state.time.timeNow)
+    }
+  },
   computed: {
     ...mapState('appointments', ['appointments'])
   },
@@ -37,12 +42,18 @@ export default {
     ...mapActions('modals', ['openAppointmentPatientsModal']),
     ...mapActions('appointments', ['getAppointments', 'appointmentDateChoose']),
     handleOpenAppointmentPatientsModal () {
-      this.$store.commit('appointments/setSelectPatient', false, { root: true })
-      this.$store.dispatch('modals/openAppointmentPatientsModal', null, { root: true })
-    }
+      this.$store.commit('appointments/setSelectPatient', false, {
+        root: true
+      })
+      this.$store.dispatch('modals/openAppointmentPatientsModal', null, {
+        root: true
+      })
+    },
+    ...mapActions('time', ['getTimeSystem'])
   },
   mounted () {
     this.getAppointments()
+    this.getTimeSystem()
   }
 }
 </script>

@@ -19,7 +19,6 @@ export default {
     })
   },
   async getVitalSignHealthPatient (data) {
-    console.log('data', data)
     const params = {
       patientId: data.patientId,
       healthRecordId: data.healthRecordId,
@@ -61,10 +60,16 @@ export default {
       url: '/VitalSigns/GetVitalSignsType'
     })
   },
-  async getAllVitalSignShare () {
+  async getAllVitalSignShare (healthRecordId) {
     return await request({
       method: 'get',
-      url: '/VitalSigns/GeVitalSignShareByDate'
+      url: `/VitalSigns/GeVitalSignShareByDate?healthRecordId=${healthRecordId}`
+    })
+  },
+  async getVitalSignShareById (vitalSignShareId) {
+    return await request({
+      method: 'get',
+      url: `/VitalSigns/GetVitalSignShareById?vitalSignShareId=${vitalSignShareId}`
     })
   }
 }

@@ -1,10 +1,8 @@
 <template>
-  <el-dialog
-    :visible="isVisibleAppointmentPatients"
-    @close="closeAppointmentPatientsModal()"
-    width="30%"
-  >
-    <template slot="title"><strong>Lịch hẹn</strong></template>
+  <el-dialog :visible="isVisibleAppointmentPatients" @close="handleClose" width="40%" center>
+    <template slot="title">
+      <strong>Lịch hẹn</strong>
+    </template>
     <div v-if="!isSelectPatient">
       <el-row
         align="middle"
@@ -30,7 +28,8 @@
       </el-row>
     </div>
     <div v-else>
-      <el-link v-show="isChoosePatient"
+      <el-link
+        v-show="isChoosePatient"
         style="margin-bottom: 1em;"
         type="primary"
         v-on:click="backToSelectPatientAppointment()"
@@ -38,24 +37,46 @@
         <i class="el-icon-back"></i> Trở về
       </el-link>
       <el-row class="verticalCenter" style="margin-bottom: .5em;">
-        <el-form>
-          <el-form-item label="Ngày"></el-form-item>
-          <el-form-item label="Giờ"></el-form-item>
-          <el-form-item label="Ghi chú"></el-form-item>
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px">
+          <el-form-item label="Ngày hẹn" required>
+            <el-col :span="11">
+              <el-form-item prop="date1">
+                <el-date-picker
+                  :picker-options="dateOptions"
+                  type="date"
+                  size="mini"
+                  placeholder="Chọn ngày"
+                  v-model="ruleForm.date1"
+                  format="dd/MM/yyyy"
+                  value-format="yyyy-MM-dd"
+                  style="width: 100%;"
+                ></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col class="line" :span="2" style="display: flex; justify-content: center;">-</el-col>
+            <el-col :span="11">
+              <el-form-item prop="date2">
+                <el-time-select
+                  placeholder="Chọn giờ"
+                  size="mini"
+                  v-model="ruleForm.date2"
+                  :picker-options="{
+                      start: '06:00',
+                      step: '00:05',
+                      end: '18:30'
+                    }"
+                  style="width: 100%;"
+                ></el-time-select>
+              </el-form-item>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="Ghi chú" prop="desc">
+            <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+          </el-form-item>
         </el-form>
-        <el-col :span="6">Ngày hẹn*:</el-col>
-        <el-col :span="18">
-          <el-date-picker type="datetime" v-model="dateExamination" size="mini" :default-time="['06:00:00', '08:00:00']"></el-date-picker>
-        </el-col>
-      </el-row>
-      <el-row class="verticalCenter">
-        <el-col :span="6">Ghi chú:</el-col>
-        <el-col :span="18">
-          <el-input v-model="note" size="mini"></el-input>
-        </el-col>
       </el-row>
       <div class="dialog-footer">
-        <el-button type="primary" @click="confirmAppointment({ dateExamination: dateExamination, note: note })">Xác nhận</el-button>
+        <el-button type="primary" @click="confirmAppointment('ruleForm')">Xác nhận</el-button>
       </div>
     </div>
   </el-dialog>
@@ -66,8 +87,30 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      dateExamination: '',
-      note: ''
+      ruleForm: {
+        date1: '',
+        date2: '',
+        desc: ''
+      },
+      rules: {
+        date1: [
+          {
+            required: true,
+            message: 'Xin hãy chọn ngày',
+            trigger: 'change'
+          }
+        ],
+        date2: [
+          {
+            required: true,
+            message: 'Xin hãy chọn giờ',
+            trigger: 'change'
+          }
+        ]
+      },
+      dateOptions: {
+        disabledDate: this.handleDisabledDate
+      }
     }
   },
   computed: {
@@ -77,13 +120,18 @@ export default {
   },
   mounted () {
     this.getPatientApproved()
+    this.getTimeSystem()
   },
   methods: {
+    handleDisabledDate (date) {
+      const now = new Date(this.$store.state.time.timeNow)
+      now.setDate(now.getDate() - 1)
+      return date < now
+    },
     ...mapActions('modals', ['closeAppointmentPatientsModal']),
     ...mapActions('patients', ['getPatientApproved']),
-    ...mapActions('appointments', [
-      'backToSelectPatientAppointment'
-    ]),
+    ...mapActions('appointments', ['backToSelectPatientAppointment']),
+    ...mapActions('time', ['getTimeSystem']),
     handleSelectPatient (patient) {
       if (patient.contractStatus !== 'ACTIVE') {
         this.$alert(
@@ -94,35 +142,53 @@ export default {
           }
         )
       } else {
-        this.$store.commit('appointments/setChoosePatient', true, { root: true })
-        this.$store.dispatch('appointments/selectPatientAppointment', {
-          healthRecordId: patient.healthRecordId,
-          accountPatientId: patient.accountPatientId
-        }, { root: true })
+        console.log('handleSelectPatient', patient)
+        this.$store.commit('appointments/setChoosePatient', false, {
+          root: true
+        })
+        this.$store.commit('appointments/setSelectPatient', true, {
+          root: true
+        })
       }
     },
-    confirmAppointment () {
-      this.$confirm(
-        'Bác sĩ sẽ đồng ý lịch hẹn tái khám cho bệnh nhân. Xác nhận?',
-        'Xác nhận',
-        {
-          confirmButtonText: 'Đồng ý',
-          cancelButtonText: 'Thoát',
-          type: 'warning'
+    handleClose () {
+      try {
+        if (this.$refs.ruleForm !== undefined) {
+          this.$refs.ruleForm.resetFields()
         }
-      )
-        .then(() => {
-          this.$store.dispatch(
-            'appointments/confirmAppointment',
+        this.closeAppointmentPatientsModal()
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    confirmAppointment (ruleForm) {
+      this.$refs[ruleForm].validate(valid => {
+        if (valid) {
+          this.$confirm(
+            'Bác sĩ sẽ đồng ý lịch hẹn tái khám cho bệnh nhân. Xác nhận?',
+            'Xác nhận',
             {
-              dateExamination: this.dateExamination,
-              note: this.note
-            },
-            { root: true }
+              confirmButtonText: 'Đồng ý',
+              cancelButtonText: 'Thoát',
+              type: 'warning'
+            }
           )
-          // location.reload()
-        })
-        .catch(() => {})
+            .then(() => {
+              this.$store.dispatch(
+                'appointments/confirmAppointment',
+                {
+                  dateExamination: `${this.ruleForm.date1}T${this.ruleForm.date2}:00`,
+                  note: this.ruleForm.desc
+                },
+                { root: true }
+              )
+              this.$refs[ruleForm].resetFields()
+            })
+            .catch(() => {})
+        } else {
+          return false
+        }
+      })
     }
   }
 }
@@ -154,6 +220,6 @@ export default {
   margin-top: 2em;
 }
 .marginbottom {
-  margin-bottom: .3em;
+  margin-bottom: 0.3em;
 }
 </style>

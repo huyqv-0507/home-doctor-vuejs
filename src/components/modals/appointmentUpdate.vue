@@ -67,7 +67,9 @@ export default {
     ...mapActions('appointments', ['updateAppointment']),
     ...mapActions('time', ['getTimeSystem']),
     handleDisabledDate (time) {
-      return time < new Date(this.timeNow)
+      const now = new Date(this.timeNow)
+      now.setDate(now.getDate() - 1)
+      return time < now
     },
     confirmUpdate (info) {
       this.$confirm(

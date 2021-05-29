@@ -252,7 +252,9 @@ export default {
       'setDiagnosePrescriptionEmpty'
     ]),
     handleDisabledDateStarted (time) {
-      return time < new Date(this.timeNow)
+      const now = new Date(this.timeNow)
+      now.setDate(now.getDate() - 1)
+      return time < now
     },
     handleDisabledDateFinished (time) {
       return time < new Date(this.dateStarted)

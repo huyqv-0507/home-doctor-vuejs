@@ -3,6 +3,7 @@ import { toDateTitle, toTimeAgo } from '../../utils/common'
 import router from '../../router'
 import { MessageBox, Notification } from 'element-ui'
 const notificationRepository = RepositoryFactory.get('notificationRepository')
+const vitalSignRepository = RepositoryFactory.get('vitalSignRepository')
 /*
   notificationTypeId:
     1: Bác sĩ có 1 hợp đồng theo dõi mới từ bệnh nhân
@@ -210,7 +211,12 @@ const actions = {
         break
       case 29: // Bệnh nhân gửi sinh hiệu cho bác sĩ
         if (notificationData.notification.medicalInstructionId !== null) {
-
+          vitalSignRepository.getVitalSignShareById(notificationData.notification.medicalInstructionId).then(response => {
+            dispatch('vitalSign/getVitalSignValueShare', { dateShare: response.data.timeShare.split(' ')[1].split('/').reverse().join('-'), hourShare: response.data.timeShare.split(' ')[0], minuteShare: response.data.minuteShare }, { root: true })
+            dispatch('modals/openViewHeartRateShare', null, { root: true })
+          }).catch(err => {
+            console.log(err)
+          })
         }
         break
     }
