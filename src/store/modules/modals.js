@@ -21,7 +21,8 @@ const state = () => ({
   isShowAddMoreDiagnoseToPrescription: false,
   isOpenChoosingVitalSignType: false,
   isViewHeartRateShare: false,
-  isShowAddMoreDiagnoseAddingMi: false
+  isShowAddMoreDiagnoseAddingMi: false,
+  isVitalSignOtherView: false
 })
 const getters = {}
 const actions = {
@@ -192,6 +193,9 @@ const actions = {
   }
 }
 const mutations = {
+  setVitalSignOtherView (state, isOpen) {
+    state.isVitalSignOtherView = isOpen
+  },
   setShowAddMoreDiagnoseAddingMi (state, isOpen) {
     state.isShowAddMoreDiagnoseAddingMi = isOpen
   },

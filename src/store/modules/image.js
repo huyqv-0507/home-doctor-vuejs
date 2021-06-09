@@ -65,6 +65,7 @@ const mutations = {
         }
       }),
       dateCreate: data.dateCreate,
+      dateTreatment: data.dateTreatment,
       patientFullName: data.patientFullName,
       images: data.images === null ? null : data.images.map(i => {
         return {

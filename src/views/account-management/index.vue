@@ -112,7 +112,7 @@ export default {
   },
   data () {
     return {
-      doctorInfo: `${this.$store.state.users.user.userId}`
+      doctorInfo: `HDR${this.$store.state.users.user.userId}`
     }
   }
 }

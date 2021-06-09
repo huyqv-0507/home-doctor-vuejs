@@ -54,7 +54,13 @@
                 width="200"
                 :formatter="formatDate"
               ></el-table-column>
-              <el-table-column label="Chi tiết" width="100">
+               <el-table-column
+                label="Nguồn"
+                prop="status"
+                width="200"
+                :formatter="formatStatus"
+              ></el-table-column>
+              <el-table-column label="Chi tiết" width="100" fixed="right">
                 <template slot-scope="scope">
                   <el-button
                     type="danger"
@@ -77,7 +83,7 @@ export default {
   computed: {
     ...mapState('patients', [
       'requestMedicalInstructions',
-      'medicalInstructionsByType', 'contractStatus'
+      'medicalInstructionsByType', 'contractStatus', 'patientOverview'
     ])
   },
   mounted () {
@@ -86,7 +92,9 @@ export default {
   },
   methods: {
     formatDiseases (row, column, cellValue, index) {
-      return cellValue.join('; ')
+      return cellValue === null || cellValue === '' ? this.patientOverview.diseases.map(d => {
+        return `${d.diseaseId} - ${d.diseaseName}; `
+      }) : cellValue.join('; ')
     },
     ...mapActions('patients', [
       'getRequestMedicalInstructions',
@@ -99,6 +107,15 @@ export default {
         .split('-')
         .reverse()
         .join('/')
+    },
+    formatStatus (row, column, cellValue, index) {
+      if (cellValue === 'DOCTOR') {
+        return 'Bác sĩ'
+      } else if (cellValue === 'SHARE' || cellValue === 'PATIENT') {
+        return 'Bệnh nhân'
+      } else if (cellValue === 'CONTRACT') {
+        return 'Hơp đồng'
+      }
     },
     handleView (index, row) {
       const medicalInstruction = {

@@ -48,6 +48,7 @@ const actions = {
         break
       case 'Sinh hiệu':
         await medicalInstructionRepository.getMedicalInstructionDetail(medicalInstructionId).then(response => {
+          console.log(response.data)
           dispatch('medicalInstruction/setVitalSignView', response.data, { root: true })
           dispatch('modals/openVitalSignShow', null, { root: true })
         }).catch((err) => {
@@ -98,6 +99,7 @@ const actions = {
       if (response.status === 200) {
         Notification.success({ title: 'Thông báo', message: 'Bạn đã yêu cầu lịch tái khám thành công. Vui lòng đợi bệnh nhân xác nhận', duration: 6000 })
         dispatch('patients/getPatientApproved', null, { root: true })
+        dispatch('businessValidator/checkAppointmentCurrent', null, { root: true })
         dispatch('appointments/getPatientAppointments', null, { root: true })
         dispatch('appointments/getAppointmentsByCurrentDate', null, { root: true })
         dispatch('patients/getOverviews', null, { root: true })
@@ -217,12 +219,13 @@ const actions = {
       }
     })
   },
-  finishAppointment ({ rootState, dispatch, commit }, diagnose) {
+  finishAppointment ({ rootState, dispatch, commit }, data) {
     const params = {
-      appointmentId: rootState.patients.patientOverview.appointmentNext.appointmentId,
-      diagnose: diagnose,
+      appointmentId: data.appointmentId,
+      diagnose: data.diagnose,
       contractId: rootState.medicalInstruction.patientSelected.contractId
     }
+    console.log(params)
     appointmentRepository.finishAppointment(params).then(response => {
       Notification.success({ title: 'Thông báo', message: 'Bác sĩ đã hoàn tất cuộc hẹn thăm khám', duration: 7000 })
       dispatch('modals/closeFinishAppointmentShow', null, { root: true })

@@ -5,7 +5,6 @@ import { groupBy } from '../../utils/common'
 import { getField, updateField } from 'vuex-map-fields'
 
 const medicalInstructionRepository = RepositoryFactory.get('medicalInstructionRepository')
-const appointmentRepository = RepositoryFactory.get('appointmentRepository')
 
 const state = () => ({
   medicalInstructionStatus: false, // Trạng thái của modal Y lệnh. Xác định trang được hiển thị (Chọn bệnh nhân/ Chọn chức năng cho y lệnh)
@@ -256,6 +255,8 @@ const actions = {
   // Chọn bệnh nhân
   selectPatient ({ commit, dispatch }, payloadPatient) {
     commit('setPatientSelected', payloadPatient)
+    commit('patients/setCurrentPatientId', payloadPatient.patientId, { root: true })
+    dispatch('patients/getOverviews', null, { root: true })
     dispatch('businessValidator/checkFirstAppointmentFinished', null, { root: true })
     dispatch('businessValidator/checkAppointmentActive', null, { root: true })
     dispatch('nextMedicalInstruction')
@@ -300,14 +301,7 @@ const actions = {
     }
     medicalInstructionRepository.createMedicalSchedule(medicalInstructionSchedule).then(response => {
       if (rootState.appointments.appointmentIdToCreatePrescription !== null) {
-        appointmentRepository.finishAppointment({
-          appointmentId: rootState.appointments.appointmentIdToCreatePrescription,
-          diagnose: '',
-          contractId: state.patientSelected.contractId
-        }).then(response => {
-          dispatch('businessValidator/checkAppointmentActive', false, { root: true })
-          dispatch('businessValidator/checkAppointmentCurrent', false, { root: true })
-        }).catch(err => { console.log(err) })
+        dispatch('appointments/finishAppointment', { diagnose: '', appointmentId: rootState.appointments.appointmentIdToCreatePrescription }, { root: true })
       }
       Notification.success({ title: 'Thông báo', message: 'Bác sĩ đã tạo đơn thuốc thành công', duration: 7000 })
       dispatch('getMedicalInstructionHistory')
@@ -782,6 +776,7 @@ const mutations = {
           }
         }),
         dateCreated: prescription.dateCreate,
+        dateTreatment: prescription.dateTreatement,
         patientFullName: prescription.patientFullName,
         images: prescription.images === null ? null : prescription.images.map(i => {
           return {
@@ -814,7 +809,7 @@ const mutations = {
           })
         }
       }
-      console.log(prescription)
+      console.log('prescriptionView', state.prescriptionView)
     } catch (error) {
       console.error(error)
     }
@@ -833,6 +828,7 @@ const mutations = {
           }
         }),
         dateCreate: vitalSign.dateCreate,
+        dateTreatment: vitalSign.dateTreatement,
         patientFullName: vitalSign.patientFullName,
         images: vitalSign.images === null ? null : vitalSign.images.map(i => {
           return {
@@ -861,7 +857,7 @@ const mutations = {
           })
         }
       }
-      console.log('vitalSignView: ', state.medicalInstructionView)
+      console.log('vitalSignView: ', state.vitalSignView)
     } catch (error) {
       console.log(error)
     }

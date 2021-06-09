@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper leftContent">
     <div class="wrapper_intro">
-     <p class="wrapper_intro-weekday">{{weekDay}}</p>
-     <p class="wrapper_intro-date">{{date}}</p>
+     <p class="wrapper_intro-weekday">{{timeObj.weekDay}}</p>
+     <p class="wrapper_intro-date">{{timeObj.date}}</p>
      <p class="wrapper_intro-hello">Xin chào, bác sĩ {{user.fullName}}</p>
     </div>
     <div class="wrapper_shortcut">
@@ -77,34 +77,10 @@ export default {
   computed: {
     ...mapState('users', ['user']),
     ...mapState('modals', ['visibleMedicalInstruction']),
-    ...mapState('time', ['timeNow'])
+    ...mapState('time', ['timeNow', 'timeObj'])
   },
   data () {
-    const now = new Date(this.$store.state.time.timeNow)
-    var weekDay = ''
-    if (now.getDay() === 0) { // weekDay [0-6]
-      weekDay = 'Chủ nhật'
-    } else if (now.getDay() === 1) {
-      weekDay = 'Thứ hai'
-    } else if (now.getDay() === 2) {
-      weekDay = 'Thứ ba'
-    } else if (now.getDay() === 3) {
-      weekDay = 'Thứ tư'
-    } else if (now.getDay() === 4) {
-      weekDay = 'Thứ năm'
-    } else if (now.getDay() === 5) {
-      weekDay = 'Thứ sáu'
-    } else if (now.getDay() === 6) {
-      weekDay = 'Thứ bảy'
-    }
-    const day = now.getDate() // day [1-31]
-    const month = now.getMonth() + 1 // month [0-11]
-    const year = now.getFullYear() // year
-
-    const date = `ngày ${day} tháng ${month} năm ${year}`
     return {
-      weekDay,
-      date,
       isShow: false
     }
   },

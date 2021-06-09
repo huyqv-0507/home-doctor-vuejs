@@ -12,7 +12,7 @@
     </div>
     <div slot="footer">
       <el-button type="info" size="mini" @click="closeFinishAppointmentShow">Huỷ</el-button>
-      <el-button type="primary" size="mini" @click="finishAppointment(diagnose)">Xác nhận</el-button>
+      <el-button type="primary" size="mini" @click="finishAppointment({ diagnose: diagnose, appointmentId: appointmentId })">Xác nhận</el-button>
     </div>
   </el-dialog>
 </template>
@@ -22,7 +22,8 @@ import { mapState, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      diagnose: ''
+      diagnose: '',
+      appointmentId: this.$store.state.patients.patientOverview.appointmentNext === null ? null : this.$store.state.patients.patientOverview.appointmentNext.appointmentId
     }
   },
   computed: {

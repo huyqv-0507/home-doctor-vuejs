@@ -21,7 +21,8 @@ const state = () => ({
   },
   requestMedicalInstructions: [],
   medicalInstructionsByType: [],
-  contractStatus: null
+  contractStatus: null,
+  currentPatientId: ''
 })
 const getters = {
   getPatientApproveByContract: (state) => (contractId) => {
@@ -32,8 +33,9 @@ const actions = {
   goToPatientHealth ({ commit, dispatch }, data) {
     console.log('goToPatientHealth', data)
     dispatch('medicalInstruction/selectPatient', data, { root: true }).then(() => {
-      router.push('/home/patient-detail')
-      dispatch('vitalSign/getVitalSignValueByHRId', null, { root: true })
+      dispatch('vitalSign/getVitalSignValueByHRId', null, { root: true }).then(() => {
+        router.push('/home/patient-detail')
+      })
     })
   },
   // Lấy trạng thái vital sign của bệnh nhân
@@ -174,6 +176,10 @@ const actions = {
   }
 }
 const mutations = {
+  setCurrentPatientId (state, patientId) {
+    state.currentPatientId = patientId
+    console.log('state.currentPatientId', state.currentPatientId)
+  },
   setOverviews (state, data) {
     try {
       const medicalInstructions = data.medicalInstructions === null ? null : data.medicalInstructions.map(mi => {
@@ -394,6 +400,7 @@ const mutations = {
           medicalInstructionTypeName: mi.medicalInstructionTypeName,
           diseases: mi.diseases === null ? null : mi.diseases,
           dateCreate: mi.dateCreate,
+          status: mi.status,
           images: mi.images === null ? null : `http://45.76.186.233:8000/api/v1/Images?pathImage=${mi.images}`
         }
       })

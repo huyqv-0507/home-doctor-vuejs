@@ -286,6 +286,7 @@ const actions = {
     contractRepository.getRequestDetail(payloadContractId).then(response => {
       console.log('Action - getRequestDetail() - Request detail:', response.data)
       commit('getRequestDetailSuccess', response.data)
+      commit('patients/setCurrentPatientId', response.data.patientId, { root: true })
       dispatch('getPatientDetail', response.data)
       rootState.medicalInstruction.medicalInstructionOfNewHealthRecord = null
       rootState.medicalInstruction.medicalInstructionOfNewHealthRecordShow = null

@@ -7,14 +7,18 @@ const state = () => ({
 })
 const getters = {}
 const actions = {
-  checkAppointmentCurrent ({ commit, rootState }) {
-    if (rootState.patients.patientOverview.appointmentNext === null) {
-      commit('setAppointmentCurrent', null)
-    } else {
-      const now = new Date(rootState.time.timeNow.split('T')[0])
-      const appointment = new Date(rootState.patients.patientOverview.appointmentNext.dateExamination.split('T')[0])
-      commit('setAppointmentCurrent', appointment >= now)
-    }
+  checkAppointmentCurrent ({ commit, rootState, dispatch }) {
+    dispatch('time/getTimeSystem', null, { root: true }).then(() => {
+      if (rootState.patients.patientOverview.appointmentNext === null) {
+        commit('setAppointmentCurrent', null)
+      } else {
+        const now = new Date(rootState.time.timeNow.split('T')[0])
+        const appointment = new Date(rootState.patients.patientOverview.appointmentNext.dateExamination.split('T')[0])
+        console.log('now', now)
+        console.log('appointment', appointment)
+        commit('setAppointmentCurrent', appointment <= now)
+      }
+    })
   },
   checkFirstAppointmentFinished ({ commit, rootState }) {
     appointmentRepository.checkFirstAppointment(rootState.medicalInstruction.patientSelected.healthRecordId).then(response => {

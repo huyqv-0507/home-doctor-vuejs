@@ -64,10 +64,14 @@ export default {
   methods: {
     ...mapActions('image', ['hideMedicalInstructionImageDetail']),
     handleAddToHR (medicalInstructionId) {
-      this.$store.dispatch('medicalInstruction/confirmAddMIToHR', medicalInstructionId, { root: true })
+      this.$store.dispatch('medicalInstruction/confirmAddMIToHR', medicalInstructionId, { root: true }).then(() => {
+        this.hideMedicalInstructionImageDetail()
+      })
     },
     handleRejectAddToHR (medicalInstructionId) {
-      this.$store.dispatch('medicalInstruction/rejectAddMIToHR', medicalInstructionId, { root: true })
+      this.$store.dispatch('medicalInstruction/rejectAddMIToHR', medicalInstructionId, { root: true }).then(() => {
+        this.hideMedicalInstructionImageDetail()
+      })
     }
   }
 }

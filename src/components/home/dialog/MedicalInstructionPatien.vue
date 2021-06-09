@@ -6,6 +6,7 @@
     @close="closeSelectMedicalInstructionModalSub()"
     class="wrapper_shortcut-items"
   >
+    <div>Số điện thoại: <strong style="font-size: 26px;">{{patientOverview.phoneNumber}}</strong></div>
     <div v-on:click="setMedicalSchedule('HOME')" class="pointer">
       <el-row
         :gutter="20"
@@ -55,7 +56,8 @@
 import { mapState, mapActions } from 'vuex'
 export default {
   computed: {
-    ...mapState('modals', ['isVisibleSelectMedicalInstructionSub'])
+    ...mapState('modals', ['isVisibleSelectMedicalInstructionSub']),
+    ...mapState('patients', ['patientOverview'])
   },
   methods: {
     ...mapActions('modals', ['closeSelectMedicalInstructionModalSub']),

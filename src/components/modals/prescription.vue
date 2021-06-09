@@ -16,6 +16,10 @@
           <strong>{{prescriptionView.conclusion}}</strong>
         </p>
         <p class="margin-line">
+          Mô tả:
+          <strong>{{prescriptionView.description}}</strong>
+        </p>
+        <p class="margin-line">
           Ngày bắt đầu:
           <strong>{{prescriptionView.prescriptionRespone.dateStarted.split('T')[0].split('-').reverse().join('/')}}</strong>
         </p>

@@ -116,7 +116,8 @@ export default {
   computed: {
     ...mapState('modals', ['isVisibleAppointmentPatients']),
     ...mapState('patients', ['approvedPatients']),
-    ...mapState('appointments', ['isSelectPatient', 'isChoosePatient'])
+    ...mapState('appointments', ['isSelectPatient', 'isChoosePatient']),
+    ...mapState('businessValidator', ['isAppointmentCurrent'])
   },
   mounted () {
     this.getPatientApproved()
@@ -128,10 +129,14 @@ export default {
       now.setDate(now.getDate() - 1)
       return date < now
     },
-    ...mapActions('modals', ['closeAppointmentPatientsModal']),
+    ...mapActions('modals', [
+      'closeAppointmentPatientsModal',
+      'openUpdateAppointmentShow'
+    ]),
     ...mapActions('patients', ['getPatientApproved']),
     ...mapActions('appointments', ['backToSelectPatientAppointment']),
     ...mapActions('time', ['getTimeSystem']),
+    ...mapActions('businessValidator', ['checkAppointmentCurrent']),
     handleSelectPatient (patient) {
       if (patient.contractStatus !== 'ACTIVE') {
         this.$alert(
@@ -142,12 +147,18 @@ export default {
           }
         )
       } else {
-        console.log('handleSelectPatient', patient)
-        this.$store.commit('appointments/setChoosePatient', false, {
-          root: true
-        })
-        this.$store.commit('appointments/setSelectPatient', true, {
-          root: true
+        this.checkAppointmentCurrent().then(() => {
+          if (!this.isAppointmentCurrent) {
+            this.openUpdateAppointmentShow()
+          } else {
+            console.log('handleSelectPatient', patient)
+            this.$store.commit('appointments/setChoosePatient', false, {
+              root: true
+            })
+            this.$store.commit('appointments/setSelectPatient', true, {
+              root: true
+            })
+          }
         })
       }
     },

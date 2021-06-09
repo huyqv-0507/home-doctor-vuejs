@@ -29,7 +29,7 @@
         <div class="medical-treatment__duration-date_content"></div>
       </div>
       <div>
-        <el-button size="mini" type="primary" @click="openAddNewMedicine()">Tạo mới {{appointmentIdToCreatePrescription}}</el-button>
+        <el-button size="mini" type="primary" @click="openAddNewMedicine()">Tạo mới</el-button>
       </div>
     </div>
     <h1 class="margin-default">Đơn thuốc đã sử dụng</h1>

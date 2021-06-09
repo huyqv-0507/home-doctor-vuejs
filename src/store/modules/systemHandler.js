@@ -106,12 +106,18 @@ const actions = {
         dispatch('systemHandler/getSystemNotifications', null, { root: true })
         dispatch('patients/getPatientApproved', null, { root: true })
         break
-      case 22:
+      case 19: // Thông báo bệnh nhân trở về trạng thái bình thường
         commit('newMessageSystemNotification')
         dispatch('systemHandler/getSystemNotifications', null, { root: true })
         dispatch('patients/getPatientApproved', null, { root: true })
         dispatch('patients/getOverviews', null, { root: true })
-        dispatch('time/getTimeSystem', null, { root: true })
+        break
+      case 22:
+        commit('newMessageSystemNotification')
+        dispatch('businessValidator/checkAppointmentCurrent', null, { root: true })
+        dispatch('systemHandler/getSystemNotifications', null, { root: true })
+        dispatch('patients/getPatientApproved', null, { root: true })
+        dispatch('patients/getOverviews', null, { root: true })
         break
 
       default:

@@ -17,6 +17,7 @@
           </el-col>
           <el-col :span="18" class="form__item_suggestion">
             <el-autocomplete
+              @blur="blurMedicineName($event)"
               style="width: 100%;"
               v-model="medicineName"
               :fetch-suggestions="searchMedicine"
@@ -29,6 +30,7 @@
                 <div>{{ item.description }}</div>
               </template>
             </el-autocomplete>
+            <p style="color: red;" v-show="isEmptyMedicineName">Bác sĩ chưa điền tên thuốc</p>
           </el-col>
         </el-row>
       </el-form-item>
@@ -151,7 +153,7 @@
 
     <span slot="footer">
       <el-row v-if="medicineCreated.status === 'NEW-MEDICINE'">
-        <el-button type="primary" @click="addMedicineToPrescription()">Xác nhận</el-button>
+        <el-button type="primary" @click="addMedicineToPrescription(medicineName)">Xác nhận</el-button>
       </el-row>
       <el-row v-else>
         <el-button type="primary" @click="handleUpdateMedicineToPrescription()">Xác nhận</el-button>
@@ -167,7 +169,8 @@ export default {
   data () {
     return {
       isValid: false,
-      medicines: []
+      medicines: [],
+      isEmptyMedicineName: false
     }
   },
   computed: {
@@ -202,6 +205,13 @@ export default {
     })
   },
   methods: {
+    blurMedicineName (event) {
+      if (event.target.value === '') {
+        this.isEmptyMedicineName = true
+      } else {
+        this.isEmptyMedicineName = false
+      }
+    },
     ...mapActions('modals', ['closeAddMedicine']),
     handleSelectMedicine (medicine) {
       this.medicineName = medicine.medicineName
@@ -229,12 +239,17 @@ export default {
           this.$store.dispatch('modals/closeAddMedicine', null, { root: true })
         })
     },
-    addMedicineToPrescription () {
-      this.$store.dispatch('medicalInstruction/addMedicineToPrescription', this.useTimeOpt, {
-        root: true
-      }).then(() => {
-        this.$store.dispatch('modals/closeAddMedicine', null, { root: true })
-      })
+    addMedicineToPrescription (medicineName) {
+      if (medicineName === '') {
+        this.isEmptyMedicineName = true
+      } else {
+        this.isEmptyMedicineName = false
+        this.$store.dispatch('medicalInstruction/addMedicineToPrescription', this.useTimeOpt, {
+          root: true
+        }).then(() => {
+          this.$store.dispatch('modals/closeAddMedicine', null, { root: true })
+        })
+      }
     },
     searchMedicine (queryString, cb) {
       var medicines = this.medicines

@@ -23,7 +23,8 @@ import {
   TooltipComponent,
   MarkPointComponent,
   MarkLineComponent,
-  VisualMapComponent
+  VisualMapComponent,
+  LegendComponent
 } from 'echarts/components'
 
 use([
@@ -34,7 +35,8 @@ use([
   TitleComponent,
   MarkPointComponent,
   VisualMapComponent,
-  MarkLineComponent
+  MarkLineComponent,
+  LegendComponent
 ])
 
 // register globally (or you can do it locally)

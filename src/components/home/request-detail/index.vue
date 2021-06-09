@@ -91,8 +91,32 @@
                     :key="`i${index}`"
                     style="width: 100px; margin: .3em;"
                   />
-                </div>
               </div>
+                    <div v-else>
+                  <input
+                    type="checkbox"
+                    :id="`${medicalInstruction.medicalInstructionId}-${medicalInstructionType.diseaseId}`"
+                    :value="{
+                          medicalInstructionId: medicalInstruction.medicalInstructionId,
+                          medicalInstructionTypeName: medicalInstruction.medicalInstructionTypeName
+                          }"
+                    v-model="checkImgs"
+                  />
+                      <img
+                        src="../../../assets/icons/ic-blood-pressure.png"
+                        style="width: 30px; margin: 0 1em;"
+                      />
+                      <div>
+                        <el-link
+                          size="mini"
+                          type="primary"
+                          v-on:click="handleView({
+                       medicalInstructionId: medicalInstruction.medicalInstructionId,
+                       medicalInstructionTypeName: medicalInstruction.medicalInstructionTypeName})"
+                        >Sinh hiệu</el-link>
+                      </div>
+                    </div>
+                </div>
             </el-row>
           </el-collapse-item>
           <el-collapse-item>
@@ -157,6 +181,7 @@
                     :key="`mi${indexMi}`"
                     style="display: flex;"
                   >
+                    <div v-if="mi.images !== null">
                     <input
                       type="checkbox"
                       :id="`${mi.medicalInstructionId}-${medicalInstruction.medicalInstructionTypeName}`"
@@ -165,7 +190,6 @@
                        medicalInstructionTypeName: medicalInstruction.medicalInstructionTypeName}"
                       v-model="checkImgs"
                     />
-                    <div v-if="mi.images !== null">
                       <el-image
                         v-on:click="showMedicalInstructionImageDetail(mi.medicalInstructionId)"
                         :src="im.url"
@@ -175,6 +199,14 @@
                       />
                     </div>
                     <div v-else>
+                    <input
+                      type="checkbox"
+                      :id="`${mi.medicalInstructionId}-${medicalInstruction.medicalInstructionTypeName}`"
+                      :value="{
+                       medicalInstructionId: mi.medicalInstructionId,
+                       medicalInstructionTypeName: medicalInstruction.medicalInstructionTypeName}"
+                      v-model="checkImgs"
+                    />
                       <img
                         src="../../../assets/icons/ic-blood-pressure.png"
                         style="width: 30px; margin: 0 1em;"

@@ -71,5 +71,11 @@ export default {
       method: 'get',
       url: `/VitalSigns/GetVitalSignShareById?vitalSignShareId=${vitalSignShareId}`
     })
+  },
+  async getDateHaveVitalSignValue (patientId, healthRecordId) {
+    return await request({
+      method: 'get',
+      url: `/VitalSigns/GetDateTimeHaveVitalSignValue?patientId=${patientId}&healthRecordId=${healthRecordId}`
+    })
   }
 }

@@ -247,6 +247,15 @@ export default {
     this.setDiagnosePrescriptionEmpty()
   },
   methods: {
+    savePrescription (data) {
+      if (this.prescriptionDiagnoses.length === 0) {
+        this.$message.error({ title: 'Thông báo', message: 'Bác sĩ chưa nhập chuẩn đoán. Vui lòng kiểm tra lại.', duration: 4000 })
+      } else if (this.prescriptionDetails.length === 0) {
+        this.$message.error({ title: 'Thông báo', message: 'Bác sĩ chưa chọn thuốc nào. Vui lòng thêm thuốc trước khi tạo đơn thuốc cho bệnh nhân', duration: 4000 })
+      } else {
+        this.$store.dispatch('medicalInstruction/savePrescription', { dateStarted: data.dateStarted, dateFinished: data.dateFinished, description: data.descriptionNewPrescription, contractId: data.contractId, conclusion: data.conclusion }, { root: true })
+      }
+    },
     ...mapActions('prescription', [
       'removeDiagnoseFromPrescription',
       'setDiagnosePrescriptionEmpty'
@@ -262,7 +271,6 @@ export default {
     ...mapActions('time', ['getTimeSystem']),
     ...mapActions('medicalInstruction', [
       'changeRadio',
-      'savePrescription',
       'backToMedicalSchedule'
     ]),
     ...mapActions('modals', [

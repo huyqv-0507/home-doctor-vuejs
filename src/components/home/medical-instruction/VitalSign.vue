@@ -19,7 +19,7 @@
             Hệ thống sẽ tự động đo nhịp tim và gửi thông báo nhắc nhở đến bệnh nhân
             <strong
               style="color: black;"
-          v-if="patientSelected !== null"
+              v-if="patientSelected !== null"
             >{{patientSelected.patientName}}</strong> như lịch bác sĩ đã sắp xếp.
           </span>
         </el-col>
@@ -30,7 +30,12 @@
           <div class="medical-treatment__duration-date_content"></div>
         </div>
         <div style="margin-top: 2em;">
-          <el-button style="margin-bottom: 1em;" size="mini" type="primary" @click="openAddNewVitalSign()">Tạo mới</el-button>
+          <el-button
+            style="margin-bottom: 1em;"
+            size="mini"
+            type="primary"
+            @click="openAddNewVitalSign()"
+          >Tạo mới</el-button>
         </div>
       </div>
       <div>
@@ -41,11 +46,18 @@
             :key="index"
             placement="top"
           >
-
+            <div style="margin-bottom: .5em;" v-if="vs.status === 'Đã huỷ'">
               <p>
                 Trạng thái:
-                <strong>{{vs.status}}</strong>
+                <strong style="color: red;">{{vs.status}}</strong>
               </p>
+            </div>
+            <div style="display: flex; align-items: center; margin-bottom: .5em;" v-if="vs.status === 'Đang hiện hành'">
+              <p>
+                Trạng thái:
+                <strong style="color: green;">{{vs.status}}</strong>
+              </p>
+            </div>
             <el-card shadow="never" v-for="(v, index) in vs.vitalSigns" :key="index">
               <p>
                 Loại sinh hiệu:

@@ -13,13 +13,7 @@
       <el-row class="margin-default items">
         <el-col :span="6">Bệnh nhân:</el-col>
         <el-col :span="18">
-          <el-text v-if="patientSelected">{{patientSelected.patientName}}</el-text>
-        </el-col>
-      </el-row>
-      <el-row class="margin-default items">
-        <el-col :span="6">Ngày bắt đầu:</el-col>
-        <el-col :span="18">
-          <el-date-picker size="mini" v-model="vitalSignForm.dateStart" format="dd/MM/yyyy" :picker-options="datePickerOptions"></el-date-picker>
+          <p v-if="patientSelected">{{patientSelected.patientName}}</p>
         </el-col>
       </el-row>
       <el-row class="margin-bottom-default items">
@@ -53,10 +47,10 @@
               </el-col>
             </el-row>
             <el-row class="margin-default content__vital-sign_body-vitalsign">
-              <el-col :span="6">
+              <el-col :span="10">
                 <p>Thời gian dẫn đến nguy hiểm:</p>
               </el-col>
-              <el-col :span="18">
+              <el-col :span="14">
                 <el-input-number
                   size="mini"
                   v-model="vitalSignForm.heartRate.rangeDangerTimeHeartRate"
@@ -64,32 +58,16 @@
               </el-col>
             </el-row>
             <el-row class="margin-default content__vital-sign_body-vitalsign">
-              <el-col :span="6">
+              <el-col :span="10">
                 <p>Thời gian trở lại bình thường:</p>
               </el-col>
-              <el-col :span="18">
+              <el-col :span="14">
                 <el-input-number
                   size="mini"
                   v-model="vitalSignForm.heartRate.rangeNormalTimeHeartRate"
                 ></el-input-number>phút.
               </el-col>
             </el-row>
-            <el-row>
-              <el-col :span="6">
-                <p>Thời gian bắt đầu đo:</p>
-              </el-col>
-              <el-col :span="18">
-                  <el-time-select
-                    size="mini"
-                    v-model="vitalSignForm.heartRate.timeStart"
-                    :picker-options="{
-                    start: '00:00',
-                    step: '00:15',
-                    end: '23:59'
-                  }"
-                    placeholder="Chọn"
-                  ></el-time-select>
-              </el-col></el-row>
           </el-row>
         </div>
       </div>
@@ -106,47 +84,6 @@
               <el-checkbox class="chk" v-model="isBloodPressureSelected"></el-checkbox>
             </el-row>
             <div v-show="isBloodPressureSelected">
-              <el-row class="margin-default content__vital-sign_body-vitalsign">
-                <el-col :span="6">
-                  <p>Khoảng an toàn</p>
-                </el-col>
-                <el-col :span="9">
-                  <p>Nhỏ nhất</p>
-                  <el-input-number
-                    size="mini"
-                    v-model="vitalSignForm.bloodPressure.minBloodPressure"
-                  ></el-input-number>
-                </el-col>
-                <el-col :span="9">
-                  <p>Lớn nhất</p>
-                  <el-input-number
-                    size="mini"
-                    v-model="vitalSignForm.bloodPressure.maxBloodPressure"
-                  ></el-input-number>
-                </el-col>
-              </el-row>
-              <el-row class="margin-default content__vital-sign_body-vitalsign">
-                <el-col :span="6">
-                  <p>Khoảng thời gian vượt mức dẫn đến nguy hiểm:</p>
-                </el-col>
-                <el-col :span="18">
-                  <el-input-number
-                    size="mini"
-                    v-model="vitalSignForm.bloodPressure.rangeDangerTimeBloodPressure"
-                  ></el-input-number>phút.
-                </el-col>
-              </el-row>
-              <el-row class="margin-default content__vital-sign_body-vitalsign">
-                <el-col :span="6">
-                  <p>Khoảng thời gian trở lại bình thường:</p>
-                </el-col>
-                <el-col :span="18">
-                  <el-input-number
-                    size="mini"
-                    v-model="vitalSignForm.bloodPressure.rangeNormalTimeBloodPressure"
-                  ></el-input-number>phút.
-                </el-col>
-              </el-row>
               <el-row class="margin-default content__vital-sign_body-vitalsign">
                 <el-col :span="6">
                   <p>Giờ đo:</p>
@@ -169,7 +106,7 @@
           <el-row>
             <el-row class="margin-default content__vital-sign_body-vitalsign">
               <img src="../../../assets/icons/ic-acid.png" class="iconDialog" />
-              <p class="title">Acid Uric</p>
+              <p class="title">Cholesterol</p>
               <el-checkbox class="chk" v-model="isAcidUricSelected"></el-checkbox>
             </el-row>
             <div v-show="isAcidUricSelected">
@@ -184,17 +121,6 @@
                 <el-col :span="9">
                   <p>Lớn nhất</p>
                   <el-input-number size="mini" v-model="vitalSignForm.acidUric.maxAcidUric"></el-input-number>
-                </el-col>
-              </el-row>
-              <el-row class="margin-default content__vital-sign_body-vitalsign">
-                <el-col :span="6">
-                  <p>Khoảng thời gian vượt mức dẫn đến nguy hiểm:</p>
-                </el-col>
-                <el-col :span="18">
-                  <el-input-number
-                    size="mini"
-                    v-model="vitalSignForm.acidUric.rangeDangerTimeAcidUric"
-                  ></el-input-number>phút.
                 </el-col>
               </el-row>
               <el-row class="margin-default content__vital-sign_body-vitalsign">
@@ -238,17 +164,6 @@
               </el-row>
               <el-row class="margin-default content__vital-sign_body-vitalsign">
                 <el-col :span="6">
-                  <p>Khoảng thời gian vượt mức dẫn đến nguy hiểm:</p>
-                </el-col>
-                <el-col :span="18">
-                  <el-input-number
-                    size="mini"
-                    v-model="vitalSignForm.temperature.rangeDangerTimeTemp"
-                  ></el-input-number>phút.
-                </el-col>
-              </el-row>
-              <el-row class="margin-default content__vital-sign_body-vitalsign">
-                <el-col :span="6">
                   <p>Giờ đo:</p>
                 </el-col>
                 <el-col :span="18">
@@ -270,8 +185,8 @@
       </div>
     </div>
     <div class="horizontalCenter" style="margin-top: 1em;">
-      <el-link @click="autoVitalSign">1</el-link>
-      <el-link @click="unAutoVitalSign">2</el-link>
+      <el-button @click="autoVitalSign" v-bind:class="{ activeBtn: isAutoVitalSign }">1</el-button>
+      <el-button @click="unAutoVitalSign" v-bind:class="{ activeBtn: !isAutoVitalSign }">2</el-button>
     </div>
     <div slot="footer">
       <el-button type="primary" size="mini" @click="openConfirmVitalSign()">Lưu</el-button>
@@ -286,7 +201,7 @@ export default {
     return {
       vitalSignForm: {
         diagnose: '',
-        dateStart: new Date(),
+        dateStart: new Date(this.$store.state.time.timeNow),
         description: '',
         heartRate: {
           minHeartRate: 0,
@@ -346,28 +261,45 @@ export default {
     ]),
     ...mapActions('time', ['getTimeSystem']),
     openConfirmVitalSign () {
-      this.$confirm(
-        'Bác sĩ xác nhận chỉ số đo sinh hiệu cho bệnh nhân. Tiếp tục?',
-        'Thông báo',
-        {
-          confirmButtonText: 'Đồng ý',
-          cancelButtonText: 'Thoát',
-          type: 'warning'
-        }
-      )
-        .then(() => {
-          this.$store.dispatch(
-            'vitalSign/confirmVitalSign',
-            {
-              vitalSignForm: this.vitalSignForm,
-              isBloodPressureSelected: this.isBloodPressureSelected,
-              isAcidUricSelected: this.isAcidUricSelected,
-              isTemperatureSelected: this.isTemperatureSelected
-            },
-            { root: true }
-          )
+      if (this.vitalSignForm.dateStart === null) {
+        this.$message.error({
+          title: 'Thông báo',
+          message: 'Bác sĩ vui lòng ngày đo sinh hiệu',
+          duration: 4000
         })
-        .catch(() => {})
+      } else if (
+        this.vitalSignForm.heartRate.maxHeartRate <=
+        this.vitalSignForm.heartRate.minHeartRate
+      ) {
+        this.$message.error({
+          title: 'Thông báo',
+          message: 'Bác sĩ vui lòng chọn đúng khoảng an toàn của nhịp tim',
+          duration: 4000
+        })
+      } else {
+        this.$confirm(
+          'Bác sĩ xác nhận chỉ số đo sinh hiệu cho bệnh nhân. Tiếp tục?',
+          'Thông báo',
+          {
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Thoát',
+            type: 'warning'
+          }
+        )
+          .then(() => {
+            this.$store.dispatch(
+              'vitalSign/confirmVitalSign',
+              {
+                vitalSignForm: this.vitalSignForm,
+                isBloodPressureSelected: this.isBloodPressureSelected,
+                isAcidUricSelected: this.isAcidUricSelected,
+                isTemperatureSelected: this.isTemperatureSelected
+              },
+              { root: true }
+            )
+          })
+          .catch(() => {})
+      }
     }
   },
   mounted () {
@@ -409,5 +341,8 @@ export default {
 }
 .chk {
   margin-left: 1em;
+}
+.activeBtn {
+  background-color: #3ac5c9;
 }
 </style>

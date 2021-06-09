@@ -8,11 +8,9 @@ const versionAPI = 'v1'
 
 const baseUrl = `${baseDomain}/api/${versionAPI}`
 const requestTimeout = 20000
-const headers = ''
 
 const request = axios.create({
   baseURL: baseUrl,
-  headers: headers,
   timeout: requestTimeout
 })
 
@@ -21,7 +19,7 @@ request.interceptors.request.use(function (config) {
   const hdrKey = getToken('hdr-key')
   const fbKey = getToken('firebase-key')
   if (hdrKey != null) {
-    // config.headers.Authorization = 'Bearer' + token
+    config.headers.Authorization = 'Bearer ' + hdrKey
   }
   if (fbKey != null) {
     // config.headers.Authorization = 'Bearer' + token

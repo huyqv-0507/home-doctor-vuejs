@@ -7,8 +7,8 @@
           <strong>Lịch hẹn</strong>
         </div>
         <div class="wrapper__item_content">
-          <div>Ngày tái khám: {{patientOverview.appointmentNext.dateExamination.split('T')[0].split('-').reverse().join('/')}}</div>
-          <div>Lý do: {{patientOverview.appointmentNext.note}}</div>
+          <div>Ngày tái khám: <strong>{{patientOverview.appointmentNext.dateExamination.split('T')[0].split('-').reverse().join('/')}}</strong></div>
+          <div>Mô tả: <strong>{{patientOverview.appointmentNext.note}}</strong></div>
           <el-link
             v-if="!isAppointmentCurrent"
             style="margin-top: 1em; font-size: 10px;"
@@ -113,7 +113,7 @@
       </el-col>
     </el-row>
     <el-divider></el-divider>
-    <el-card class="wrapper func" shadow="never">
+    <el-card class="wrapper func" shadow="never" style="display: none;">
       <div v-if="patientOverview.smartWatchConnected === false">
         <p style="font-size: 10px; color: red;">
           <i>Bệnh nhân chưa ghép nối thiết bị.</i>

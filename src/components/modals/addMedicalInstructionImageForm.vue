@@ -29,6 +29,9 @@
             >{{type.medicalInstructionTypeName}}</el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="Ngày khám" prop="dateTreatment">
+          <el-date-picker format="dd/MM/yyyy" value-format="yyyy-MM-dd" type="date" size="mini" v-model="addingMedicalInstructionForm.dateTreatment"></el-date-picker>
+        </el-form-item>
         <el-form-item label="Chuẩn đoán" required prop="diagnoses">
           <el-checkbox-group v-model="addingMedicalInstructionForm.diagnoses">
             <el-checkbox
@@ -105,6 +108,7 @@ export default {
         diagnoses: [],
         conclusion: '',
         description: '',
+        dateTreatment: '',
         images: ''
       },
       rules: {
@@ -118,6 +122,9 @@ export default {
             message: 'Bác sĩ phải chọn ít nhất một bệnh',
             trigger: 'change'
           }
+        ],
+        dateTreatment: [
+          { type: 'date', required: true, message: 'Xin hãy thêm ngày khám', trigger: 'blur' }
         ]
       },
       type: [],
@@ -212,6 +219,7 @@ export default {
           this.addingMedicalInstructionForm.medicalInstructionTypeName
         ).medicalInstructionTypeId,
         healthRecordId: this.patientSelected.healthRecordId,
+        dateTreatment: this.addingMedicalInstructionForm.dateTreatment,
         patientId: this.patientSelected.patientId,
         description: this.addingMedicalInstructionForm.description,
         diseaseIds: diseases.map(d => {

@@ -126,6 +126,7 @@ export default {
     formData.append('MedicalInstructionTypeId', data.medicalInstructionTypeId)
     formData.append('HealthRecordId', data.healthRecordId)
     formData.append('PatientId', data.patientId)
+    formData.append('DateTreatment', data.dateTreatment)
     formData.append('Description', data.description)
     formData.append('Conclusion', data.Conclusion)
     data.diseaseIds.forEach(id => {

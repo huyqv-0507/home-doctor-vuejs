@@ -1,7 +1,7 @@
 /* eslint-disable quotes */
 import { RepositoryFactory } from '../../repositories/RepositoryFactory'
 import { Notification, Message } from 'element-ui'
-import { formatDateToInsertDb } from '../../utils/common'
+import { formatDateToInsertDb, groupBy } from '../../utils/common'
 import { HeartRateLineChart } from '../../models/chart'
 export function VitalSign (vitalSignId, numberMax, numberMin, minuteDangerInterval, minuteNormalInterval, timeStart, minuteAgain) {
   return {
@@ -23,12 +23,14 @@ const state = () => ({
   vitalSignSchedule: [],
   appointmentIdForVitalSign: -1,
   heartRateValues: [],
+  heartRateValueDate: [],
   heartRateSchedule: {},
   vitalSignTypes: [],
   choosingTypes: [],
   allVitalSignShare: [],
   currentHeartRateValue: {},
-  chartShareOption: {}
+  chartShareOption: {},
+  isVitalSign: ''
 })
 const getters = {
   findStatusOfPatient: state => (patientId) => {
@@ -39,11 +41,49 @@ const getters = {
   }
 }
 const actions = {
+  async handleViewVitalSign ({ dispatch, rootState, commit, state }, data) {
+    if (data.vitalSignTypeId === 1) {
+      dispatch('vitalSign/getVitalSignValueByMiId', {
+        medicalInstructionId: data.medicalInstructionId,
+        patientId: rootState.patients.currentPatientId
+      }, { root: true })
+      dispatch('modals/openChartView', null, { root: true })
+    } else {
+      state.isVitalSign = data.vitalSignTypeId
+      dispatch('vitalSign/getVitalSignValueByMiIdDifferenceHR', {
+        medicalInstructionId: data.medicalInstructionId,
+        patientId: rootState.patients.currentPatientId
+      }, { root: true })
+      commit('modals/setVitalSignOtherView', true, { root: true })
+    }
+  },
+  getDateHaveVitalSignValue ({ commit, rootState }) {
+    vitalSignRepository.getDateHaveVitalSignValue(rootState.medicalInstruction.patientSelected.patientId, rootState.medicalInstruction.patientSelected.healthRecordId).then(response => {
+      commit('setHeartRateValueDate', response.data)
+    }).catch(err => {
+      console.log(err)
+      commit('setHeartRateValueDate', [])
+    })
+  },
   getVitalSignValueByMiId ({ commit, state, dispatch }, data) {
     console.log('getVitalSignValueByMiId', data)
     vitalSignRepository.getVitalSignValueByMiId(data.medicalInstructionId, data.patientId).then(response => {
       commit('setVitalSignValue', response.data)
       dispatch('vitalSign/setHeartRateChart', state.heartRateValues[0].dateCreated, { root: true })
+    }).catch((error) => {
+      if (error.message.includes('404')) {
+        console.log(error)
+        state.vitalSignValue = {}
+        state.vitalSignValue = {}
+        state.heartRateValues = []
+        state.heartRateSchedule = []
+      }
+    })
+  },
+  getVitalSignValueByMiIdDifferenceHR ({ commit, state, dispatch }, data) {
+    console.log('getVitalSignValueByMiId', data)
+    vitalSignRepository.getVitalSignValueByMiId(data.medicalInstructionId, data.patientId).then(response => {
+      commit('setVitalSignValue', response.data)
     }).catch((error) => {
       if (error.message.includes('404')) {
         console.log(error)
@@ -80,15 +120,14 @@ const actions = {
     const healthRecordId = rootState.medicalInstruction.patientSelected.healthRecordId
     await vitalSignRepository.getVitalSigns(healthRecordId).then(response => {
       if (response.status === 200) {
-        console.log('database.vitalSignSchedule', response.data)
         commit('setVitalSignSchedule', response.data)
       }
     }).catch(() => {
       commit('setVitalSignScheduleEmpty')
     })
   },
-  getVitalSignHealthPatient ({ commit, rootState }) {
-    const now = new Date(rootState.time.timeNow)
+  getVitalSignHealthPatient ({ commit, rootState }, date) {
+    const now = new Date(date.split('/').reverse().join('-'))
     const data = {
       patientId: rootState.medicalInstruction.patientSelected.patientId,
       healthRecordId: rootState.medicalInstruction.patientSelected.healthRecordId,
@@ -125,7 +164,7 @@ const actions = {
     commit('setVitalSignOverviews', [
       {
         patientId: 2,
-        status: 'Bình thường'
+        status: 'Bình throne'
       },
       {
         patientId: 1004,
@@ -136,7 +175,7 @@ const actions = {
   confirmVitalSign ({ state, rootState, dispatch }, vitalSignData) {
     console.log('vitalSignPayload', vitalSignData)
     const date = formatDateToInsertDb(vitalSignData.vitalSignForm.dateStart)
-    const timeHeartRate = date + 'T' + vitalSignData.vitalSignForm.heartRate.timeStart + ':' + '00'
+    const timeHeartRate = date + 'T00:00:00'
     const vitalSigns = []
     const heartRate = new VitalSign(
       1,
@@ -151,11 +190,11 @@ const actions = {
     if (vitalSignData.isBloodPressureSelected) {
       const bloodPressure = new VitalSign(
         2,
-        vitalSignData.vitalSignForm.bloodPressure.maxBloodPressure,
-        vitalSignData.vitalSignForm.bloodPressure.minBloodPressure,
-        vitalSignData.vitalSignForm.bloodPressure.rangeDangerTimeBloodPressure,
-        vitalSignData.vitalSignForm.bloodPressure.rangeNormalTimeBloodPressure,
-        date + 'T' + vitalSignData.vitalSignForm.bloodPressure.timeStart + ':' + '00',
+        0,
+        0,
+        0,
+        0,
+        date + 'T' + vitalSignData.vitalSignForm.bloodPressure.timeBloodPressure + ':' + '00',
         0
       )
       vitalSigns.push(bloodPressure)
@@ -165,9 +204,9 @@ const actions = {
         3,
         vitalSignData.vitalSignForm.acidUric.minAcidUric,
         vitalSignData.vitalSignForm.acidUric.maxAcidUric,
-        vitalSignData.vitalSignForm.acidUric.rangeDangerTimeAcidUric,
-        vitalSignData.vitalSignForm.acidUric.rangeNormalTimeAcidUric,
-        date + 'T' + vitalSignData.vitalSignForm.acidUric.timeStart + ':' + '00',
+        0,
+        0,
+        date + 'T' + vitalSignData.vitalSignForm.acidUric.timeAcidUric + ':' + '00',
         0
       )
       vitalSigns.push(acidUric)
@@ -177,9 +216,9 @@ const actions = {
         4,
         vitalSignData.vitalSignForm.temperature.minTemp,
         vitalSignData.vitalSignForm.temperature.maxTemp,
-        vitalSignData.vitalSignForm.temperature.rangeDangerTimeTemp,
-        vitalSignData.vitalSignForm.temperature.rangeNormalTimeTemp,
-        date + 'T' + vitalSignData.vitalSignForm.temperature.timeStart + ':' + '00',
+        0,
+        0,
+        date + 'T' + vitalSignData.vitalSignForm.temperature.timeTemp + ':' + '00',
         0
       )
       vitalSigns.push(temperature)
@@ -190,7 +229,7 @@ const actions = {
       doctorAccountId: parseInt(rootState.users.user.accountId),
       contractId: rootState.medicalInstruction.patientSelected.contractId,
       diagnose: vitalSignData.vitalSignForm.diagnose,
-      dateStart: formatDateToInsertDb(vitalSignData.vitalSignForm.dateStart),
+      // dateStart: formatDateToInsertDb(vitalSignData.vitalSignForm.dateStart),
       description: vitalSignData.vitalSignForm.description,
       appointmentId: rootState.appointments.appointmentIdToCreateVitalSign,
       vitalSigns: vitalSigns
@@ -246,6 +285,9 @@ const actions = {
   }
 }
 const mutations = {
+  setHeartRateValueDate (state, date) {
+    state.heartRateValueDate = date
+  },
   setCurrentHeartRateValue (state, vitalSignValues) {
     if (vitalSignValues === null) {
       state.currentHeartRateValue = null
@@ -360,19 +402,34 @@ const mutations = {
           minuteAgain: vsv.minuteAgain
         }
       }),
-      vitalSignValues: data.vitalSignValues === null ? null : data.vitalSignValues.map(vs => {
-        if (vs.vitalSignTypeId === 1) {
-          state.heartRateValues.push(vs)
+      vitalSignValues: data.vitalSignValues === null ? null : groupBy(data.vitalSignValues, 'vitalSignTypeId', 'vitalSignTypeId', 'vitalSignValues').map(v => {
+        let tmpType = ''
+        if (v.vitalSignTypeId === '1') {
+          tmpType = 'Nhịp tim'
+          v.vitalSignValues.forEach(x => {
+            state.heartRateValues.push(x)
+          })
+        } else if (v.vitalSignTypeId === '2') {
+          tmpType = 'Huyết áp'
+        } else if (v.vitalSignTypeId === '3') {
+          tmpType = 'Cholesterol'
+        } else if (v.vitalSignTypeId === '4') {
+          tmpType = 'Nhiệt độ'
         }
         return {
-          dateCreated: vs.dateCreated,
-          numberValue: vs.numberValue === null ? null : vs.numberValue,
-          timeValue: vs.timeValue === null ? null : vs.timeValue,
-          vitalSignTypeId: vs.vitalSignTypeId
+          vitalSignTypeId: parseInt(v.vitalSignTypeId),
+          vitalSignTypeName: tmpType,
+          vitalSignValues: v.vitalSignValues.map(vt => {
+            return {
+              dateCreated: vt.dateCreated,
+              timeValue: vt.timeValue.substring(0, vt.timeValue.length - 1).split(','),
+              numberValue: vt.numberValue.substring(0, vt.numberValue.length - 1).split(',')
+            }
+          })
         }
       })
     }
-    console.log('state.heartRateValues', state.heartRateValues)
+    console.log('heartRateValues', state.heartRateValues)
     console.log('VitalSignValue', state.vitalSignValue)
   },
   setDeviceConnecting (state, device) {

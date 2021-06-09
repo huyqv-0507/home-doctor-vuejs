@@ -16,7 +16,7 @@
           :label="mit.medicalInstructionTypeName"
         >{{mit.medicalInstructionTypeName}}</el-option>
       </el-select>
-      <p>Ghi chú thêm</p>
+      <p style="margin-top: 1em; margin-bottom: .5em;">Ghi chú thêm</p>
       <el-input v-model="note" size="mini"></el-input>
     </div>
     <template slot="footer">

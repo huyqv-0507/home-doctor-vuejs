@@ -16,6 +16,7 @@
     <patient-select-diaglog />
     <choosing-vital-sign-type />
     <view-heart-rate-share />
+    <view-vital-sign-other />
   </div>
 </template>
 <script>
@@ -34,6 +35,7 @@ import AddMoreDiagnosePrescription from '../src/components/modals/addMoreDiagnos
 import PatientSelectDialog from '../src/components/home/appointment/patient-select-dialog'
 import ChoosingVitalSignType from '../src/components/modals/choosingVitalSingType'
 import ViewHeartRateShare from '../src/components/modals/viewHeartRateShare'
+import ViewVitalSignOther from '../src/components/modals/vitalSignOtherView'
 export default {
   data () {
     return {
@@ -55,7 +57,8 @@ export default {
     'add-more-diagnose-prescription': AddMoreDiagnosePrescription,
     'patient-select-diaglog': PatientSelectDialog,
     'choosing-vital-sign-type': ChoosingVitalSignType,
-    'view-heart-rate-share': ViewHeartRateShare
+    'view-heart-rate-share': ViewHeartRateShare,
+    'view-vital-sign-other': ViewVitalSignOther
   }
 }
 </script>

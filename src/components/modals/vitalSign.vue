@@ -13,7 +13,7 @@
           Bệnh nhân:
           <strong>{{vitalSignView.patientFullName}}</strong>
         </p>
-        <p v-show="vitalSignView.diseases !== [] && vitalSignView.disease !== null" class="margin-line">
+        <p v-show="vitalSignView.diseases.length !== 0" class="margin-line">
           Chuẩn đoán:
           <strong v-for="(disease, index) in vitalSignView.diseases" :key="`disease-${index}`">{{disease.diseaseId}} - {{disease.diseaseName}}; </strong>
         </p>
@@ -41,9 +41,9 @@
         <el-table-column label="Loại sinh hiệu" prop="vitalSignType" width="200"></el-table-column>
         <el-table-column label="Mức an toàn lớn nhất" prop="numberMax" width="120"></el-table-column>
         <el-table-column label="Mức an toàn nhỏ nhất" prop="numberMin" width="120"></el-table-column>
-        <el-table-column label="Số phút gây ra nguy hiểm" prop="minuteDangerInterval" width="120"></el-table-column>
-        <el-table-column label="Thời gian bắt đầu đo" prop="timeStart" width="120" :formatter="formatDate"></el-table-column>
-        <el-table-column label="Số phút gây nguy hiểm" prop="minuteAgain" width="120"></el-table-column>
+        <el-table-column label="Thời gian gây ra nguy hiểm (phút)" prop="minuteDangerInterval" width="120"></el-table-column>
+        <el-table-column label="Thời gian trở lại bình thường (phút)" prop="minuteDangerInterval" width="120"></el-table-column>
+        <el-table-column label="Giờ đo" prop="timeStart" width="120" :formatter="formatDate"></el-table-column>
         <el-table-column label="Biểu đồ" width="90">
           <template slot-scope="scope">
             <el-button size="mini" @click="handleView(scope.$index, scope.row)">Xem</el-button>
@@ -65,19 +65,16 @@ export default {
   },
   methods: {
     formatDate (row, column, cellValue, index) {
-      return row.timeStart
-        .split('T')[0]
-        .split('-')
-        .reverse()
-        .join('/')
+      return `${row.timeStart
+        .split('T')[1]
+        .split(':')[0]}:${row.timeStart
+        .split('T')[1]
+        .split(':')[1]}`
     },
     ...mapActions('modals', ['closeVitalSignShow']),
     handleView (index, row) {
-      this.$store.dispatch('vitalSign/getVitalSignValueByMiId', {
-        medicalInstructionId: this.vitalSignView.medicalInstructionId,
-        patientId: this.requestDetail.patientId
-      })
-      this.$store.dispatch('modals/openChartView', null, { root: true })
+      console.log('row', row)
+      this.$store.dispatch('vitalSign/handleViewVitalSign', { vitalSignTypeId: row.vitalSignTypeId, medicalInstructionId: this.vitalSignView.medicalInstructionId }, { root: true })
     },
     handleAddToHR (medicalInstructionId) {
       this.$store.dispatch('medicalInstruction/confirmAddMIToHR', medicalInstructionId, { root: true })
